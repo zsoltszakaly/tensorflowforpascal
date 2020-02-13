@@ -1,0 +1,12 @@
+'Wrapper Generator for TensorFlow (c) Zsolt Szakaly'#$0d#$0a+
+'Usage: wrappermaker [Option[=Value]]'#$0d#$0a+
+'  Options:'#$0d#$0a+
+'    -E, --eager-prefix:       Eager function name starts with'#$0d#$0a+
+'    -G, --graph-prefix:       TGraphExt function name starts with'#$0d#$0a+
+'    -H, --help, ?:            Help'#$0d#$0a+
+'    -O, --output-file:        The name of the unit generated'#$0d#$0a+
+'    -S, --source-file:        The name of the TensorFlow definition file'#$0d#$0a+
+'    -T, --template:           The name of the template file'#$0d#$0a+
+'    -U, --unit:               Specifies the generated unit'#$0d#$0a+
+'    -V, --verbose:            Verbose level'#$0d#$0a+
+'For moe details use option --help=2'

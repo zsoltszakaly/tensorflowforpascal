@@ -1,0 +1,28 @@
+'Wrapper Generator for TensorFlow (c) Zsolt Szakaly'#$0d#$0a+
+'Usage: wrappermaker [Option[=Value]]'#$0d#$0a+
+'  Options:'#$0d#$0a+
+'    -E, --eager-prefix:       Eager function name starts with'#$0d#$0a+
+'              The name of the functions generated for the Eager functions. Default="Exec". This option is only used if -U=2 or -U=3, i.e. Eager interface is generated.'#$0d#$0a+
+#$0d#$0a+
+'    -G, --graph-prefix:       TGraphExt function name starts with'#$0d#$0a+
+'              The name of the functions generated for the TGraphExt functions. Default="Add". This option is only used if -U=1 or -U=3, i.e. Graph interface is generated.'#$0d#$0a+
+#$0d#$0a+
+'    -H, --help, ?:            Help'#$0d#$0a+
+'              Option value is optional, 1 (default) short, 2 (this one) full version. For all other options the option value is mandatory if the option is added.'#$0d#$0a+
+#$0d#$0a+
+'    -O, --output-file:        The name of the unit generated'#$0d#$0a+
+'              The file name can be in the current directory, or any other valid location, as per the operation system. If the name includes special characters, especially space, the name can be included in "", or ''''. Default value tf_wrapper.pas.'#$0d#$0a+
+#$0d#$0a+
+'    -S, --source-file:        The name of the TensorFlow definition file'#$0d#$0a+
+'              The file name can be in the current directory, or any other valid location, as per the operation system. If the name includes special characters, especially space, the name can be included in "", or ''''. Default value ops.pbtxt. Later releases might include possibility to directly use the latest definition file from github.com, but currently it is not supported.'#$0d#$0a+
+#$0d#$0a+
+'    -T, --template:           The name of the template file'#$0d#$0a+
+'              The file name can be in the current directory, or any other valid location, as per the operation system. If the name includes special characters, especially space, the name can be included in "", or ''''. Default value tf_wrappertemplate.pas.'#$0d#$0a+
+#$0d#$0a+
+'    -U, --unit:               Specifies the generated unit'#$0d#$0a+
+'              Possible values: 1 - Only the TGraphExt interface is generated, 2 - Only the Eager interface is generated, 3 - Both the TGraphExt and the Eager interfaces are generated. Default value 3.'#$0d#$0a+
+#$0d#$0a+
+'    -V, --verbose:            Verbose level'#$0d#$0a+
+'              Possible values: 0 - No screen output, 1 - Only errors and indication of the start and end of the process shown, 2 - More details shown. Default value 1.'#$0d#$0a+
+#$0d#$0a+
+'For more information on the generated unit and latest releases follow the github folder and check the Description parts of the source code of wrappermaker.pas, the tf_wrappertemplate.pas and the generated unit (normally tf_wrapper.pas).'#$0d#$0a
