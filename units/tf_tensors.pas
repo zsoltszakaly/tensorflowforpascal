@@ -15,7 +15,9 @@ unit tf_tensors;
 //  A copy of the GNU General Public License is available on the World Wide Web at <http://www.gnu.org/copyleft/gpl.html>. You can
 //  also obtain it by writing to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1335, USA.
 //
-//  Change log: 13/02/2020 Initial version
+//  Change log:
+//    13/02/2020 Initial version
+//    15/02/2020 CreateTensorString added
 //
 //**********************************************************************************************************************************
 //
@@ -82,6 +84,8 @@ function CreateTensorSingle(const AData:Single):TF_TensorPtr;
 function CreateTensorSingle(const AData:array of Single):TF_TensorPtr;
 function CreateTensorSingle(const AShape:array of Int64; const AData:array of Single):TF_TensorPtr;
 function CreateTensorSingle(const AShape:array of Int64; const AData; ALength:Int64):TF_TensorPtr;
+
+function CreateTensorString(const AData:PChar):TF_TensorPtr;
 
 // other tpyes, e.g. Complex can be added later, but the generic one can always be used
 
@@ -302,6 +306,17 @@ function CreateTensorSingle(const AShape:array of Int64; const AData; ALength:In
   begin
   result:=CreateTensor(TF_FLOAT,AShape);
   WriteTensorData(result,AData,ALength);
+  end;
+
+function CreateTensorString(const AData:PChar):TF_TensorPtr;
+  var
+    Status:TF_StatusPtr;
+  begin
+  Status:=TF_NewStatus;
+  result:=TF_AllocateTensor(TF_STRING,nil,0,8+TF_StringEncodedSize(strlen(AData)));
+  TF_StringEncode(AData,strlen(AData),TF_TensorData(result)+8,TF_StringEncodedSize(strlen(AData)),Status);
+  TF_CheckStatus(Status);
+  FillByte(TF_TensorData(result)^,8,0);
   end;
 
 //**********************************************************************************************************************************
