@@ -336,19 +336,20 @@ procedure Example12;
     g:TGraphExt;
     s:TSession;
     t:TF_TensorPtr;
+    LastOperationName:string;
   begin
   writeln('Starting Example 12');
   g.Init;
   g.AddInput('input-bmp',TF_String); // The input bmp file name will be given as an input parameter
   g.AddConstant('jpeg-resolution',Int32(80));
   g.AddReadFile('input-bmp','bmp-content');
-  g.AddDecodeBmp('bmp-content','decoded-image',3); // all three colours
+  g.AddDecodeBmp('bmp-content','decoded-image',3);
   g.AddEncodeJpegVariableQuality('decoded-image','jpeg-resolution','jpeg-content');
   g.AddConstant('output-jpg','myoutput.jpg'); // The output jpg name will be given as a constant (just to illustrate the difference)
-  g.AddWriteFile('output-jpg','jpeg-content');
+  LastOperationName:=g.AddWriteFile('output-jpg','jpeg-content');
   s.Init(g);
   t:=createtensorstring('myinput.bmp'); // Since the input bmp is an input parameter, we have to create it
-  s.run(['input-bmp'],[t],[],['WriteFile6']); // The actual run of the Session
+  s.run(['input-bmp'],[t],[],[LastOperationName]); // The actual run of the Session, making sure that the last operation runs
   TF_DeleteTEnsor(t); // In Graph operation, there is no automatic tensor deletion, so it has to be done manually
   s.Done;
   g.Done;
