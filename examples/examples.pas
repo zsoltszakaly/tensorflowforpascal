@@ -15,7 +15,10 @@ program examples;
 //  A copy of the GNU General Public License is available on the World Wide Web at <http://www.gnu.org/copyleft/gpl.html>. You can
 //  also obtain it by writing to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1335, USA.
 //
-//  Change log: 13/02/2020 Initial version
+//  Change log:
+//    13/02/2020 Initial version
+//    15/02/2020 Example12 added to convert a BMP to JPG file (use input file "myinput.bmp")
+//               Minor changes in line with the tf_operations changes
 //
 //**********************************************************************************************************************************
 //
@@ -66,11 +69,11 @@ procedure Example1;
   t2:=CreateTensorInt32([2,4],[1,2,3,4,5,6,7,8]); // A 2x4 matrix, filled the same way
   g.Init;                                         // Need to call Init before the first use
   attr:=TF_TensorType(t1);                        // Set the Attribute Value for Attribute "T"
-  if not g.AddOper('Placeholder',[],[],[],['tensor1'],['dtype'],['type'],[@attr]) then // The Generic call to add and Input
+  if g.AddOper('Placeholder',[],[],[],['tensor1'],['dtype'],['type'],[@attr])='' then // The Generic call to add and Input
     writeln('Error while adding tensor1');
-  if not g.AddInput('tensor2',TF_Int32) then      // The same as tensor1, but with a simplified function created to add Inputs
+  if g.AddInput('tensor2',TF_Int32)='' then      // The same as tensor1, but with a simplified function created to add Inputs
     writeln('Error while adding tensor2');
-  if not g.AddOper('MatMul',['tensor1','tensor2'],[],[],['tensorout'],['T'],['type'],[@attr]) then // The Generic call
+  if g.AddOper('MatMul',['tensor1','tensor2'],[],[],['tensorout'],['T'],['type'],[@attr])='' then // The Generic call
     writeln('Soemthing went wrong!');
   s.Init(g);                                      // Need to make a Session that runs the Graph
   touts:=s.run(['tensor1','tensor2'],[t1,t2],['tensorout']); // The actual run of the Session
@@ -327,6 +330,32 @@ procedure Example11;
   writeln;
   end;
 
+procedure Example12;
+// This example converts a BMP image into a JPEG image
+  var
+    g:TGraphExt;
+    s:TSession;
+    t:TF_TensorPtr;
+  begin
+  writeln('Starting Example 12');
+  g.Init;
+  g.AddInput('input-bmp',TF_String); // The input bmp file name will be given as an input parameter
+  g.AddConstant('jpeg-resolution',Int32(80));
+  g.AddReadFile('input-bmp','bmp-content');
+  g.AddDecodeBmp('bmp-content','decoded-image',3); // all three colours
+  g.AddEncodeJpegVariableQuality('decoded-image','jpeg-resolution','jpeg-content');
+  g.AddConstant('output-jpg','myoutput.jpg'); // The output jpg name will be given as a constant (just to illustrate the difference)
+  g.AddWriteFile('output-jpg','jpeg-content');
+  s.Init(g);
+  t:=createtensorstring('myinput.bmp'); // Since the input bmp is an input parameter, we have to create it
+  s.run(['input-bmp'],[t],[],['WriteFile6']); // The actual run of the Session
+  TF_DeleteTEnsor(t); // In Graph operation, there is no automatic tensor deletion, so it has to be done manually
+  s.Done;
+  g.Done;
+  writeln('Finished Example 12');
+  writeln;
+  end;
+
 begin
 Example1;
 Example2;
@@ -339,5 +368,6 @@ Example8;
 Example9;
 Example10;
 Example11;
+Example12;
 end.
 
