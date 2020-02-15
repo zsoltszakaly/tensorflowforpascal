@@ -15,7 +15,10 @@ unit tf_wrapper;
 //  A copy of the GNU General Public License is available on the World Wide Web at <http://www.gnu.org/copyleft/gpl.html>. You can
 //  also obtain it by writing to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1335, USA.
 //
-//  Change log: 11/02/2020 Initial version
+//  Change log:
+//    11/02/2020 Initial version
+//    15/02/2020 ctypes add to uses
+//
 //
 //**********************************************************************************************************************************
 //
@@ -88,6 +91,7 @@ unit tf_wrapper;
 interface
 
 uses
+  ctypes,
   SysUtils,
   tf_api,
   tf_operations;

@@ -15,7 +15,10 @@ program wrappermaker;
 //  A copy of the GNU General Public License is available on the World Wide Web at <http://www.gnu.org/copyleft/gpl.html>. You can
 //  also obtain it by writing to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1335, USA.
 //
-//  Change log: 13/02/2020 Initial version
+//  Change log:
+//    13/02/2020 Initial version
+//    15/02/2020 The integer attributes changed to cint64
+//               The generated Add<oper> results changed to string in line with the change in AddOper
 //
 //**********************************************************************************************************************************
 //
@@ -794,13 +797,13 @@ procedure GenerateGraph(const AOpName:string);
     if AttributeTypes[i]='func' then
       PascalType:='TF_Function';
     if AttributeTypes[i]='int' then
-      PascalType:='integer';
+      PascalType:='cint64';
     if AttributeTypes[i]='list(float)' then
       PascalType:='array of real';
     if AttributeTypes[i]='list(func)' then
       PascalType:='array of TF_Function';
     if AttributeTypes[i]='list(int)' then
-      PascalType:='array of integer';
+      PascalType:='array of cint64';
     if AttributeTypes[i]='list(shape)' then
       PascalType:='array of TF_Shape';
     if AttributeTypes[i]='list(string)' then
@@ -838,7 +841,7 @@ procedure GenerateGraph(const AOpName:string);
   OneExecution:=OneExecution+'])';
   if OneCall[Length(OneCall)]=' ' then
     SetLength(OneCall,Length(OneCall)-2);
-  OneCall:=OneCall+'):boolean;'+#$0a;
+  OneCall:=OneCall+'):string;'+#$0a;
   GraphInterface:=GraphInterface+'    function '+OneCall;
   GraphImplementation:=GraphImplementation+'function TGraphExt.'+OneCall+'  begin'+#$0d#$0a;
   GraphImplementation:=GraphImplementation+OneExecution+#$0d#$0a;
