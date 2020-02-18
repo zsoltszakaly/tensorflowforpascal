@@ -19,7 +19,6 @@ unit tf_wrapper;
 //    11/02/2020 Initial version
 //    15/02/2020 ctypes add to uses
 //
-//
 //**********************************************************************************************************************************
 //
 //  Description
@@ -109,10 +108,10 @@ type
     function AddAllCandidateSampler(const I_true_classes:string; const O_sampled_candidates:string; const O_true_expected_count:string; const O_sampled_expected_count:string; const A_num_true:cint64; const A_num_sampled:cint64; const A_unique:boolean; const A_seed:cint64; const A_seed2:cint64):string;
     function AddAllToAll(const I_input:string; const I_group_assignment:string; const O_output:string; const A_T:TF_DataType; const A_concat_dimension:cint64; const A_split_dimension:cint64; const A_split_count:cint64):string;
     function AddAngle(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_Tout:TF_DataType):string;
-    function AddAnonymousIterator(const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddAnonymousIteratorV2(const O_handle:string; const O_deleter:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddAnonymousIterator(const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddAnonymousIteratorV2(const O_handle:string; const O_deleter:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddAnonymousMemoryCache(const O_handle:string; const O_deleter:string):string;
-    function AddAnonymousMultiDeviceIterator(const O_handle:string; const O_deleter:string; const A_devices:array of string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddAnonymousMultiDeviceIterator(const O_handle:string; const O_deleter:string; const A_devices:TF_StringList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddAnonymousRandomSeedGenerator(const I_seed:string; const I_seed2:string; const O_handle:string; const O_deleter:string):string;
     function AddAny(const I_input:string; const I_reduction_indices:string; const O_output:string; const A_keep_dims:boolean; const A_Tidx:TF_DataType):string;
     function AddApplyAdaMax(const I_var:string; const I_m:string; const I_v:string; const I_beta1_power:string; const I_lr:string; const I_beta1:string; const I_beta2:string; const I_epsilon:string; const I_grad:string; const O_out:string; const A_T:TF_DataType; const A_use_locking:boolean):string;
@@ -137,8 +136,8 @@ type
     function AddAsString(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_precision:cint64; const A_scientific:boolean; const A_shortest:boolean; const A_width:cint64; const A_fill:string):string;
     function AddAsin(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
     function AddAsinh(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
-    function AddAssert(const I_condition:string; const I_data:string; const A_T:array of TF_DataType; const A_summarize:cint64):string;
-    function AddAssertNextDataset(const I_input_dataset:string; const I_transformations:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddAssert(const I_condition:string; const IL_data:string; const A_T:TF_TypeList; const A_summarize:cint64):string;
+    function AddAssertNextDataset(const I_input_dataset:string; const I_transformations:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddAssign(const I_ref:string; const I_value:string; const O_output_ref:string; const A_T:TF_DataType; const A_validate_shape:boolean; const A_use_locking:boolean):string;
     function AddAssignAdd(const I_ref:string; const I_value:string; const O_output_ref:string; const A_T:TF_DataType; const A_use_locking:boolean):string;
     function AddAssignAddVariableOp(const I_resource:string; const I_value:string; const A_dtype:TF_DataType):string;
@@ -151,26 +150,26 @@ type
     function AddAudioSpectrogram(const I_input:string; const O_spectrogram:string; const A_window_size:cint64; const A_stride:cint64; const A_magnitude_squared:boolean):string;
     function AddAudioSummary(const I_tag:string; const I_tensor:string; const O_summary:string; const A_sample_rate:real; const A_max_outputs:cint64):string;
     function AddAudioSummaryV2(const I_tag:string; const I_tensor:string; const I_sample_rate:string; const O_summary:string; const A_max_outputs:cint64):string;
-    function AddAutoShardDataset(const I_input_dataset:string; const I_num_workers:string; const I_index:string; const O_handle:string; const A_auto_shard_policy:cint64; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddAvgPool(const I_value:string; const O_output:string; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
-    function AddAvgPool3D(const I_input:string; const O_output:string; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
-    function AddAvgPool3DGrad(const I_orig_input_shape:string; const I_grad:string; const O_output:string; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
-    function AddAvgPoolGrad(const I_orig_input_shape:string; const I_grad:string; const O_output:string; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
-    function AddBarrier(const O_handle:string; const A_component_types:array of TF_DataType; const A_shapes:array of TF_Shape; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
+    function AddAutoShardDataset(const I_input_dataset:string; const I_num_workers:string; const I_index:string; const O_handle:string; const A_auto_shard_policy:cint64; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddAvgPool(const I_value:string; const O_output:string; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
+    function AddAvgPool3D(const I_input:string; const O_output:string; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
+    function AddAvgPool3DGrad(const I_orig_input_shape:string; const I_grad:string; const O_output:string; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
+    function AddAvgPoolGrad(const I_orig_input_shape:string; const I_grad:string; const O_output:string; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
+    function AddBarrier(const O_handle:string; const A_component_types:TF_TypeList; const A_shapes:TF_ShapeList; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
     function AddBarrierClose(const I_handle:string; const A_cancel_pending_enqueues:boolean):string;
     function AddBarrierIncompleteSize(const I_handle:string; const O_size:string):string;
     function AddBarrierInsertMany(const I_handle:string; const I_keys:string; const I_values:string; const A_T:TF_DataType; const A_component_index:cint64):string;
     function AddBarrierReadySize(const I_handle:string; const O_size:string):string;
-    function AddBarrierTakeMany(const I_handle:string; const I_num_elements:string; const O_indices:string; const O_keys:string; const OL_values:string; const A_component_types:array of TF_DataType; const A_allow_small_batch:boolean; const A_wait_for_incomplete:boolean; const A_timeout_ms:cint64):string;
-    function AddBatch(const I_in_tensors:string; const O_batch_index:string; const O_id:string; const OL_batched_tensors:string; const A_num_batch_threads:cint64; const A_max_batch_size:cint64; const A_max_enqueued_batches:cint64; const A_batch_timeout_micros:cint64; const A_allowed_batch_sizes:array of cint64; const A_grad_timeout_micros:cint64; const A_container:string; const A_shared_name:string; const A_batching_queue:string; const A_T:array of TF_DataType):string;
+    function AddBarrierTakeMany(const I_handle:string; const I_num_elements:string; const O_indices:string; const O_keys:string; const OL_values:string; const A_component_types:TF_TypeList; const A_allow_small_batch:boolean; const A_wait_for_incomplete:boolean; const A_timeout_ms:cint64):string;
+    function AddBatch(const IL_in_tensors:string; const O_batch_index:string; const O_id:string; const OL_batched_tensors:string; const A_num_batch_threads:cint64; const A_max_batch_size:cint64; const A_max_enqueued_batches:cint64; const A_batch_timeout_micros:cint64; const A_allowed_batch_sizes:TF_IntList; const A_grad_timeout_micros:cint64; const A_container:string; const A_shared_name:string; const A_batching_queue:string; const A_T:TF_TypeList):string;
     function AddBatchCholesky(const I_input:string; const O_output:string; const A_T:TF_DataType):string;
     function AddBatchCholeskyGrad(const I_l:string; const I_grad:string; const O_output:string; const A_T:TF_DataType):string;
-    function AddBatchDataset(const I_input_dataset:string; const I_batch_size:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddBatchDatasetV2(const I_input_dataset:string; const I_batch_size:string; const I_drop_remainder:string; const O_handle:string; const A_parallel_copy:boolean; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddBatchDataset(const I_input_dataset:string; const I_batch_size:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddBatchDatasetV2(const I_input_dataset:string; const I_batch_size:string; const I_drop_remainder:string; const O_handle:string; const A_parallel_copy:boolean; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddBatchFFT(const I_input:string; const O_output:string):string;
     function AddBatchFFT2D(const I_input:string; const O_output:string):string;
     function AddBatchFFT3D(const I_input:string; const O_output:string):string;
-    function AddBatchFunction(const I_in_tensors:string; const I_captured_tensors:string; const OL_out_tensors:string; const A_f:TF_Function; const A_num_batch_threads:cint64; const A_max_batch_size:cint64; const A_batch_timeout_micros:cint64; const A_max_enqueued_batches:cint64; const A_allowed_batch_sizes:array of cint64; const A_container:string; const A_shared_name:string; const A_batching_queue:string; const A_Tin:array of TF_DataType; const A_Tcaptured:array of TF_DataType; const A_Tout:array of TF_DataType):string;
+    function AddBatchFunction(const IL_in_tensors:string; const IL_captured_tensors:string; const OL_out_tensors:string; const A_f:TF_Function; const A_num_batch_threads:cint64; const A_max_batch_size:cint64; const A_batch_timeout_micros:cint64; const A_max_enqueued_batches:cint64; const A_allowed_batch_sizes:TF_IntList; const A_container:string; const A_shared_name:string; const A_batching_queue:string; const A_Tin:TF_TypeList; const A_Tcaptured:TF_TypeList; const A_Tout:TF_TypeList):string;
     function AddBatchIFFT(const I_input:string; const O_output:string):string;
     function AddBatchIFFT2D(const I_input:string; const O_output:string):string;
     function AddBatchIFFT3D(const I_input:string; const O_output:string):string;
@@ -237,34 +236,34 @@ type
     function AddBroadcastArgs(const I_s0:string; const I_s1:string; const O_r0:string; const A_T:TF_DataType):string;
     function AddBroadcastGradientArgs(const I_s0:string; const I_s1:string; const O_r0:string; const O_r1:string; const A_T:TF_DataType):string;
     function AddBroadcastTo(const I_input:string; const I_shape:string; const O_output:string; const A_T:TF_DataType; const A_Tidx:TF_DataType):string;
-    function AddBucketize(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_boundaries:array of real):string;
-    function AddBytesProducedStatsDataset(const I_input_dataset:string; const I_tag:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddBucketize(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_boundaries:TF_FloatList):string;
+    function AddBytesProducedStatsDataset(const I_input_dataset:string; const I_tag:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddCSRSparseMatrixComponents(const I_csr_sparse_matrix:string; const I_index:string; const O_row_ptrs:string; const O_col_inds:string; const O_values:string; const A_type:TF_DataType):string;
     function AddCSRSparseMatrixToDense(const I_sparse_input:string; const O_dense_output:string; const A_type:TF_DataType):string;
     function AddCSRSparseMatrixToSparseTensor(const I_sparse_matrix:string; const O_indices:string; const O_values:string; const O_dense_shape:string; const A_type:TF_DataType):string;
-    function AddCSVDataset(const I_filenames:string; const I_compression_type:string; const I_buffer_size:string; const I_header:string; const I_field_delim:string; const I_use_quote_delim:string; const I_na_value:string; const I_select_cols:string; const I_record_defaults:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddCSVDataset(const I_filenames:string; const I_compression_type:string; const I_buffer_size:string; const I_header:string; const I_field_delim:string; const I_use_quote_delim:string; const I_na_value:string; const I_select_cols:string; const IL_record_defaults:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddCTCBeamSearchDecoder(const I_inputs:string; const I_sequence_length:string; const O_log_probability:string; const OL_decoded_indices:string; const OL_decoded_values:string; const OL_decoded_shape:string; const A_beam_width:cint64; const A_top_paths:cint64; const A_merge_repeated:boolean; const A_T:TF_DataType):string;
     function AddCTCGreedyDecoder(const I_inputs:string; const I_sequence_length:string; const O_decoded_indices:string; const O_decoded_values:string; const O_decoded_shape:string; const O_log_probability:string; const A_merge_repeated:boolean; const A_T:TF_DataType):string;
     function AddCTCLoss(const I_inputs:string; const I_labels_indices:string; const I_labels_values:string; const I_sequence_length:string; const O_loss:string; const O_gradient:string; const A_preprocess_collapse_repeated:boolean; const A_ctc_merge_repeated:boolean; const A_ignore_longer_outputs_than_inputs:boolean; const A_T:TF_DataType):string;
     function AddCTCLossV2(const I_inputs:string; const I_labels_indices:string; const I_labels_values:string; const I_sequence_length:string; const O_loss:string; const O_gradient:string; const A_preprocess_collapse_repeated:boolean; const A_ctc_merge_repeated:boolean; const A_ignore_longer_outputs_than_inputs:boolean):string;
-    function AddCacheDataset(const I_input_dataset:string; const I_filename:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddCacheDatasetV2(const I_input_dataset:string; const I_filename:string; const I_cache:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddCase(const I_branch_index:string; const I_input:string; const OL_output:string; const A_Tin:array of TF_DataType; const A_Tout:array of TF_DataType; const A_branches:array of TF_Function; const A_output_shapes:array of TF_Shape):string;
+    function AddCacheDataset(const I_input_dataset:string; const I_filename:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddCacheDatasetV2(const I_input_dataset:string; const I_filename:string; const I_cache:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddCase(const I_branch_index:string; const IL_input:string; const OL_output:string; const A_Tin:TF_TypeList; const A_Tout:TF_TypeList; const A_branches:TF_FuncnameList; const A_output_shapes:TF_ShapeList):string;
     function AddCast(const I_x:string; const O_y:string; const A_SrcT:TF_DataType; const A_DstT:TF_DataType; const A_Truncate:boolean):string;
     function AddCeil(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
     function AddCheckNumerics(const I_tensor:string; const O_output:string; const A_T:TF_DataType; const A_message:string):string;
     function AddCheckNumericsV2(const I_tensor:string; const O_output:string; const A_T:TF_DataType; const A_message:string):string;
     function AddCholesky(const I_input:string; const O_output:string; const A_T:TF_DataType):string;
     function AddCholeskyGrad(const I_l:string; const I_grad:string; const O_output:string; const A_T:TF_DataType):string;
-    function AddChooseFastestBranchDataset(const I_input_dataset:string; const I_ratio_numerator:string; const I_ratio_denominator:string; const I_other_arguments:string; const O_handle:string; const A_Targuments:array of TF_DataType; const A_num_elements_per_branch:cint64; const A_branches:array of TF_Function; const A_other_arguments_lengths:array of cint64; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddChooseFastestDataset(const IL_input_datasets:string; const O_handle:string; const A_N:cint64; const A_num_experiments:cint64; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddChooseFastestBranchDataset(const I_input_dataset:string; const I_ratio_numerator:string; const I_ratio_denominator:string; const IL_other_arguments:string; const O_handle:string; const A_Targuments:TF_TypeList; const A_num_elements_per_branch:cint64; const A_branches:TF_FuncnameList; const A_other_arguments_lengths:TF_IntList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddChooseFastestDataset(const IL_input_datasets:string; const O_handle:string; const A_N:cint64; const A_num_experiments:cint64; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddClipByValue(const I_t:string; const I_clip_value_min:string; const I_clip_value_max:string; const O_output:string; const A_T:TF_DataType):string;
     function AddCloseSummaryWriter(const I_writer:string):string;
     function AddCollectiveBcastRecv(const O_data:string; const A_T:TF_DataType; const A_group_size:cint64; const A_group_key:cint64; const A_instance_key:cint64; const A_shape:TF_Shape; const A_communication_hint:string):string;
     function AddCollectiveBcastSend(const I_input:string; const O_data:string; const A_T:TF_DataType; const A_group_size:cint64; const A_group_key:cint64; const A_instance_key:cint64; const A_shape:TF_Shape; const A_communication_hint:string):string;
     function AddCollectiveGather(const I_input:string; const O_data:string; const A_T:TF_DataType; const A_group_size:cint64; const A_group_key:cint64; const A_instance_key:cint64; const A_shape:TF_Shape; const A_communication_hint:string):string;
     function AddCollectivePermute(const I_input:string; const I_source_target_pairs:string; const O_output:string; const A_T:TF_DataType):string;
-    function AddCollectiveReduce(const I_input:string; const O_data:string; const A_T:TF_DataType; const A_group_size:cint64; const A_group_key:cint64; const A_instance_key:cint64; const A_merge_op:string; const A_final_op:string; const A_subdiv_offsets:array of cint64; const A_wait_for:array of cint64; const A_communication_hint:string):string;
+    function AddCollectiveReduce(const I_input:string; const O_data:string; const A_T:TF_DataType; const A_group_size:cint64; const A_group_key:cint64; const A_instance_key:cint64; const A_merge_op:string; const A_final_op:string; const A_subdiv_offsets:TF_IntList; const A_wait_for:TF_IntList; const A_communication_hint:string):string;
     function AddCombinedNonMaxSuppression(const I_boxes:string; const I_scores:string; const I_max_output_size_per_class:string; const I_max_total_size:string; const I_iou_threshold:string; const I_score_threshold:string; const O_nmsed_boxes:string; const O_nmsed_scores:string; const O_nmsed_classes:string; const O_valid_detections:string; const A_pad_per_class:boolean; const A_clip_boxes:boolean):string;
     function AddCompareAndBitpack(const I_input:string; const I_threshold:string; const O_output:string; const A_T:TF_DataType):string;
     function AddComplex(const I_real:string; const I_imag:string; const O_out:string; const A_T:TF_DataType; const A_Tout:TF_DataType):string;
@@ -273,7 +272,7 @@ type
     function AddConcat(const I_concat_dim:string; const IL_values:string; const O_output:string; const A_N:cint64; const A_T:TF_DataType):string;
     function AddConcatOffset(const I_concat_dim:string; const IL_shape:string; const OL_offset:string; const A_N:cint64):string;
     function AddConcatV2(const I_axis:string; const IL_values:string; const O_output:string; const A_N:cint64; const A_T:TF_DataType; const A_Tidx:TF_DataType):string;
-    function AddConcatenateDataset(const I_input_dataset:string; const I_another_dataset:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddConcatenateDataset(const I_input_dataset:string; const I_another_dataset:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddConditionalAccumulator(const O_handle:string; const A_dtype:TF_DataType; const A_shape:TF_Shape; const A_container:string; const A_shared_name:string; const A_reduction_type:string):string;
     function AddConfigureDistributedTPU(const O_topology:string; const A_embedding_config:string; const A_tpu_embedding_config:string; const A_is_global_init:boolean; const A_enable_whole_mesh_compilations:boolean; const A_compilation_failure_closes_chips:boolean):string;
     function AddConfigureTPUEmbedding(const A_config:string):string;
@@ -282,16 +281,16 @@ type
     function AddConst(const O_output:string; const A_value:TF_TensorPtr; const A_dtype:TF_DataType):string;
     function AddConsumeMutexLock(const I_mutex_lock:string):string;
     function AddControlTrigger():string;
-    function AddConv2D(const I_input:string; const I_filter:string; const O_output:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_use_cudnn_on_gpu:boolean; const A_padding:string; const A_explicit_paddings:array of cint64; const A_data_format:string; const A_dilations:array of cint64):string;
-    function AddConv2DBackpropFilter(const I_input:string; const I_filter_sizes:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_use_cudnn_on_gpu:boolean; const A_padding:string; const A_explicit_paddings:array of cint64; const A_data_format:string; const A_dilations:array of cint64):string;
-    function AddConv2DBackpropInput(const I_input_sizes:string; const I_filter:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_use_cudnn_on_gpu:boolean; const A_padding:string; const A_explicit_paddings:array of cint64; const A_data_format:string; const A_dilations:array of cint64):string;
-    function AddConv3D(const I_input:string; const I_filter:string; const O_output:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_dilations:array of cint64):string;
-    function AddConv3DBackpropFilter(const I_input:string; const I_filter:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64):string;
-    function AddConv3DBackpropFilterV2(const I_input:string; const I_filter_sizes:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_dilations:array of cint64):string;
-    function AddConv3DBackpropInput(const I_input:string; const I_filter:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64):string;
-    function AddConv3DBackpropInputV2(const I_input_sizes:string; const I_filter:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_dilations:array of cint64; const A_Tshape:TF_DataType):string;
-    function AddCopy(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_tensor_name:string; const A_debug_ops_spec:array of string):string;
-    function AddCopyHost(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_tensor_name:string; const A_debug_ops_spec:array of string):string;
+    function AddConv2D(const I_input:string; const I_filter:string; const O_output:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_use_cudnn_on_gpu:boolean; const A_padding:string; const A_explicit_paddings:TF_IntList; const A_data_format:string; const A_dilations:TF_IntList):string;
+    function AddConv2DBackpropFilter(const I_input:string; const I_filter_sizes:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_use_cudnn_on_gpu:boolean; const A_padding:string; const A_explicit_paddings:TF_IntList; const A_data_format:string; const A_dilations:TF_IntList):string;
+    function AddConv2DBackpropInput(const I_input_sizes:string; const I_filter:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_use_cudnn_on_gpu:boolean; const A_padding:string; const A_explicit_paddings:TF_IntList; const A_data_format:string; const A_dilations:TF_IntList):string;
+    function AddConv3D(const I_input:string; const I_filter:string; const O_output:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_dilations:TF_IntList):string;
+    function AddConv3DBackpropFilter(const I_input:string; const I_filter:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList):string;
+    function AddConv3DBackpropFilterV2(const I_input:string; const I_filter_sizes:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_dilations:TF_IntList):string;
+    function AddConv3DBackpropInput(const I_input:string; const I_filter:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList):string;
+    function AddConv3DBackpropInputV2(const I_input_sizes:string; const I_filter:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_dilations:TF_IntList; const A_Tshape:TF_DataType):string;
+    function AddCopy(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_tensor_name:string; const A_debug_ops_spec:TF_StringList):string;
+    function AddCopyHost(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_tensor_name:string; const A_debug_ops_spec:TF_StringList):string;
     function AddCos(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
     function AddCosh(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
     function AddCountUpTo(const I_ref:string; const O_output:string; const A_limit:cint64; const A_T:TF_DataType):string;
@@ -320,29 +319,29 @@ type
     function AddDataFormatVecPermute(const I_x:string; const O_y:string; const A_T:TF_DataType; const A_src_format:string; const A_dst_format:string):string;
     function AddDatasetCardinality(const I_input_dataset:string; const O_cardinality:string):string;
     function AddDatasetFromGraph(const I_graph_def:string; const O_handle:string):string;
-    function AddDatasetToGraph(const I_input_dataset:string; const O_graph:string; const A_stateful_whitelist:array of string; const A_allow_stateful:boolean; const A_strip_device_assignment:boolean):string;
+    function AddDatasetToGraph(const I_input_dataset:string; const O_graph:string; const A_stateful_whitelist:TF_StringList; const A_allow_stateful:boolean; const A_strip_device_assignment:boolean):string;
     function AddDatasetToGraphV2(const I_input_dataset:string; const O_graph:string; const A_external_state_policy:cint64; const A_strip_device_assignment:boolean):string;
-    function AddDatasetToSingleElement(const I_dataset:string; const OL_components:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddDatasetToSingleElement(const I_dataset:string; const OL_components:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddDatasetToTFRecord(const I_input_dataset:string; const I_filename:string; const I_compression_type:string):string;
     function AddDawsn(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
     function AddDebugGradientIdentity(const I_input:string; const O_output:string; const A_T:TF_DataType):string;
     function AddDebugGradientRefIdentity(const I_input:string; const O_output:string; const A_T:TF_DataType):string;
-    function AddDebugIdentity(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_device_name:string; const A_tensor_name:string; const A_debug_urls:array of string; const A_gated_grpc:boolean):string;
-    function AddDebugIdentityV2(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_tfdbg_context_id:string; const A_op_name:string; const A_output_slot:cint64; const A_tensor_debug_mode:cint64; const A_debug_urls:array of string):string;
-    function AddDebugNanCount(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_device_name:string; const A_tensor_name:string; const A_debug_urls:array of string; const A_gated_grpc:boolean):string;
-    function AddDebugNumericSummary(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_device_name:string; const A_tensor_name:string; const A_debug_urls:array of string; const A_lower_bound:real; const A_upper_bound:real; const A_mute_if_healthy:boolean; const A_gated_grpc:boolean):string;
+    function AddDebugIdentity(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_device_name:string; const A_tensor_name:string; const A_debug_urls:TF_StringList; const A_gated_grpc:boolean):string;
+    function AddDebugIdentityV2(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_tfdbg_context_id:string; const A_op_name:string; const A_output_slot:cint64; const A_tensor_debug_mode:cint64; const A_debug_urls:TF_StringList):string;
+    function AddDebugNanCount(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_device_name:string; const A_tensor_name:string; const A_debug_urls:TF_StringList; const A_gated_grpc:boolean):string;
+    function AddDebugNumericSummary(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_device_name:string; const A_tensor_name:string; const A_debug_urls:TF_StringList; const A_lower_bound:real; const A_upper_bound:real; const A_mute_if_healthy:boolean; const A_gated_grpc:boolean):string;
     function AddDebugNumericSummaryV2(const I_input:string; const O_output:string; const A_output_dtype:TF_DataType; const A_T:TF_DataType; const A_tensor_debug_mode:cint64; const A_tensor_id:cint64):string;
     function AddDecodeAndCropJpeg(const I_contents:string; const I_crop_window:string; const O_image:string; const A_channels:cint64; const A_ratio:cint64; const A_fancy_upscaling:boolean; const A_try_recover_truncated:boolean; const A_acceptable_fraction:real; const A_dct_method:string):string;
     function AddDecodeBase64(const I_input:string; const O_output:string):string;
     function AddDecodeBmp(const I_contents:string; const O_image:string; const A_channels:cint64):string;
-    function AddDecodeCSV(const I_records:string; const I_record_defaults:string; const OL_output:string; const A_OUT_TYPE:array of TF_DataType; const A_field_delim:string; const A_use_quote_delim:boolean; const A_na_value:string; const A_select_cols:array of cint64):string;
+    function AddDecodeCSV(const I_records:string; const IL_record_defaults:string; const OL_output:string; const A_OUT_TYPE:TF_TypeList; const A_field_delim:string; const A_use_quote_delim:boolean; const A_na_value:string; const A_select_cols:TF_IntList):string;
     function AddDecodeCompressed(const I_bytes:string; const O_output:string; const A_compression_type:string):string;
     function AddDecodeGif(const I_contents:string; const O_image:string):string;
     function AddDecodeJSONExample(const I_json_examples:string; const O_binary_examples:string):string;
     function AddDecodeJpeg(const I_contents:string; const O_image:string; const A_channels:cint64; const A_ratio:cint64; const A_fancy_upscaling:boolean; const A_try_recover_truncated:boolean; const A_acceptable_fraction:real; const A_dct_method:string):string;
     function AddDecodePaddedRaw(const I_input_bytes:string; const I_fixed_length:string; const O_output:string; const A_out_type:TF_DataType; const A_little_endian:boolean):string;
     function AddDecodePng(const I_contents:string; const O_image:string; const A_channels:cint64; const A_dtype:TF_DataType):string;
-    function AddDecodeProtoV2(const I_bytes:string; const O_sizes:string; const OL_values:string; const A_message_type:string; const A_field_names:array of string; const A_output_types:array of TF_DataType; const A_descriptor_source:string; const A_message_format:string; const A_sanitize:boolean):string;
+    function AddDecodeProtoV2(const I_bytes:string; const O_sizes:string; const OL_values:string; const A_message_type:string; const A_field_names:TF_StringList; const A_output_types:TF_TypeList; const A_descriptor_source:string; const A_message_format:string; const A_sanitize:boolean):string;
     function AddDecodeRaw(const I_bytes:string; const O_output:string; const A_out_type:TF_DataType; const A_little_endian:boolean):string;
     function AddDecodeWav(const I_contents:string; const O_audio:string; const O_sample_rate:string; const A_desired_channels:cint64; const A_desired_samples:cint64):string;
     function AddDeepCopy(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
@@ -353,12 +352,12 @@ type
     function AddDeleteSessionTensor(const I_handle:string):string;
     function AddDenseToCSRSparseMatrix(const I_dense_input:string; const I_indices:string; const O_sparse_output:string; const A_T:TF_DataType):string;
     function AddDenseToDenseSetOperation(const I_set1:string; const I_set2:string; const O_result_indices:string; const O_result_values:string; const O_result_shape:string; const A_set_operation:string; const A_validate_indices:boolean; const A_T:TF_DataType):string;
-    function AddDenseToSparseBatchDataset(const I_input_dataset:string; const I_batch_size:string; const I_row_shape:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddDenseToSparseBatchDataset(const I_input_dataset:string; const I_batch_size:string; const I_row_shape:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddDenseToSparseSetOperation(const I_set1:string; const I_set2_indices:string; const I_set2_values:string; const I_set2_shape:string; const O_result_indices:string; const O_result_values:string; const O_result_shape:string; const A_set_operation:string; const A_validate_indices:boolean; const A_T:TF_DataType):string;
     function AddDepthToSpace(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_block_size:cint64; const A_data_format:string):string;
-    function AddDepthwiseConv2dNative(const I_input:string; const I_filter:string; const O_output:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_dilations:array of cint64):string;
-    function AddDepthwiseConv2dNativeBackpropFilter(const I_input:string; const I_filter_sizes:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_dilations:array of cint64):string;
-    function AddDepthwiseConv2dNativeBackpropInput(const I_input_sizes:string; const I_filter:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_dilations:array of cint64):string;
+    function AddDepthwiseConv2dNative(const I_input:string; const I_filter:string; const O_output:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_dilations:TF_IntList):string;
+    function AddDepthwiseConv2dNativeBackpropFilter(const I_input:string; const I_filter_sizes:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_dilations:TF_IntList):string;
+    function AddDepthwiseConv2dNativeBackpropInput(const I_input_sizes:string; const I_filter:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_dilations:TF_IntList):string;
     function AddDequantize(const I_input:string; const I_min_range:string; const I_max_range:string; const O_output:string; const A_T:TF_DataType; const A_mode:string; const A_narrow_range:boolean; const A_axis:cint64; const A_dtype:TF_DataType):string;
     function AddDeserializeIterator(const I_resource_handle:string; const I_serialized:string):string;
     function AddDeserializeManySparse(const I_serialized_sparse:string; const O_sparse_indices:string; const O_sparse_values:string; const O_sparse_shape:string; const A_dtype:TF_DataType):string;
@@ -368,17 +367,17 @@ type
     function AddDiag(const I_diagonal:string; const O_output:string; const A_T:TF_DataType):string;
     function AddDiagPart(const I_input:string; const O_diagonal:string; const A_T:TF_DataType):string;
     function AddDigamma(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
-    function AddDilation2D(const I_input:string; const I_filter:string; const O_output:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_rates:array of cint64; const A_padding:string):string;
-    function AddDilation2DBackpropFilter(const I_input:string; const I_filter:string; const I_out_backprop:string; const O_filter_backprop:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_rates:array of cint64; const A_padding:string):string;
-    function AddDilation2DBackpropInput(const I_input:string; const I_filter:string; const I_out_backprop:string; const O_in_backprop:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_rates:array of cint64; const A_padding:string):string;
-    function AddDirectedInterleaveDataset(const I_selector_input_dataset:string; const IL_data_input_datasets:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_N:cint64):string;
+    function AddDilation2D(const I_input:string; const I_filter:string; const O_output:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_rates:TF_IntList; const A_padding:string):string;
+    function AddDilation2DBackpropFilter(const I_input:string; const I_filter:string; const I_out_backprop:string; const O_filter_backprop:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_rates:TF_IntList; const A_padding:string):string;
+    function AddDilation2DBackpropInput(const I_input:string; const I_filter:string; const I_out_backprop:string; const O_in_backprop:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_rates:TF_IntList; const A_padding:string):string;
+    function AddDirectedInterleaveDataset(const I_selector_input_dataset:string; const IL_data_input_datasets:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_N:cint64):string;
     function AddDiv(const I_x:string; const I_y:string; const O_z:string; const A_T:TF_DataType):string;
     function AddDivNoNan(const I_x:string; const I_y:string; const O_z:string; const A_T:TF_DataType):string;
     function AddDrawBoundingBoxes(const I_images:string; const I_boxes:string; const O_output:string; const A_T:TF_DataType):string;
     function AddDrawBoundingBoxesV2(const I_images:string; const I_boxes:string; const I_colors:string; const O_output:string; const A_T:TF_DataType):string;
     function AddDynamicPartition(const I_data:string; const I_partitions:string; const OL_outputs:string; const A_num_partitions:cint64; const A_T:TF_DataType):string;
     function AddDynamicStitch(const IL_indices:string; const IL_data:string; const O_merged:string; const A_N:cint64; const A_T:TF_DataType):string;
-    function AddEagerPyFunc(const I_input:string; const OL_output:string; const A_token:string; const A_is_async:boolean; const A_Tin:array of TF_DataType; const A_Tout:array of TF_DataType):string;
+    function AddEagerPyFunc(const IL_input:string; const OL_output:string; const A_token:string; const A_is_async:boolean; const A_Tin:TF_TypeList; const A_Tout:TF_TypeList):string;
     function AddEditDistance(const I_hypothesis_indices:string; const I_hypothesis_values:string; const I_hypothesis_shape:string; const I_truth_indices:string; const I_truth_values:string; const I_truth_shape:string; const O_output:string; const A_normalize:boolean; const A_T:TF_DataType):string;
     function AddEig(const I_input:string; const O_e:string; const O_v:string; const A_compute_v:boolean; const A_T:TF_DataType; const A_Tout:TF_DataType):string;
     function AddEinsum(const IL_inputs:string; const O_output:string; const A_equation:string; const A_N:cint64; const A_T:TF_DataType):string;
@@ -390,11 +389,11 @@ type
     function AddEncodeJpeg(const I_image:string; const O_contents:string; const A_format:string; const A_quality:cint64; const A_progressive:boolean; const A_optimize_size:boolean; const A_chroma_downsampling:boolean; const A_density_unit:string; const A_x_density:cint64; const A_y_density:cint64; const A_xmp_metadata:string):string;
     function AddEncodeJpegVariableQuality(const I_images:string; const I_quality:string; const O_contents:string):string;
     function AddEncodePng(const I_image:string; const O_contents:string; const A_compression:cint64; const A_T:TF_DataType):string;
-    function AddEncodeProto(const I_sizes:string; const I_values:string; const O_bytes:string; const A_field_names:array of string; const A_message_type:string; const A_descriptor_source:string; const A_Tinput_types:array of TF_DataType):string;
+    function AddEncodeProto(const I_sizes:string; const IL_values:string; const O_bytes:string; const A_field_names:TF_StringList; const A_message_type:string; const A_descriptor_source:string; const A_Tinput_types:TF_TypeList):string;
     function AddEncodeWav(const I_audio:string; const I_sample_rate:string; const O_contents:string):string;
     function AddEnqueueTPUEmbeddingIntegerBatch(const I_mode_override:string; const IL_batch:string; const A_N:cint64; const A_device_ordinal:cint64):string;
-    function AddEnqueueTPUEmbeddingSparseBatch(const I_mode_override:string; const IL_sample_indices:string; const IL_embedding_indices:string; const IL_aggregation_weights:string; const A_T1:TF_DataType; const A_T2:TF_DataType; const A_T3:TF_DataType; const A_N:cint64; const A_device_ordinal:cint64; const A_combiners:array of string):string;
-    function AddEnqueueTPUEmbeddingSparseTensorBatch(const I_mode_override:string; const IL_sample_indices:string; const IL_embedding_indices:string; const IL_aggregation_weights:string; const A_T1:TF_DataType; const A_T2:TF_DataType; const A_T3:TF_DataType; const A_N:cint64; const A_device_ordinal:cint64; const A_combiners:array of string; const A_table_ids:array of cint64; const A_max_sequence_lengths:array of cint64):string;
+    function AddEnqueueTPUEmbeddingSparseBatch(const I_mode_override:string; const IL_sample_indices:string; const IL_embedding_indices:string; const IL_aggregation_weights:string; const A_T1:TF_DataType; const A_T2:TF_DataType; const A_T3:TF_DataType; const A_N:cint64; const A_device_ordinal:cint64; const A_combiners:TF_StringList):string;
+    function AddEnqueueTPUEmbeddingSparseTensorBatch(const I_mode_override:string; const IL_sample_indices:string; const IL_embedding_indices:string; const IL_aggregation_weights:string; const A_T1:TF_DataType; const A_T2:TF_DataType; const A_T3:TF_DataType; const A_N:cint64; const A_device_ordinal:cint64; const A_combiners:TF_StringList; const A_table_ids:TF_IntList; const A_max_sequence_lengths:TF_IntList):string;
     function AddEnsureShape(const I_input:string; const O_output:string; const A_shape:TF_Shape; const A_T:TF_DataType):string;
     function AddEnter(const I_data:string; const O_output:string; const A_T:TF_DataType; const A_frame_name:string; const A_is_constant:boolean; const A_parallel_iterations:cint64):string;
     function AddEqual(const I_x:string; const I_y:string; const O_z:string; const A_T:TF_DataType; const A_incompatible_shape_error:boolean):string;
@@ -405,54 +404,54 @@ type
     function AddExit(const I_data:string; const O_output:string; const A_T:TF_DataType):string;
     function AddExp(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
     function AddExpandDims(const I_input:string; const I_dim:string; const O_output:string; const A_T:TF_DataType; const A_Tdim:TF_DataType):string;
-    function AddExperimentalAssertNextDataset(const I_input_dataset:string; const I_transformations:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddExperimentalAutoShardDataset(const I_input_dataset:string; const I_num_workers:string; const I_index:string; const O_handle:string; const A_auto_shard_policy:cint64; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddExperimentalBytesProducedStatsDataset(const I_input_dataset:string; const I_tag:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddExperimentalCSVDataset(const I_filenames:string; const I_compression_type:string; const I_buffer_size:string; const I_header:string; const I_field_delim:string; const I_use_quote_delim:string; const I_na_value:string; const I_select_cols:string; const I_record_defaults:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddExperimentalChooseFastestDataset(const IL_input_datasets:string; const O_handle:string; const A_N:cint64; const A_num_experiments:cint64; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddExperimentalAssertNextDataset(const I_input_dataset:string; const I_transformations:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddExperimentalAutoShardDataset(const I_input_dataset:string; const I_num_workers:string; const I_index:string; const O_handle:string; const A_auto_shard_policy:cint64; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddExperimentalBytesProducedStatsDataset(const I_input_dataset:string; const I_tag:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddExperimentalCSVDataset(const I_filenames:string; const I_compression_type:string; const I_buffer_size:string; const I_header:string; const I_field_delim:string; const I_use_quote_delim:string; const I_na_value:string; const I_select_cols:string; const IL_record_defaults:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddExperimentalChooseFastestDataset(const IL_input_datasets:string; const O_handle:string; const A_N:cint64; const A_num_experiments:cint64; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddExperimentalDatasetCardinality(const I_input_dataset:string; const O_cardinality:string):string;
     function AddExperimentalDatasetToTFRecord(const I_input_dataset:string; const I_filename:string; const I_compression_type:string):string;
-    function AddExperimentalDenseToSparseBatchDataset(const I_input_dataset:string; const I_batch_size:string; const I_row_shape:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddExperimentalDirectedInterleaveDataset(const I_selector_input_dataset:string; const IL_data_input_datasets:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_N:cint64):string;
-    function AddExperimentalGroupByReducerDataset(const I_input_dataset:string; const I_key_func_other_arguments:string; const I_init_func_other_arguments:string; const I_reduce_func_other_arguments:string; const I_finalize_func_other_arguments:string; const O_handle:string; const A_key_func:TF_Function; const A_init_func:TF_Function; const A_reduce_func:TF_Function; const A_finalize_func:TF_Function; const A_Tkey_func_other_arguments:array of TF_DataType; const A_Tinit_func_other_arguments:array of TF_DataType; const A_Treduce_func_other_arguments:array of TF_DataType; const A_Tfinalize_func_other_arguments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddExperimentalGroupByWindowDataset(const I_input_dataset:string; const I_key_func_other_arguments:string; const I_reduce_func_other_arguments:string; const I_window_size_func_other_arguments:string; const O_handle:string; const A_key_func:TF_Function; const A_reduce_func:TF_Function; const A_window_size_func:TF_Function; const A_Tkey_func_other_arguments:array of TF_DataType; const A_Treduce_func_other_arguments:array of TF_DataType; const A_Twindow_size_func_other_arguments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddExperimentalIgnoreErrorsDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddExperimentalDenseToSparseBatchDataset(const I_input_dataset:string; const I_batch_size:string; const I_row_shape:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddExperimentalDirectedInterleaveDataset(const I_selector_input_dataset:string; const IL_data_input_datasets:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_N:cint64):string;
+    function AddExperimentalGroupByReducerDataset(const I_input_dataset:string; const IL_key_func_other_arguments:string; const IL_init_func_other_arguments:string; const IL_reduce_func_other_arguments:string; const IL_finalize_func_other_arguments:string; const O_handle:string; const A_key_func:TF_Function; const A_init_func:TF_Function; const A_reduce_func:TF_Function; const A_finalize_func:TF_Function; const A_Tkey_func_other_arguments:TF_TypeList; const A_Tinit_func_other_arguments:TF_TypeList; const A_Treduce_func_other_arguments:TF_TypeList; const A_Tfinalize_func_other_arguments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddExperimentalGroupByWindowDataset(const I_input_dataset:string; const IL_key_func_other_arguments:string; const IL_reduce_func_other_arguments:string; const IL_window_size_func_other_arguments:string; const O_handle:string; const A_key_func:TF_Function; const A_reduce_func:TF_Function; const A_window_size_func:TF_Function; const A_Tkey_func_other_arguments:TF_TypeList; const A_Treduce_func_other_arguments:TF_TypeList; const A_Twindow_size_func_other_arguments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddExperimentalIgnoreErrorsDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddExperimentalIteratorGetDevice(const I_resource:string; const O_device:string):string;
-    function AddExperimentalLMDBDataset(const I_filenames:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddExperimentalLatencyStatsDataset(const I_input_dataset:string; const I_tag:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddExperimentalMapAndBatchDataset(const I_input_dataset:string; const I_other_arguments:string; const I_batch_size:string; const I_num_parallel_calls:string; const I_drop_remainder:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_preserve_cardinality:boolean):string;
-    function AddExperimentalMapDataset(const I_input_dataset:string; const I_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_use_inter_op_parallelism:boolean; const A_preserve_cardinality:boolean):string;
+    function AddExperimentalLMDBDataset(const I_filenames:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddExperimentalLatencyStatsDataset(const I_input_dataset:string; const I_tag:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddExperimentalMapAndBatchDataset(const I_input_dataset:string; const I_batch_size:string; const I_num_parallel_calls:string; const I_drop_remainder:string; const IL_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_preserve_cardinality:boolean):string;
+    function AddExperimentalMapDataset(const I_input_dataset:string; const IL_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_use_inter_op_parallelism:boolean; const A_preserve_cardinality:boolean):string;
     function AddExperimentalMatchingFilesDataset(const I_patterns:string; const O_handle:string):string;
-    function AddExperimentalMaxIntraOpParallelismDataset(const I_input_dataset:string; const I_max_intra_op_parallelism:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddExperimentalNonSerializableDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddExperimentalParallelInterleaveDataset(const I_input_dataset:string; const I_other_arguments:string; const I_cycle_length:string; const I_block_length:string; const I_sloppy:string; const I_buffer_output_elements:string; const I_prefetch_input_elements:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddExperimentalParseExampleDataset(const I_input_dataset:string; const I_num_parallel_calls:string; const I_dense_defaults:string; const O_handle:string; const A_sparse_keys:array of string; const A_dense_keys:array of string; const A_sparse_types:array of TF_DataType; const A_Tdense:array of TF_DataType; const A_dense_shapes:array of TF_Shape; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_sloppy:boolean):string;
-    function AddExperimentalPrivateThreadPoolDataset(const I_input_dataset:string; const I_num_threads:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddExperimentalRandomDataset(const I_seed:string; const I_seed2:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddExperimentalRebatchDataset(const I_input_dataset:string; const I_num_replicas:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_use_fallback:boolean):string;
-    function AddExperimentalScanDataset(const I_input_dataset:string; const I_initial_state:string; const I_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Tstate:array of TF_DataType; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_preserve_cardinality:boolean):string;
-    function AddExperimentalSetStatsAggregatorDataset(const I_input_dataset:string; const I_stats_aggregator:string; const I_tag:string; const I_counter_prefix:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddExperimentalSleepDataset(const I_input_dataset:string; const I_sleep_microseconds:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddExperimentalSlidingWindowDataset(const I_input_dataset:string; const I_window_size:string; const I_window_shift:string; const I_window_stride:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddExperimentalSqlDataset(const I_driver_name:string; const I_data_source_name:string; const I_query:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddExperimentalMaxIntraOpParallelismDataset(const I_input_dataset:string; const I_max_intra_op_parallelism:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddExperimentalNonSerializableDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddExperimentalParallelInterleaveDataset(const I_input_dataset:string; const I_cycle_length:string; const I_block_length:string; const I_sloppy:string; const I_buffer_output_elements:string; const I_prefetch_input_elements:string; const IL_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddExperimentalParseExampleDataset(const I_input_dataset:string; const I_num_parallel_calls:string; const IL_dense_defaults:string; const O_handle:string; const A_sparse_keys:TF_StringList; const A_dense_keys:TF_StringList; const A_sparse_types:TF_TypeList; const A_Tdense:TF_TypeList; const A_dense_shapes:TF_ShapeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_sloppy:boolean):string;
+    function AddExperimentalPrivateThreadPoolDataset(const I_input_dataset:string; const I_num_threads:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddExperimentalRandomDataset(const I_seed:string; const I_seed2:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddExperimentalRebatchDataset(const I_input_dataset:string; const I_num_replicas:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_use_fallback:boolean):string;
+    function AddExperimentalScanDataset(const I_input_dataset:string; const IL_initial_state:string; const IL_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Tstate:TF_TypeList; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_preserve_cardinality:boolean):string;
+    function AddExperimentalSetStatsAggregatorDataset(const I_input_dataset:string; const I_stats_aggregator:string; const I_tag:string; const I_counter_prefix:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddExperimentalSleepDataset(const I_input_dataset:string; const I_sleep_microseconds:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddExperimentalSlidingWindowDataset(const I_input_dataset:string; const I_window_size:string; const I_window_shift:string; const I_window_stride:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddExperimentalSqlDataset(const I_driver_name:string; const I_data_source_name:string; const I_query:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddExperimentalStatsAggregatorHandle(const O_handle:string; const A_container:string; const A_shared_name:string):string;
     function AddExperimentalStatsAggregatorSummary(const I_iterator:string; const O_summary:string):string;
-    function AddExperimentalTakeWhileDataset(const I_input_dataset:string; const I_other_arguments:string; const O_handle:string; const A_predicate:TF_Function; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddExperimentalThreadPoolDataset(const I_input_dataset:string; const I_thread_pool:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddExperimentalTakeWhileDataset(const I_input_dataset:string; const IL_other_arguments:string; const O_handle:string; const A_predicate:TF_Function; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddExperimentalThreadPoolDataset(const I_input_dataset:string; const I_thread_pool:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddExperimentalThreadPoolHandle(const O_handle:string; const A_num_threads:cint64; const A_max_intra_op_parallelism:cint64; const A_display_name:string; const A_container:string; const A_shared_name:string):string;
-    function AddExperimentalUnbatchDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddExperimentalUniqueDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddExperimentalUnbatchDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddExperimentalUniqueDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddExpint(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
     function AddExpm1(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
     function AddExtractGlimpse(const I_input:string; const I_size:string; const I_offsets:string; const O_glimpse:string; const A_centered:boolean; const A_normalized:boolean; const A_uniform_noise:boolean; const A_noise:string):string;
-    function AddExtractImagePatches(const I_images:string; const O_patches:string; const A_ksizes:array of cint64; const A_strides:array of cint64; const A_rates:array of cint64; const A_T:TF_DataType; const A_padding:string):string;
+    function AddExtractImagePatches(const I_images:string; const O_patches:string; const A_ksizes:TF_IntList; const A_strides:TF_IntList; const A_rates:TF_IntList; const A_T:TF_DataType; const A_padding:string):string;
     function AddExtractJpegShape(const I_contents:string; const O_image_shape:string; const A_output_type:TF_DataType):string;
-    function AddExtractVolumePatches(const I_input:string; const O_patches:string; const A_ksizes:array of cint64; const A_strides:array of cint64; const A_T:TF_DataType; const A_padding:string):string;
+    function AddExtractVolumePatches(const I_input:string; const O_patches:string; const A_ksizes:TF_IntList; const A_strides:TF_IntList; const A_T:TF_DataType; const A_padding:string):string;
     function AddFFT(const I_input:string; const O_output:string; const A_Tcomplex:TF_DataType):string;
     function AddFFT2D(const I_input:string; const O_output:string; const A_Tcomplex:TF_DataType):string;
     function AddFFT3D(const I_input:string; const O_output:string; const A_Tcomplex:TF_DataType):string;
-    function AddFIFOQueue(const O_handle:string; const A_component_types:array of TF_DataType; const A_shapes:array of TF_Shape; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
-    function AddFIFOQueueV2(const O_handle:string; const A_component_types:array of TF_DataType; const A_shapes:array of TF_Shape; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
+    function AddFIFOQueue(const O_handle:string; const A_component_types:TF_TypeList; const A_shapes:TF_ShapeList; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
+    function AddFIFOQueueV2(const O_handle:string; const A_component_types:TF_TypeList; const A_shapes:TF_ShapeList; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
     function AddFact(const O_fact:string):string;
     function AddFakeParam(const O_output:string; const A_dtype:TF_DataType; const A_shape:TF_Shape):string;
     function AddFakeQuantWithMinMaxArgs(const I_inputs:string; const O_outputs:string; const A_min:real; const A_max:real; const A_num_bits:cint64; const A_narrow_range:boolean):string;
@@ -463,23 +462,23 @@ type
     function AddFakeQuantWithMinMaxVarsPerChannelGradient(const I_gradients:string; const I_inputs:string; const I_min:string; const I_max:string; const O_backprops_wrt_input:string; const O_backprop_wrt_min:string; const O_backprop_wrt_max:string; const A_num_bits:cint64; const A_narrow_range:boolean):string;
     function AddFakeQueue(const I_resource:string; const O_handle:string):string;
     function AddFill(const I_dims:string; const I_value:string; const O_output:string; const A_T:TF_DataType; const A_index_type:TF_DataType):string;
-    function AddFilterByLastComponentDataset(const I_input_dataset:string; const O_output:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddFilterDataset(const I_input_dataset:string; const I_other_arguments:string; const O_handle:string; const A_predicate:TF_Function; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddFilterByLastComponentDataset(const I_input_dataset:string; const O_output:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddFilterDataset(const I_input_dataset:string; const IL_other_arguments:string; const O_handle:string; const A_predicate:TF_Function; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddFingerprint(const I_data:string; const I_method:string; const O_fingerprint:string; const A_T:TF_DataType):string;
     function AddFixedLengthRecordDataset(const I_filenames:string; const I_header_bytes:string; const I_record_bytes:string; const I_footer_bytes:string; const I_buffer_size:string; const O_handle:string):string;
     function AddFixedLengthRecordDatasetV2(const I_filenames:string; const I_header_bytes:string; const I_record_bytes:string; const I_footer_bytes:string; const I_buffer_size:string; const I_compression_type:string; const O_handle:string):string;
     function AddFixedLengthRecordReader(const O_reader_handle:string; const A_header_bytes:cint64; const A_record_bytes:cint64; const A_footer_bytes:cint64; const A_hop_bytes:cint64; const A_container:string; const A_shared_name:string):string;
     function AddFixedLengthRecordReaderV2(const O_reader_handle:string; const A_header_bytes:cint64; const A_record_bytes:cint64; const A_footer_bytes:cint64; const A_hop_bytes:cint64; const A_container:string; const A_shared_name:string; const A_encoding:string):string;
-    function AddFixedUnigramCandidateSampler(const I_true_classes:string; const O_sampled_candidates:string; const O_true_expected_count:string; const O_sampled_expected_count:string; const A_num_true:cint64; const A_num_sampled:cint64; const A_unique:boolean; const A_range_max:cint64; const A_vocab_file:string; const A_distortion:real; const A_num_reserved_ids:cint64; const A_num_shards:cint64; const A_shard:cint64; const A_unigrams:array of real; const A_seed:cint64; const A_seed2:cint64):string;
-    function AddFlatMapDataset(const I_input_dataset:string; const I_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddFixedUnigramCandidateSampler(const I_true_classes:string; const O_sampled_candidates:string; const O_true_expected_count:string; const O_sampled_expected_count:string; const A_num_true:cint64; const A_num_sampled:cint64; const A_unique:boolean; const A_range_max:cint64; const A_vocab_file:string; const A_distortion:real; const A_num_reserved_ids:cint64; const A_num_shards:cint64; const A_shard:cint64; const A_unigrams:TF_FloatList; const A_seed:cint64; const A_seed2:cint64):string;
+    function AddFlatMapDataset(const I_input_dataset:string; const IL_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddFloor(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
     function AddFloorDiv(const I_x:string; const I_y:string; const O_z:string; const A_T:TF_DataType):string;
     function AddFloorMod(const I_x:string; const I_y:string; const O_z:string; const A_T:TF_DataType):string;
     function AddFlushSummaryWriter(const I_writer:string):string;
-    function AddFor(const I_start:string; const I_limit:string; const I_delta:string; const I_input:string; const OL_output:string; const A_T:array of TF_DataType; const A_body:TF_Function):string;
-    function AddFractionalAvgPool(const I_value:string; const O_output:string; const O_row_pooling_sequence:string; const O_col_pooling_sequence:string; const A_pooling_ratio:array of real; const A_pseudo_random:boolean; const A_overlapping:boolean; const A_deterministic:boolean; const A_seed:cint64; const A_seed2:cint64; const A_T:TF_DataType):string;
+    function AddFor(const I_start:string; const I_limit:string; const I_delta:string; const IL_input:string; const OL_output:string; const A_T:TF_TypeList; const A_body:TF_Function):string;
+    function AddFractionalAvgPool(const I_value:string; const O_output:string; const O_row_pooling_sequence:string; const O_col_pooling_sequence:string; const A_pooling_ratio:TF_FloatList; const A_pseudo_random:boolean; const A_overlapping:boolean; const A_deterministic:boolean; const A_seed:cint64; const A_seed2:cint64; const A_T:TF_DataType):string;
     function AddFractionalAvgPoolGrad(const I_orig_input_tensor_shape:string; const I_out_backprop:string; const I_row_pooling_sequence:string; const I_col_pooling_sequence:string; const O_output:string; const A_overlapping:boolean; const A_T:TF_DataType):string;
-    function AddFractionalMaxPool(const I_value:string; const O_output:string; const O_row_pooling_sequence:string; const O_col_pooling_sequence:string; const A_pooling_ratio:array of real; const A_pseudo_random:boolean; const A_overlapping:boolean; const A_deterministic:boolean; const A_seed:cint64; const A_seed2:cint64; const A_T:TF_DataType):string;
+    function AddFractionalMaxPool(const I_value:string; const O_output:string; const O_row_pooling_sequence:string; const O_col_pooling_sequence:string; const A_pooling_ratio:TF_FloatList; const A_pseudo_random:boolean; const A_overlapping:boolean; const A_deterministic:boolean; const A_seed:cint64; const A_seed2:cint64; const A_T:TF_DataType):string;
     function AddFractionalMaxPoolGrad(const I_orig_input:string; const I_orig_output:string; const I_out_backprop:string; const I_row_pooling_sequence:string; const I_col_pooling_sequence:string; const O_output:string; const A_overlapping:boolean; const A_T:TF_DataType):string;
     function AddFresnelCos(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
     function AddFresnelSin(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
@@ -489,8 +488,8 @@ type
     function AddFusedBatchNormGradV3(const I_y_backprop:string; const I_x:string; const I_scale:string; const I_reserve_space_1:string; const I_reserve_space_2:string; const I_reserve_space_3:string; const O_x_backprop:string; const O_scale_backprop:string; const O_offset_backprop:string; const O_reserve_space_4:string; const O_reserve_space_5:string; const A_T:TF_DataType; const A_U:TF_DataType; const A_epsilon:real; const A_data_format:string; const A_is_training:boolean):string;
     function AddFusedBatchNormV2(const I_x:string; const I_scale:string; const I_offset:string; const I_mean:string; const I_variance:string; const O_y:string; const O_batch_mean:string; const O_batch_variance:string; const O_reserve_space_1:string; const O_reserve_space_2:string; const A_T:TF_DataType; const A_U:TF_DataType; const A_epsilon:real; const A_data_format:string; const A_is_training:boolean):string;
     function AddFusedBatchNormV3(const I_x:string; const I_scale:string; const I_offset:string; const I_mean:string; const I_variance:string; const O_y:string; const O_batch_mean:string; const O_batch_variance:string; const O_reserve_space_1:string; const O_reserve_space_2:string; const O_reserve_space_3:string; const A_T:TF_DataType; const A_U:TF_DataType; const A_epsilon:real; const A_data_format:string; const A_is_training:boolean):string;
-    function AddFusedPadConv2D(const I_input:string; const I_paddings:string; const I_filter:string; const O_output:string; const A_T:TF_DataType; const A_mode:string; const A_strides:array of cint64; const A_padding:string):string;
-    function AddFusedResizeAndPadConv2D(const I_input:string; const I_size:string; const I_paddings:string; const I_filter:string; const O_output:string; const A_T:TF_DataType; const A_resize_align_corners:boolean; const A_mode:string; const A_strides:array of cint64; const A_padding:string):string;
+    function AddFusedPadConv2D(const I_input:string; const I_paddings:string; const I_filter:string; const O_output:string; const A_T:TF_DataType; const A_mode:string; const A_strides:TF_IntList; const A_padding:string):string;
+    function AddFusedResizeAndPadConv2D(const I_input:string; const I_size:string; const I_paddings:string; const I_filter:string; const O_output:string; const A_T:TF_DataType; const A_resize_align_corners:boolean; const A_mode:string; const A_strides:TF_IntList; const A_padding:string):string;
     function AddGRUBlockCell(const I_x:string; const I_h_prev:string; const I_w_ru:string; const I_w_c:string; const I_b_ru:string; const I_b_c:string; const O_r:string; const O_u:string; const O_c:string; const O_h:string; const A_T:TF_DataType):string;
     function AddGRUBlockCellGrad(const I_x:string; const I_h_prev:string; const I_w_ru:string; const I_w_c:string; const I_b_ru:string; const I_b_c:string; const I_r:string; const I_u:string; const I_c:string; const I_d_h:string; const O_d_x:string; const O_d_h_prev:string; const O_d_c_bar:string; const O_d_r_bar_u_bar:string; const A_T:TF_DataType):string;
     function AddGather(const I_params:string; const I_indices:string; const O_output:string; const A_validate_indices:boolean; const A_Tparams:TF_DataType; const A_Tindices:TF_DataType):string;
@@ -498,14 +497,14 @@ type
     function AddGatherV2(const I_params:string; const I_indices:string; const I_axis:string; const O_output:string; const A_batch_dims:cint64; const A_Tparams:TF_DataType; const A_Tindices:TF_DataType; const A_Taxis:TF_DataType):string;
     function AddGenerateBoundingBoxProposals(const I_scores:string; const I_bbox_deltas:string; const I_image_info:string; const I_anchors:string; const I_nms_threshold:string; const I_pre_nms_topn:string; const I_min_size:string; const O_rois:string; const O_roi_probabilities:string; const A_post_nms_topn:cint64):string;
     function AddGenerateVocabRemapping(const I_new_vocab_file:string; const I_old_vocab_file:string; const O_remapping:string; const O_num_present:string; const A_new_vocab_offset:cint64; const A_num_new_vocab:cint64; const A_old_vocab_size:cint64):string;
-    function AddGeneratorDataset(const I_init_func_other_args:string; const I_next_func_other_args:string; const I_finalize_func_other_args:string; const O_handle:string; const A_init_func:TF_Function; const A_next_func:TF_Function; const A_finalize_func:TF_Function; const A_Tinit_func_args:array of TF_DataType; const A_Tnext_func_args:array of TF_DataType; const A_Tfinalize_func_args:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddGeneratorDataset(const IL_init_func_other_args:string; const IL_next_func_other_args:string; const IL_finalize_func_other_args:string; const O_handle:string; const A_init_func:TF_Function; const A_next_func:TF_Function; const A_finalize_func:TF_Function; const A_Tinit_func_args:TF_TypeList; const A_Tnext_func_args:TF_TypeList; const A_Tfinalize_func_args:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddGetSessionHandle(const I_value:string; const O_handle:string; const A_T:TF_DataType):string;
     function AddGetSessionHandleV2(const I_value:string; const O_handle:string; const A_T:TF_DataType):string;
     function AddGetSessionTensor(const I_handle:string; const O_value:string; const A_dtype:TF_DataType):string;
     function AddGreater(const I_x:string; const I_y:string; const O_z:string; const A_T:TF_DataType):string;
     function AddGreaterEqual(const I_x:string; const I_y:string; const O_z:string; const A_T:TF_DataType):string;
-    function AddGroupByReducerDataset(const I_input_dataset:string; const I_key_func_other_arguments:string; const I_init_func_other_arguments:string; const I_reduce_func_other_arguments:string; const I_finalize_func_other_arguments:string; const O_handle:string; const A_key_func:TF_Function; const A_init_func:TF_Function; const A_reduce_func:TF_Function; const A_finalize_func:TF_Function; const A_Tkey_func_other_arguments:array of TF_DataType; const A_Tinit_func_other_arguments:array of TF_DataType; const A_Treduce_func_other_arguments:array of TF_DataType; const A_Tfinalize_func_other_arguments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddGroupByWindowDataset(const I_input_dataset:string; const I_key_func_other_arguments:string; const I_reduce_func_other_arguments:string; const I_window_size_func_other_arguments:string; const O_handle:string; const A_key_func:TF_Function; const A_reduce_func:TF_Function; const A_window_size_func:TF_Function; const A_Tkey_func_other_arguments:array of TF_DataType; const A_Treduce_func_other_arguments:array of TF_DataType; const A_Twindow_size_func_other_arguments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddGroupByReducerDataset(const I_input_dataset:string; const IL_key_func_other_arguments:string; const IL_init_func_other_arguments:string; const IL_reduce_func_other_arguments:string; const IL_finalize_func_other_arguments:string; const O_handle:string; const A_key_func:TF_Function; const A_init_func:TF_Function; const A_reduce_func:TF_Function; const A_finalize_func:TF_Function; const A_Tkey_func_other_arguments:TF_TypeList; const A_Tinit_func_other_arguments:TF_TypeList; const A_Treduce_func_other_arguments:TF_TypeList; const A_Tfinalize_func_other_arguments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddGroupByWindowDataset(const I_input_dataset:string; const IL_key_func_other_arguments:string; const IL_reduce_func_other_arguments:string; const IL_window_size_func_other_arguments:string; const O_handle:string; const A_key_func:TF_Function; const A_reduce_func:TF_Function; const A_window_size_func:TF_Function; const A_Tkey_func_other_arguments:TF_TypeList; const A_Treduce_func_other_arguments:TF_TypeList; const A_Twindow_size_func_other_arguments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddGuaranteeConst(const I_input:string; const O_output:string; const A_T:TF_DataType):string;
     function AddHSVToRGB(const I_images:string; const O_output:string; const A_T:TF_DataType):string;
     function AddHashTable(const O_table_handle:string; const A_container:string; const A_shared_name:string; const A_use_node_name_sharing:boolean; const A_key_dtype:TF_DataType; const A_value_dtype:TF_DataType):string;
@@ -520,14 +519,14 @@ type
     function AddIRFFT2D(const I_input:string; const I_fft_length:string; const O_output:string; const A_Treal:TF_DataType; const A_Tcomplex:TF_DataType):string;
     function AddIRFFT3D(const I_input:string; const I_fft_length:string; const O_output:string; const A_Treal:TF_DataType; const A_Tcomplex:TF_DataType):string;
     function AddIdentity(const I_input:string; const O_output:string; const A_T:TF_DataType):string;
-    function AddIdentityN(const I_input:string; const OL_output:string; const A_T:array of TF_DataType):string;
+    function AddIdentityN(const IL_input:string; const OL_output:string; const A_T:TF_TypeList):string;
     function AddIdentityReader(const O_reader_handle:string; const A_container:string; const A_shared_name:string):string;
     function AddIdentityReaderV2(const O_reader_handle:string; const A_container:string; const A_shared_name:string):string;
-    function AddIf(const I_cond:string; const I_input:string; const OL_output:string; const A_Tcond:TF_DataType; const A_Tin:array of TF_DataType; const A_Tout:array of TF_DataType; const A_then_branch:TF_Function; const A_else_branch:TF_Function; const A_output_shapes:array of TF_Shape):string;
+    function AddIf(const I_cond:string; const IL_input:string; const OL_output:string; const A_Tcond:TF_DataType; const A_Tin:TF_TypeList; const A_Tout:TF_TypeList; const A_then_branch:TF_Function; const A_else_branch:TF_Function; const A_output_shapes:TF_ShapeList):string;
     function AddIgamma(const I_a:string; const I_x:string; const O_z:string; const A_T:TF_DataType):string;
     function AddIgammaGradA(const I_a:string; const I_x:string; const O_z:string; const A_T:TF_DataType):string;
     function AddIgammac(const I_a:string; const I_x:string; const O_z:string; const A_T:TF_DataType):string;
-    function AddIgnoreErrorsDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddIgnoreErrorsDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddImag(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_Tout:TF_DataType):string;
     function AddImageProjectiveTransformV2(const I_images:string; const I_transforms:string; const I_output_shape:string; const O_transformed_images:string; const A_dtype:TF_DataType; const A_interpolation:string):string;
     function AddImageSummary(const I_tag:string; const I_tensor:string; const O_summary:string; const A_max_images:cint64; const A_T:TF_DataType; const A_bad_color:TF_TensorPtr):string;
@@ -536,10 +535,10 @@ type
     function AddInTopK(const I_predictions:string; const I_targets:string; const O_precision:string; const A_k:cint64; const A_T:TF_DataType):string;
     function AddInTopKV2(const I_predictions:string; const I_targets:string; const I_k:string; const O_precision:string; const A_T:TF_DataType):string;
     function AddInfeedDequeue(const O_output:string; const A_dtype:TF_DataType; const A_shape:TF_Shape):string;
-    function AddInfeedDequeueTuple(const OL_outputs:string; const A_dtypes:array of TF_DataType; const A_shapes:array of TF_Shape):string;
-    function AddInfeedEnqueue(const I_input:string; const A_dtype:TF_DataType; const A_shape:TF_Shape; const A_layout:array of cint64; const A_device_ordinal:cint64):string;
+    function AddInfeedDequeueTuple(const OL_outputs:string; const A_dtypes:TF_TypeList; const A_shapes:TF_ShapeList):string;
+    function AddInfeedEnqueue(const I_input:string; const A_dtype:TF_DataType; const A_shape:TF_Shape; const A_layout:TF_IntList; const A_device_ordinal:cint64):string;
     function AddInfeedEnqueuePrelinearizedBuffer(const I_input:string; const A_device_ordinal:cint64):string;
-    function AddInfeedEnqueueTuple(const I_inputs:string; const A_dtypes:array of TF_DataType; const A_shapes:array of TF_Shape; const A_layouts:array of cint64; const A_device_ordinal:cint64):string;
+    function AddInfeedEnqueueTuple(const IL_inputs:string; const A_dtypes:TF_TypeList; const A_shapes:TF_ShapeList; const A_layouts:TF_IntList; const A_device_ordinal:cint64):string;
     function AddInitializeTable(const I_table_handle:string; const I_keys:string; const I_values:string; const A_Tkey:TF_DataType; const A_Tval:TF_DataType):string;
     function AddInitializeTableFromTextFile(const I_table_handle:string; const I_filename:string; const A_key_index:cint64; const A_value_index:cint64; const A_vocab_size:cint64; const A_delimiter:string):string;
     function AddInitializeTableFromTextFileV2(const I_table_handle:string; const I_filename:string; const A_key_index:cint64; const A_value_index:cint64; const A_vocab_size:cint64; const A_delimiter:string):string;
@@ -547,7 +546,7 @@ type
     function AddInplaceAdd(const I_x:string; const I_i:string; const I_v:string; const O_y:string; const A_T:TF_DataType):string;
     function AddInplaceSub(const I_x:string; const I_i:string; const I_v:string; const O_y:string; const A_T:TF_DataType):string;
     function AddInplaceUpdate(const I_x:string; const I_i:string; const I_v:string; const O_y:string; const A_T:TF_DataType):string;
-    function AddInterleaveDataset(const I_input_dataset:string; const I_other_arguments:string; const I_cycle_length:string; const I_block_length:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddInterleaveDataset(const I_input_dataset:string; const I_cycle_length:string; const I_block_length:string; const IL_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddInv(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
     function AddInvGrad(const I_y:string; const I_dy:string; const O_z:string; const A_T:TF_DataType):string;
     function AddInvert(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
@@ -558,25 +557,25 @@ type
     function AddIsInf(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
     function AddIsNan(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
     function AddIsVariableInitialized(const I_ref:string; const O_is_initialized:string; const A_dtype:TF_DataType):string;
-    function AddIterator(const O_handle:string; const A_shared_name:string; const A_container:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddIteratorFromStringHandle(const I_string_handle:string; const O_resource_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddIteratorFromStringHandleV2(const I_string_handle:string; const O_resource_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddIterator(const O_handle:string; const A_shared_name:string; const A_container:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddIteratorFromStringHandle(const I_string_handle:string; const O_resource_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddIteratorFromStringHandleV2(const I_string_handle:string; const O_resource_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddIteratorGetDevice(const I_resource:string; const O_device:string):string;
-    function AddIteratorGetNext(const I_iterator:string; const OL_components:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddIteratorGetNextAsOptional(const I_iterator:string; const O_optional:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddIteratorGetNextSync(const I_iterator:string; const OL_components:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddIteratorGetNext(const I_iterator:string; const OL_components:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddIteratorGetNextAsOptional(const I_iterator:string; const O_optional:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddIteratorGetNextSync(const I_iterator:string; const OL_components:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddIteratorToStringHandle(const I_resource_handle:string; const O_string_handle:string):string;
-    function AddIteratorV2(const O_handle:string; const A_shared_name:string; const A_container:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddIteratorV2(const O_handle:string; const A_shared_name:string; const A_container:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddKMC2ChainInitialization(const I_distances:string; const I_seed:string; const O_index:string):string;
     function AddKmeansPlusPlusInitialization(const I_points:string; const I_num_to_sample:string; const I_seed:string; const I_num_retries_per_sample:string; const O_samples:string):string;
     function AddL2Loss(const I_t:string; const O_output:string; const A_T:TF_DataType):string;
-    function AddLMDBDataset(const I_filenames:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddLMDBDataset(const I_filenames:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddLMDBReader(const O_reader_handle:string; const A_container:string; const A_shared_name:string):string;
     function AddLRN(const I_input:string; const O_output:string; const A_depth_radius:cint64; const A_bias:real; const A_alpha:real; const A_beta:real; const A_T:TF_DataType):string;
     function AddLRNGrad(const I_input_grads:string; const I_input_image:string; const I_output_image:string; const O_output:string; const A_depth_radius:cint64; const A_bias:real; const A_alpha:real; const A_beta:real; const A_T:TF_DataType):string;
     function AddLSTMBlockCell(const I_x:string; const I_cs_prev:string; const I_h_prev:string; const I_w:string; const I_wci:string; const I_wcf:string; const I_wco:string; const I_b:string; const O_i:string; const O_cs:string; const O_f:string; const O_o:string; const O_ci:string; const O_co:string; const O_h:string; const A_forget_bias:real; const A_cell_clip:real; const A_use_peephole:boolean; const A_T:TF_DataType):string;
     function AddLSTMBlockCellGrad(const I_x:string; const I_cs_prev:string; const I_h_prev:string; const I_w:string; const I_wci:string; const I_wcf:string; const I_wco:string; const I_b:string; const I_i:string; const I_cs:string; const I_f:string; const I_o:string; const I_ci:string; const I_co:string; const I_cs_grad:string; const I_h_grad:string; const O_cs_prev_grad:string; const O_dicfo:string; const O_wci_grad:string; const O_wcf_grad:string; const O_wco_grad:string; const A_use_peephole:boolean; const A_T:TF_DataType):string;
-    function AddLatencyStatsDataset(const I_input_dataset:string; const I_tag:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddLatencyStatsDataset(const I_input_dataset:string; const I_tag:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddLeakyRelu(const I_features:string; const O_activations:string; const A_alpha:real; const A_T:TF_DataType):string;
     function AddLeakyReluGrad(const I_gradients:string; const I_features:string; const O_backprops:string; const A_alpha:real; const A_T:TF_DataType):string;
     function AddLearnedUnigramCandidateSampler(const I_true_classes:string; const O_sampled_candidates:string; const O_true_expected_count:string; const O_sampled_expected_count:string; const A_num_true:cint64; const A_num_sampled:cint64; const A_unique:boolean; const A_range_max:cint64; const A_seed:cint64; const A_seed2:cint64):string;
@@ -627,16 +626,16 @@ type
     function AddLowerBound(const I_sorted_inputs:string; const I_values:string; const O_output:string; const A_T:TF_DataType; const A_out_type:TF_DataType):string;
     function AddLu(const I_input:string; const O_lu:string; const O_p:string; const A_T:TF_DataType; const A_output_idx_type:TF_DataType):string;
     function AddMakeIterator(const I_dataset:string; const I_iterator:string):string;
-    function AddMapAndBatchDataset(const I_input_dataset:string; const I_other_arguments:string; const I_batch_size:string; const I_num_parallel_calls:string; const I_drop_remainder:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_preserve_cardinality:boolean):string;
-    function AddMapClear(const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
-    function AddMapDataset(const I_input_dataset:string; const I_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_use_inter_op_parallelism:boolean; const A_preserve_cardinality:boolean):string;
-    function AddMapDefun(const I_arguments:string; const I_captured_inputs:string; const OL_output:string; const A_Targuments:array of TF_DataType; const A_Tcaptured:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_f:TF_Function; const A_max_intra_op_parallelism:cint64):string;
-    function AddMapIncompleteSize(const O_size:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
-    function AddMapPeek(const I_key:string; const I_indices:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
-    function AddMapSize(const O_size:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
-    function AddMapStage(const I_key:string; const I_indices:string; const I_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_fake_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
-    function AddMapUnstage(const I_key:string; const I_indices:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
-    function AddMapUnstageNoKey(const I_indices:string; const O_key:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
+    function AddMapAndBatchDataset(const I_input_dataset:string; const I_batch_size:string; const I_num_parallel_calls:string; const I_drop_remainder:string; const IL_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_preserve_cardinality:boolean):string;
+    function AddMapClear(const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
+    function AddMapDataset(const I_input_dataset:string; const IL_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_use_inter_op_parallelism:boolean; const A_preserve_cardinality:boolean):string;
+    function AddMapDefun(const IL_arguments:string; const IL_captured_inputs:string; const OL_output:string; const A_Targuments:TF_TypeList; const A_Tcaptured:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_f:TF_Function; const A_max_intra_op_parallelism:cint64):string;
+    function AddMapIncompleteSize(const O_size:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
+    function AddMapPeek(const I_key:string; const I_indices:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
+    function AddMapSize(const O_size:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
+    function AddMapStage(const I_key:string; const I_indices:string; const IL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_fake_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
+    function AddMapUnstage(const I_key:string; const I_indices:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
+    function AddMapUnstageNoKey(const I_indices:string; const O_key:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
     function AddMatMul(const I_a:string; const I_b:string; const O_product:string; const A_transpose_a:boolean; const A_transpose_b:boolean; const A_T:TF_DataType):string;
     function AddMatchingFiles(const I_pattern:string; const O_filenames:string):string;
     function AddMatchingFilesDataset(const I_patterns:string; const O_handle:string):string;
@@ -659,19 +658,19 @@ type
     function AddMatrixSquareRoot(const I_input:string; const O_output:string; const A_T:TF_DataType):string;
     function AddMatrixTriangularSolve(const I_matrix:string; const I_rhs:string; const O_output:string; const A_lower:boolean; const A_adjoint:boolean; const A_T:TF_DataType):string;
     function AddMax(const I_input:string; const I_reduction_indices:string; const O_output:string; const A_keep_dims:boolean; const A_T:TF_DataType; const A_Tidx:TF_DataType):string;
-    function AddMaxIntraOpParallelismDataset(const I_input_dataset:string; const I_max_intra_op_parallelism:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddMaxPool(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string; const A_data_format:string):string;
-    function AddMaxPool3D(const I_input:string; const O_output:string; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
-    function AddMaxPool3DGrad(const I_orig_input:string; const I_orig_output:string; const I_grad:string; const O_output:string; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_T:TF_DataType; const A_TInput:TF_DataType):string;
-    function AddMaxPool3DGradGrad(const I_orig_input:string; const I_orig_output:string; const I_grad:string; const O_output:string; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
-    function AddMaxPoolGrad(const I_orig_input:string; const I_orig_output:string; const I_grad:string; const O_output:string; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
-    function AddMaxPoolGradGrad(const I_orig_input:string; const I_orig_output:string; const I_grad:string; const O_output:string; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
+    function AddMaxIntraOpParallelismDataset(const I_input_dataset:string; const I_max_intra_op_parallelism:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddMaxPool(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string):string;
+    function AddMaxPool3D(const I_input:string; const O_output:string; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
+    function AddMaxPool3DGrad(const I_orig_input:string; const I_orig_output:string; const I_grad:string; const O_output:string; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_T:TF_DataType; const A_TInput:TF_DataType):string;
+    function AddMaxPool3DGradGrad(const I_orig_input:string; const I_orig_output:string; const I_grad:string; const O_output:string; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
+    function AddMaxPoolGrad(const I_orig_input:string; const I_orig_output:string; const I_grad:string; const O_output:string; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
+    function AddMaxPoolGradGrad(const I_orig_input:string; const I_orig_output:string; const I_grad:string; const O_output:string; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
     function AddMaxPoolGradGradV2(const I_orig_input:string; const I_orig_output:string; const I_grad:string; const I_ksize:string; const I_strides:string; const O_output:string; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
-    function AddMaxPoolGradGradWithArgmax(const I_input:string; const I_grad:string; const I_argmax:string; const O_output:string; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string; const A_include_batch_in_index:boolean; const A_Targmax:TF_DataType; const A_T:TF_DataType):string;
+    function AddMaxPoolGradGradWithArgmax(const I_input:string; const I_grad:string; const I_argmax:string; const O_output:string; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string; const A_include_batch_in_index:boolean; const A_Targmax:TF_DataType; const A_T:TF_DataType):string;
     function AddMaxPoolGradV2(const I_orig_input:string; const I_orig_output:string; const I_grad:string; const I_ksize:string; const I_strides:string; const O_output:string; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
-    function AddMaxPoolGradWithArgmax(const I_input:string; const I_grad:string; const I_argmax:string; const O_output:string; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string; const A_include_batch_in_index:boolean; const A_Targmax:TF_DataType; const A_T:TF_DataType):string;
+    function AddMaxPoolGradWithArgmax(const I_input:string; const I_grad:string; const I_argmax:string; const O_output:string; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string; const A_include_batch_in_index:boolean; const A_Targmax:TF_DataType; const A_T:TF_DataType):string;
     function AddMaxPoolV2(const I_input:string; const I_ksize:string; const I_strides:string; const O_output:string; const A_T:TF_DataType; const A_padding:string; const A_data_format:string):string;
-    function AddMaxPoolWithArgmax(const I_input:string; const O_output:string; const O_argmax:string; const A_ksize:array of cint64; const A_strides:array of cint64; const A_Targmax:TF_DataType; const A_padding:string; const A_include_batch_in_index:boolean; const A_T:TF_DataType):string;
+    function AddMaxPoolWithArgmax(const I_input:string; const O_output:string; const O_argmax:string; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_Targmax:TF_DataType; const A_padding:string; const A_include_batch_in_index:boolean; const A_T:TF_DataType):string;
     function AddMaximum(const I_x:string; const I_y:string; const O_z:string; const A_T:TF_DataType):string;
     function AddMean(const I_input:string; const I_reduction_indices:string; const O_output:string; const A_keep_dims:boolean; const A_T:TF_DataType; const A_Tidx:TF_DataType):string;
     function AddMerge(const IL_inputs:string; const O_output:string; const O_value_index:string; const A_T:TF_DataType; const A_N:cint64):string;
@@ -682,14 +681,14 @@ type
     function AddMinimum(const I_x:string; const I_y:string; const O_z:string; const A_T:TF_DataType):string;
     function AddMirrorPad(const I_input:string; const I_paddings:string; const O_output:string; const A_T:TF_DataType; const A_Tpaddings:TF_DataType; const A_mode:string):string;
     function AddMirrorPadGrad(const I_input:string; const I_paddings:string; const O_output:string; const A_T:TF_DataType; const A_Tpaddings:TF_DataType; const A_mode:string):string;
-    function AddMlirPassthroughOp(const I_inputs:string; const OL_outputs:string; const A_mlir_module:string; const A_Tinputs:array of TF_DataType; const A_Toutputs:array of TF_DataType):string;
+    function AddMlirPassthroughOp(const IL_inputs:string; const OL_outputs:string; const A_mlir_module:string; const A_Tinputs:TF_TypeList; const A_Toutputs:TF_TypeList):string;
     function AddMod(const I_x:string; const I_y:string; const O_z:string; const A_T:TF_DataType):string;
-    function AddModelDataset(const I_input_dataset:string; const O_handle:string; const A_algorithm:cint64; const A_cpu_budget:cint64; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddModelDataset(const I_input_dataset:string; const O_handle:string; const A_algorithm:cint64; const A_cpu_budget:cint64; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddMul(const I_x:string; const I_y:string; const O_z:string; const A_T:TF_DataType):string;
     function AddMulNoNan(const I_x:string; const I_y:string; const O_z:string; const A_T:TF_DataType):string;
-    function AddMultiDeviceIterator(const O_handle:string; const A_devices:array of string; const A_shared_name:string; const A_container:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddMultiDeviceIteratorFromStringHandle(const I_string_handle:string; const O_multi_device_iterator:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddMultiDeviceIteratorGetNextFromShard(const I_multi_device_iterator:string; const I_shard_num:string; const I_incarnation_id:string; const OL_components:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddMultiDeviceIterator(const O_handle:string; const A_devices:TF_StringList; const A_shared_name:string; const A_container:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddMultiDeviceIteratorFromStringHandle(const I_string_handle:string; const O_multi_device_iterator:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddMultiDeviceIteratorGetNextFromShard(const I_multi_device_iterator:string; const I_shard_num:string; const I_incarnation_id:string; const OL_components:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddMultiDeviceIteratorInit(const I_dataset:string; const I_multi_device_iterator:string; const I_max_buffer_size:string; const O_incarnation_id:string):string;
     function AddMultiDeviceIteratorToStringHandle(const I_multi_device_iterator:string; const O_string_handle:string):string;
     function AddMultinomial(const I_logits:string; const I_num_samples:string; const O_output:string; const A_seed:cint64; const A_seed2:cint64; const A_T:TF_DataType; const A_output_dtype:TF_DataType):string;
@@ -707,7 +706,7 @@ type
     function AddNdtri(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
     function AddNearestNeighbors(const I_points:string; const I_centers:string; const I_k:string; const O_nearest_center_indices:string; const O_nearest_center_distances:string):string;
     function AddNeg(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
-    function AddNegTrain(const I_w_in:string; const I_w_out:string; const I_examples:string; const I_labels:string; const I_lr:string; const A_vocab_count:array of cint64; const A_num_negative_samples:cint64):string;
+    function AddNegTrain(const I_w_in:string; const I_w_out:string; const I_examples:string; const I_labels:string; const I_lr:string; const A_vocab_count:TF_IntList; const A_num_negative_samples:cint64):string;
     function AddNextAfter(const I_x1:string; const I_x2:string; const O_output:string; const A_T:TF_DataType):string;
     function AddNextIteration(const I_data:string; const O_output:string; const A_T:TF_DataType):string;
     function AddNoOp():string;
@@ -718,69 +717,69 @@ type
     function AddNonMaxSuppressionV4(const I_boxes:string; const I_scores:string; const I_max_output_size:string; const I_iou_threshold:string; const I_score_threshold:string; const O_selected_indices:string; const O_valid_outputs:string; const A_T:TF_DataType; const A_T_threshold:TF_DataType; const A_pad_to_max_output_size:boolean):string;
     function AddNonMaxSuppressionV5(const I_boxes:string; const I_scores:string; const I_max_output_size:string; const I_iou_threshold:string; const I_score_threshold:string; const I_soft_nms_sigma:string; const O_selected_indices:string; const O_selected_scores:string; const O_valid_outputs:string; const A_T:TF_DataType; const A_pad_to_max_output_size:boolean):string;
     function AddNonMaxSuppressionWithOverlaps(const I_overlaps:string; const I_scores:string; const I_max_output_size:string; const I_overlap_threshold:string; const I_score_threshold:string; const O_selected_indices:string):string;
-    function AddNonSerializableDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddNonSerializableDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddNotEqual(const I_x:string; const I_y:string; const O_z:string; const A_T:TF_DataType; const A_incompatible_shape_error:boolean):string;
     function AddNthElement(const I_input:string; const I_n:string; const O_values:string; const A_reverse:boolean; const A_T:TF_DataType):string;
     function AddOneHot(const I_indices:string; const I_depth:string; const I_on_value:string; const I_off_value:string; const O_output:string; const A_axis:cint64; const A_T:TF_DataType; const A_TI:TF_DataType):string;
-    function AddOneShotIterator(const O_handle:string; const A_dataset_factory:TF_Function; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_container:string; const A_shared_name:string):string;
+    function AddOneShotIterator(const O_handle:string; const A_dataset_factory:TF_Function; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_container:string; const A_shared_name:string):string;
     function AddOnesLike(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
-    function AddOptimizeDataset(const I_input_dataset:string; const I_optimizations:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_optimization_configs:array of string):string;
-    function AddOptionalFromValue(const I_components:string; const O_optional:string; const A_Toutput_types:array of TF_DataType):string;
-    function AddOptionalGetValue(const I_optional:string; const OL_components:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddOptimizeDataset(const I_input_dataset:string; const I_optimizations:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_optimization_configs:TF_StringList):string;
+    function AddOptionalFromValue(const IL_components:string; const O_optional:string; const A_Toutput_types:TF_TypeList):string;
+    function AddOptionalGetValue(const I_optional:string; const OL_components:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddOptionalHasValue(const I_optional:string; const O_has_value:string):string;
     function AddOptionalNone(const O_optional:string):string;
-    function AddOrderedMapClear(const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
-    function AddOrderedMapIncompleteSize(const O_size:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
-    function AddOrderedMapPeek(const I_key:string; const I_indices:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
-    function AddOrderedMapSize(const O_size:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
-    function AddOrderedMapStage(const I_key:string; const I_indices:string; const I_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_fake_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
-    function AddOrderedMapUnstage(const I_key:string; const I_indices:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
-    function AddOrderedMapUnstageNoKey(const I_indices:string; const O_key:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
+    function AddOrderedMapClear(const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
+    function AddOrderedMapIncompleteSize(const O_size:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
+    function AddOrderedMapPeek(const I_key:string; const I_indices:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
+    function AddOrderedMapSize(const O_size:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
+    function AddOrderedMapStage(const I_key:string; const I_indices:string; const IL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_fake_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
+    function AddOrderedMapUnstage(const I_key:string; const I_indices:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
+    function AddOrderedMapUnstageNoKey(const I_indices:string; const O_key:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
     function AddOutfeedDequeue(const O_output:string; const A_dtype:TF_DataType; const A_shape:TF_Shape; const A_device_ordinal:cint64):string;
-    function AddOutfeedDequeueTuple(const OL_outputs:string; const A_dtypes:array of TF_DataType; const A_shapes:array of TF_Shape; const A_device_ordinal:cint64):string;
+    function AddOutfeedDequeueTuple(const OL_outputs:string; const A_dtypes:TF_TypeList; const A_shapes:TF_ShapeList; const A_device_ordinal:cint64):string;
     function AddOutfeedEnqueue(const I_input:string; const A_dtype:TF_DataType):string;
-    function AddOutfeedEnqueueTuple(const I_inputs:string; const A_dtypes:array of TF_DataType):string;
+    function AddOutfeedEnqueueTuple(const IL_inputs:string; const A_dtypes:TF_TypeList):string;
     function AddPack(const IL_values:string; const O_output:string; const A_N:cint64; const A_T:TF_DataType; const A_axis:cint64):string;
     function AddPad(const I_input:string; const I_paddings:string; const O_output:string; const A_T:TF_DataType; const A_Tpaddings:TF_DataType):string;
     function AddPadV2(const I_input:string; const I_paddings:string; const I_constant_values:string; const O_output:string; const A_T:TF_DataType; const A_Tpaddings:TF_DataType):string;
-    function AddPaddedBatchDataset(const I_input_dataset:string; const I_batch_size:string; const I_padding_values:string; const IL_padded_shapes:string; const O_handle:string; const A_Toutput_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_N:cint64):string;
-    function AddPaddedBatchDatasetV2(const I_input_dataset:string; const I_batch_size:string; const I_padding_values:string; const I_drop_remainder:string; const IL_padded_shapes:string; const O_handle:string; const A_parallel_copy:boolean; const A_Toutput_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_N:cint64):string;
-    function AddPaddingFIFOQueue(const O_handle:string; const A_component_types:array of TF_DataType; const A_shapes:array of TF_Shape; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
-    function AddPaddingFIFOQueueV2(const O_handle:string; const A_component_types:array of TF_DataType; const A_shapes:array of TF_Shape; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
+    function AddPaddedBatchDataset(const I_input_dataset:string; const I_batch_size:string; const IL_padded_shapes:string; const IL_padding_values:string; const O_handle:string; const A_Toutput_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_N:cint64):string;
+    function AddPaddedBatchDatasetV2(const I_input_dataset:string; const I_batch_size:string; const I_drop_remainder:string; const IL_padded_shapes:string; const IL_padding_values:string; const O_handle:string; const A_parallel_copy:boolean; const A_Toutput_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_N:cint64):string;
+    function AddPaddingFIFOQueue(const O_handle:string; const A_component_types:TF_TypeList; const A_shapes:TF_ShapeList; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
+    function AddPaddingFIFOQueueV2(const O_handle:string; const A_component_types:TF_TypeList; const A_shapes:TF_ShapeList; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
     function AddParallelConcat(const IL_values:string; const O_output:string; const A_N:cint64; const A_T:TF_DataType; const A_shape:TF_Shape):string;
     function AddParallelDynamicStitch(const IL_indices:string; const IL_data:string; const O_merged:string; const A_N:cint64; const A_T:TF_DataType):string;
-    function AddParallelInterleaveDataset(const I_input_dataset:string; const I_other_arguments:string; const I_cycle_length:string; const I_block_length:string; const I_sloppy:string; const I_buffer_output_elements:string; const I_prefetch_input_elements:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddParallelInterleaveDatasetV2(const I_input_dataset:string; const I_other_arguments:string; const I_cycle_length:string; const I_block_length:string; const I_num_parallel_calls:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_sloppy:boolean):string;
-    function AddParallelInterleaveDatasetV3(const I_input_dataset:string; const I_other_arguments:string; const I_cycle_length:string; const I_block_length:string; const I_num_parallel_calls:string; const O_handle:string; const A_f:TF_Function; const A_deterministic:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddParallelMapDataset(const I_input_dataset:string; const I_other_arguments:string; const I_num_parallel_calls:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_use_inter_op_parallelism:boolean; const A_sloppy:boolean; const A_preserve_cardinality:boolean):string;
+    function AddParallelInterleaveDataset(const I_input_dataset:string; const I_cycle_length:string; const I_block_length:string; const I_sloppy:string; const I_buffer_output_elements:string; const I_prefetch_input_elements:string; const IL_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddParallelInterleaveDatasetV2(const I_input_dataset:string; const I_cycle_length:string; const I_block_length:string; const I_num_parallel_calls:string; const IL_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_sloppy:boolean):string;
+    function AddParallelInterleaveDatasetV3(const I_input_dataset:string; const I_cycle_length:string; const I_block_length:string; const I_num_parallel_calls:string; const IL_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_deterministic:string; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddParallelMapDataset(const I_input_dataset:string; const I_num_parallel_calls:string; const IL_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_use_inter_op_parallelism:boolean; const A_sloppy:boolean; const A_preserve_cardinality:boolean):string;
     function AddParameterizedTruncatedNormal(const I_shape:string; const I_means:string; const I_stdevs:string; const I_minvals:string; const I_maxvals:string; const O_output:string; const A_seed:cint64; const A_seed2:cint64; const A_dtype:TF_DataType; const A_T:TF_DataType):string;
-    function AddParseExample(const I_serialized:string; const I_names:string; const I_dense_defaults:string; const IL_sparse_keys:string; const IL_dense_keys:string; const OL_sparse_indices:string; const OL_sparse_values:string; const OL_sparse_shapes:string; const OL_dense_values:string; const A_Nsparse:cint64; const A_Ndense:cint64; const A_sparse_types:array of TF_DataType; const A_Tdense:array of TF_DataType; const A_dense_shapes:array of TF_Shape):string;
-    function AddParseExampleDataset(const I_input_dataset:string; const I_num_parallel_calls:string; const I_dense_defaults:string; const O_handle:string; const A_sparse_keys:array of string; const A_dense_keys:array of string; const A_sparse_types:array of TF_DataType; const A_Tdense:array of TF_DataType; const A_dense_shapes:array of TF_Shape; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_sloppy:boolean; const A_ragged_keys:array of string; const A_ragged_value_types:array of TF_DataType; const A_ragged_split_types:array of TF_DataType):string;
-    function AddParseExampleV2(const I_serialized:string; const I_names:string; const I_sparse_keys:string; const I_dense_keys:string; const I_ragged_keys:string; const I_dense_defaults:string; const OL_sparse_indices:string; const OL_sparse_values:string; const OL_sparse_shapes:string; const OL_dense_values:string; const OL_ragged_values:string; const OL_ragged_row_splits:string; const A_Tdense:array of TF_DataType; const A_num_sparse:cint64; const A_sparse_types:array of TF_DataType; const A_ragged_value_types:array of TF_DataType; const A_ragged_split_types:array of TF_DataType; const A_dense_shapes:array of TF_Shape):string;
-    function AddParseSequenceExample(const I_serialized:string; const I_debug_name:string; const I_context_dense_defaults:string; const OL_context_sparse_indices:string; const OL_context_sparse_values:string; const OL_context_sparse_shapes:string; const OL_context_dense_values:string; const OL_feature_list_sparse_indices:string; const OL_feature_list_sparse_values:string; const OL_feature_list_sparse_shapes:string; const OL_feature_list_dense_values:string; const OL_feature_list_dense_lengths:string; const A_feature_list_dense_missing_assumed_empty:array of string; const A_context_sparse_keys:array of string; const A_context_dense_keys:array of string; const A_feature_list_sparse_keys:array of string; const A_feature_list_dense_keys:array of string; const A_Ncontext_sparse:cint64; const A_Ncontext_dense:cint64; const A_Nfeature_list_sparse:cint64; const A_Nfeature_list_dense:cint64; const A_context_sparse_types:array of TF_DataType; const A_Tcontext_dense:array of TF_DataType; const A_feature_list_dense_types:array of TF_DataType; const A_context_dense_shapes:array of TF_Shape; const A_feature_list_sparse_types:array of TF_DataType; const A_feature_list_dense_shapes:array of TF_Shape):string;
-    function AddParseSequenceExampleV2(const I_serialized:string; const I_debug_name:string; const I_context_sparse_keys:string; const I_context_dense_keys:string; const I_context_ragged_keys:string; const I_feature_list_sparse_keys:string; const I_feature_list_dense_keys:string; const I_feature_list_ragged_keys:string; const I_feature_list_dense_missing_assumed_empty:string; const I_context_dense_defaults:string; const OL_context_sparse_indices:string; const OL_context_sparse_values:string; const OL_context_sparse_shapes:string; const OL_context_dense_values:string; const OL_context_ragged_values:string; const OL_context_ragged_row_splits:string; const OL_feature_list_sparse_indices:string; const OL_feature_list_sparse_values:string; const OL_feature_list_sparse_shapes:string; const OL_feature_list_dense_values:string; const OL_feature_list_dense_lengths:string; const OL_feature_list_ragged_values:string; const OL_feature_list_ragged_outer_splits:string; const OL_feature_list_ragged_inner_splits:string; const A_Ncontext_sparse:cint64; const A_Tcontext_dense:array of TF_DataType; const A_context_sparse_types:array of TF_DataType; const A_context_ragged_value_types:array of TF_DataType; const A_context_ragged_split_types:array of TF_DataType; const A_context_dense_shapes:array of TF_Shape; const A_Nfeature_list_sparse:cint64; const A_Nfeature_list_dense:cint64; const A_feature_list_dense_types:array of TF_DataType; const A_feature_list_sparse_types:array of TF_DataType; const A_feature_list_ragged_value_types:array of TF_DataType; const A_feature_list_ragged_split_types:array of TF_DataType; const A_feature_list_dense_shapes:array of TF_Shape):string;
-    function AddParseSingleExample(const I_serialized:string; const I_dense_defaults:string; const OL_sparse_indices:string; const OL_sparse_values:string; const OL_sparse_shapes:string; const OL_dense_values:string; const A_num_sparse:cint64; const A_sparse_keys:array of string; const A_dense_keys:array of string; const A_sparse_types:array of TF_DataType; const A_Tdense:array of TF_DataType; const A_dense_shapes:array of TF_Shape):string;
-    function AddParseSingleSequenceExample(const I_serialized:string; const I_feature_list_dense_missing_assumed_empty:string; const I_context_dense_defaults:string; const I_debug_name:string; const IL_context_sparse_keys:string; const IL_context_dense_keys:string; const IL_feature_list_sparse_keys:string; const IL_feature_list_dense_keys:string; const OL_context_sparse_indices:string; const OL_context_sparse_values:string; const OL_context_sparse_shapes:string; const OL_context_dense_values:string; const OL_feature_list_sparse_indices:string; const OL_feature_list_sparse_values:string; const OL_feature_list_sparse_shapes:string; const OL_feature_list_dense_values:string; const A_Ncontext_sparse:cint64; const A_Ncontext_dense:cint64; const A_Nfeature_list_sparse:cint64; const A_Nfeature_list_dense:cint64; const A_context_sparse_types:array of TF_DataType; const A_Tcontext_dense:array of TF_DataType; const A_feature_list_dense_types:array of TF_DataType; const A_context_dense_shapes:array of TF_Shape; const A_feature_list_sparse_types:array of TF_DataType; const A_feature_list_dense_shapes:array of TF_Shape):string;
+    function AddParseExample(const I_serialized:string; const I_names:string; const IL_sparse_keys:string; const IL_dense_keys:string; const IL_dense_defaults:string; const OL_sparse_indices:string; const OL_sparse_values:string; const OL_sparse_shapes:string; const OL_dense_values:string; const A_Nsparse:cint64; const A_Ndense:cint64; const A_sparse_types:TF_TypeList; const A_Tdense:TF_TypeList; const A_dense_shapes:TF_ShapeList):string;
+    function AddParseExampleDataset(const I_input_dataset:string; const I_num_parallel_calls:string; const IL_dense_defaults:string; const O_handle:string; const A_sparse_keys:TF_StringList; const A_dense_keys:TF_StringList; const A_sparse_types:TF_TypeList; const A_Tdense:TF_TypeList; const A_dense_shapes:TF_ShapeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_sloppy:boolean; const A_ragged_keys:TF_StringList; const A_ragged_value_types:TF_TypeList; const A_ragged_split_types:TF_TypeList):string;
+    function AddParseExampleV2(const I_serialized:string; const I_names:string; const I_sparse_keys:string; const I_dense_keys:string; const I_ragged_keys:string; const IL_dense_defaults:string; const OL_sparse_indices:string; const OL_sparse_values:string; const OL_sparse_shapes:string; const OL_dense_values:string; const OL_ragged_values:string; const OL_ragged_row_splits:string; const A_Tdense:TF_TypeList; const A_num_sparse:cint64; const A_sparse_types:TF_TypeList; const A_ragged_value_types:TF_TypeList; const A_ragged_split_types:TF_TypeList; const A_dense_shapes:TF_ShapeList):string;
+    function AddParseSequenceExample(const I_serialized:string; const I_debug_name:string; const IL_context_dense_defaults:string; const OL_context_sparse_indices:string; const OL_context_sparse_values:string; const OL_context_sparse_shapes:string; const OL_context_dense_values:string; const OL_feature_list_sparse_indices:string; const OL_feature_list_sparse_values:string; const OL_feature_list_sparse_shapes:string; const OL_feature_list_dense_values:string; const OL_feature_list_dense_lengths:string; const A_feature_list_dense_missing_assumed_empty:TF_StringList; const A_context_sparse_keys:TF_StringList; const A_context_dense_keys:TF_StringList; const A_feature_list_sparse_keys:TF_StringList; const A_feature_list_dense_keys:TF_StringList; const A_Ncontext_sparse:cint64; const A_Ncontext_dense:cint64; const A_Nfeature_list_sparse:cint64; const A_Nfeature_list_dense:cint64; const A_context_sparse_types:TF_TypeList; const A_Tcontext_dense:TF_TypeList; const A_feature_list_dense_types:TF_TypeList; const A_context_dense_shapes:TF_ShapeList; const A_feature_list_sparse_types:TF_TypeList; const A_feature_list_dense_shapes:TF_ShapeList):string;
+    function AddParseSequenceExampleV2(const I_serialized:string; const I_debug_name:string; const I_context_sparse_keys:string; const I_context_dense_keys:string; const I_context_ragged_keys:string; const I_feature_list_sparse_keys:string; const I_feature_list_dense_keys:string; const I_feature_list_ragged_keys:string; const I_feature_list_dense_missing_assumed_empty:string; const IL_context_dense_defaults:string; const OL_context_sparse_indices:string; const OL_context_sparse_values:string; const OL_context_sparse_shapes:string; const OL_context_dense_values:string; const OL_context_ragged_values:string; const OL_context_ragged_row_splits:string; const OL_feature_list_sparse_indices:string; const OL_feature_list_sparse_values:string; const OL_feature_list_sparse_shapes:string; const OL_feature_list_dense_values:string; const OL_feature_list_dense_lengths:string; const OL_feature_list_ragged_values:string; const OL_feature_list_ragged_outer_splits:string; const OL_feature_list_ragged_inner_splits:string; const A_Ncontext_sparse:cint64; const A_Tcontext_dense:TF_TypeList; const A_context_sparse_types:TF_TypeList; const A_context_ragged_value_types:TF_TypeList; const A_context_ragged_split_types:TF_TypeList; const A_context_dense_shapes:TF_ShapeList; const A_Nfeature_list_sparse:cint64; const A_Nfeature_list_dense:cint64; const A_feature_list_dense_types:TF_TypeList; const A_feature_list_sparse_types:TF_TypeList; const A_feature_list_ragged_value_types:TF_TypeList; const A_feature_list_ragged_split_types:TF_TypeList; const A_feature_list_dense_shapes:TF_ShapeList):string;
+    function AddParseSingleExample(const I_serialized:string; const IL_dense_defaults:string; const OL_sparse_indices:string; const OL_sparse_values:string; const OL_sparse_shapes:string; const OL_dense_values:string; const A_num_sparse:cint64; const A_sparse_keys:TF_StringList; const A_dense_keys:TF_StringList; const A_sparse_types:TF_TypeList; const A_Tdense:TF_TypeList; const A_dense_shapes:TF_ShapeList):string;
+    function AddParseSingleSequenceExample(const I_serialized:string; const I_feature_list_dense_missing_assumed_empty:string; const I_debug_name:string; const IL_context_sparse_keys:string; const IL_context_dense_keys:string; const IL_feature_list_sparse_keys:string; const IL_feature_list_dense_keys:string; const IL_context_dense_defaults:string; const OL_context_sparse_indices:string; const OL_context_sparse_values:string; const OL_context_sparse_shapes:string; const OL_context_dense_values:string; const OL_feature_list_sparse_indices:string; const OL_feature_list_sparse_values:string; const OL_feature_list_sparse_shapes:string; const OL_feature_list_dense_values:string; const A_Ncontext_sparse:cint64; const A_Ncontext_dense:cint64; const A_Nfeature_list_sparse:cint64; const A_Nfeature_list_dense:cint64; const A_context_sparse_types:TF_TypeList; const A_Tcontext_dense:TF_TypeList; const A_feature_list_dense_types:TF_TypeList; const A_context_dense_shapes:TF_ShapeList; const A_feature_list_sparse_types:TF_TypeList; const A_feature_list_dense_shapes:TF_ShapeList):string;
     function AddParseTensor(const I_serialized:string; const O_output:string; const A_out_type:TF_DataType):string;
-    function AddPartitionedCall(const I_args:string; const OL_output:string; const A_Tin:array of TF_DataType; const A_Tout:array of TF_DataType; const A_f:TF_Function; const A_config:string; const A_config_proto:string; const A_executor_type:string):string;
+    function AddPartitionedCall(const IL_args:string; const OL_output:string; const A_Tin:TF_TypeList; const A_Tout:TF_TypeList; const A_f:TF_Function; const A_config:string; const A_config_proto:string; const A_executor_type:string):string;
     function AddPlaceholder(const O_output:string; const A_dtype:TF_DataType; const A_shape:TF_Shape):string;
     function AddPlaceholderV2(const O_output:string; const A_dtype:TF_DataType; const A_shape:TF_Shape):string;
     function AddPlaceholderWithDefault(const I_input:string; const O_output:string; const A_dtype:TF_DataType; const A_shape:TF_Shape):string;
     function AddPolygamma(const I_a:string; const I_x:string; const O_z:string; const A_T:TF_DataType):string;
     function AddPopulationCount(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
     function AddPow(const I_x:string; const I_y:string; const O_z:string; const A_T:TF_DataType):string;
-    function AddPrefetchDataset(const I_input_dataset:string; const I_buffer_size:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_slack_period:cint64; const A_legacy_autotune:boolean):string;
-    function AddPrelinearize(const I_input:string; const O_output:string; const A_dtype:TF_DataType; const A_shape:TF_Shape; const A_layout:array of cint64):string;
-    function AddPrelinearizeTuple(const I_inputs:string; const O_output:string; const A_dtypes:array of TF_DataType; const A_shapes:array of TF_Shape; const A_layouts:array of cint64):string;
+    function AddPrefetchDataset(const I_input_dataset:string; const I_buffer_size:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_slack_period:cint64; const A_legacy_autotune:boolean):string;
+    function AddPrelinearize(const I_input:string; const O_output:string; const A_dtype:TF_DataType; const A_shape:TF_Shape; const A_layout:TF_IntList):string;
+    function AddPrelinearizeTuple(const IL_inputs:string; const O_output:string; const A_dtypes:TF_TypeList; const A_shapes:TF_ShapeList; const A_layouts:TF_IntList):string;
     function AddPreventGradient(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_message:string):string;
-    function AddPrint(const I_input:string; const I_data:string; const O_output:string; const A_T:TF_DataType; const A_U:array of TF_DataType; const A_message:string; const A_first_n:cint64; const A_summarize:cint64):string;
+    function AddPrint(const I_input:string; const IL_data:string; const O_output:string; const A_T:TF_DataType; const A_U:TF_TypeList; const A_message:string; const A_first_n:cint64; const A_summarize:cint64):string;
     function AddPrintV2(const I_input:string; const A_output_stream:string; const A_end:string):string;
-    function AddPriorityQueue(const O_handle:string; const A_component_types:array of TF_DataType; const A_shapes:array of TF_Shape; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
-    function AddPriorityQueueV2(const O_handle:string; const A_component_types:array of TF_DataType; const A_shapes:array of TF_Shape; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
-    function AddPrivateThreadPoolDataset(const I_input_dataset:string; const I_num_threads:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddPriorityQueue(const O_handle:string; const A_component_types:TF_TypeList; const A_shapes:TF_ShapeList; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
+    function AddPriorityQueueV2(const O_handle:string; const A_component_types:TF_TypeList; const A_shapes:TF_ShapeList; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
+    function AddPrivateThreadPoolDataset(const I_input_dataset:string; const I_num_threads:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddProd(const I_input:string; const I_reduction_indices:string; const O_output:string; const A_keep_dims:boolean; const A_T:TF_DataType; const A_Tidx:TF_DataType):string;
-    function AddPyFunc(const I_input:string; const OL_output:string; const A_token:string; const A_Tin:array of TF_DataType; const A_Tout:array of TF_DataType):string;
-    function AddPyFuncStateless(const I_input:string; const OL_output:string; const A_token:string; const A_Tin:array of TF_DataType; const A_Tout:array of TF_DataType):string;
+    function AddPyFunc(const IL_input:string; const OL_output:string; const A_token:string; const A_Tin:TF_TypeList; const A_Tout:TF_TypeList):string;
+    function AddPyFuncStateless(const IL_input:string; const OL_output:string; const A_token:string; const A_Tin:TF_TypeList; const A_Tout:TF_TypeList):string;
     function AddQr(const I_input:string; const O_q:string; const O_r:string; const A_full_matrices:boolean; const A_T:TF_DataType):string;
     function AddQuantizeAndDequantize(const I_input:string; const O_output:string; const A_signed_input:boolean; const A_num_bits:cint64; const A_range_given:boolean; const A_input_min:real; const A_input_max:real; const A_T:TF_DataType):string;
     function AddQuantizeAndDequantizeV2(const I_input:string; const I_input_min:string; const I_input_max:string; const O_output:string; const A_signed_input:boolean; const A_num_bits:cint64; const A_range_given:boolean; const A_T:TF_DataType; const A_round_mode:string; const A_narrow_range:boolean; const A_axis:cint64):string;
@@ -788,33 +787,33 @@ type
     function AddQuantizeDownAndShrinkRange(const I_input:string; const I_input_min:string; const I_input_max:string; const O_output:string; const O_output_min:string; const O_output_max:string; const A_Tinput:TF_DataType; const A_out_type:TF_DataType):string;
     function AddQuantizeV2(const I_input:string; const I_min_range:string; const I_max_range:string; const O_output:string; const O_output_min:string; const O_output_max:string; const A_T:TF_DataType; const A_mode:string; const A_round_mode:string; const A_narrow_range:boolean; const A_axis:cint64; const A_ensure_minimum_range:real):string;
     function AddQuantizedAdd(const I_x:string; const I_y:string; const I_min_x:string; const I_max_x:string; const I_min_y:string; const I_max_y:string; const O_z:string; const O_min_z:string; const O_max_z:string; const A_T1:TF_DataType; const A_T2:TF_DataType; const A_Toutput:TF_DataType):string;
-    function AddQuantizedAvgPool(const I_input:string; const I_min_input:string; const I_max_input:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_T:TF_DataType; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string):string;
+    function AddQuantizedAvgPool(const I_input:string; const I_min_input:string; const I_max_input:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_T:TF_DataType; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string):string;
     function AddQuantizedBatchNormWithGlobalNormalization(const I_t:string; const I_t_min:string; const I_t_max:string; const I_m:string; const I_m_min:string; const I_m_max:string; const I_v:string; const I_v_min:string; const I_v_max:string; const I_beta:string; const I_beta_min:string; const I_beta_max:string; const I_gamma:string; const I_gamma_min:string; const I_gamma_max:string; const O_result:string; const O_result_min:string; const O_result_max:string; const A_Tinput:TF_DataType; const A_out_type:TF_DataType; const A_variance_epsilon:real; const A_scale_after_normalization:boolean):string;
     function AddQuantizedBiasAdd(const I_input:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_bias:string; const I_max_bias:string; const O_output:string; const O_min_out:string; const O_max_out:string; const A_T1:TF_DataType; const A_T2:TF_DataType; const A_out_type:TF_DataType):string;
     function AddQuantizedConcat(const I_concat_dim:string; const IL_values:string; const IL_input_mins:string; const IL_input_maxes:string; const O_output:string; const O_output_min:string; const O_output_max:string; const A_N:cint64; const A_T:TF_DataType):string;
-    function AddQuantizedConv2D(const I_input:string; const I_filter:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64):string;
-    function AddQuantizedConv2DAndRelu(const I_input:string; const I_filter:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64; const A_padding_list:array of cint64):string;
-    function AddQuantizedConv2DAndReluAndRequantize(const I_input:string; const I_filter:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64; const A_padding_list:array of cint64):string;
-    function AddQuantizedConv2DAndRequantize(const I_input:string; const I_filter:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64; const A_padding_list:array of cint64):string;
-    function AddQuantizedConv2DPerChannel(const I_input:string; const I_filter:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64):string;
-    function AddQuantizedConv2DWithBias(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64; const A_padding_list:array of cint64):string;
-    function AddQuantizedConv2DWithBiasAndRelu(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64; const A_padding_list:array of cint64):string;
-    function AddQuantizedConv2DWithBiasAndReluAndRequantize(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_Tbias:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64; const A_padding_list:array of cint64):string;
-    function AddQuantizedConv2DWithBiasAndRequantize(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_Tbias:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64; const A_padding_list:array of cint64):string;
-    function AddQuantizedConv2DWithBiasSignedSumAndReluAndRequantize(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const I_summand:string; const I_min_summand:string; const I_max_summand:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_Tbias:TF_DataType; const A_Tsummand:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64; const A_padding_list:array of cint64):string;
-    function AddQuantizedConv2DWithBiasSumAndRelu(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_summand:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64; const A_padding_list:array of cint64):string;
-    function AddQuantizedConv2DWithBiasSumAndReluAndRequantize(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const I_summand:string; const I_min_summand:string; const I_max_summand:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_Tbias:TF_DataType; const A_Tsummand:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64; const A_padding_list:array of cint64):string;
-    function AddQuantizedDepthwiseConv2D(const I_input:string; const I_filter:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64):string;
-    function AddQuantizedDepthwiseConv2DWithBias(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64):string;
-    function AddQuantizedDepthwiseConv2DWithBiasAndRelu(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64; const A_padding_list:array of cint64):string;
-    function AddQuantizedDepthwiseConv2DWithBiasAndReluAndRequantize(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_Tbias:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64; const A_padding_list:array of cint64):string;
+    function AddQuantizedConv2D(const I_input:string; const I_filter:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList):string;
+    function AddQuantizedConv2DAndRelu(const I_input:string; const I_filter:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList; const A_padding_list:TF_IntList):string;
+    function AddQuantizedConv2DAndReluAndRequantize(const I_input:string; const I_filter:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList; const A_padding_list:TF_IntList):string;
+    function AddQuantizedConv2DAndRequantize(const I_input:string; const I_filter:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList; const A_padding_list:TF_IntList):string;
+    function AddQuantizedConv2DPerChannel(const I_input:string; const I_filter:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList):string;
+    function AddQuantizedConv2DWithBias(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList; const A_padding_list:TF_IntList):string;
+    function AddQuantizedConv2DWithBiasAndRelu(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList; const A_padding_list:TF_IntList):string;
+    function AddQuantizedConv2DWithBiasAndReluAndRequantize(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_Tbias:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList; const A_padding_list:TF_IntList):string;
+    function AddQuantizedConv2DWithBiasAndRequantize(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_Tbias:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList; const A_padding_list:TF_IntList):string;
+    function AddQuantizedConv2DWithBiasSignedSumAndReluAndRequantize(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const I_summand:string; const I_min_summand:string; const I_max_summand:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_Tbias:TF_DataType; const A_Tsummand:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList; const A_padding_list:TF_IntList):string;
+    function AddQuantizedConv2DWithBiasSumAndRelu(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_summand:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList; const A_padding_list:TF_IntList):string;
+    function AddQuantizedConv2DWithBiasSumAndReluAndRequantize(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const I_summand:string; const I_min_summand:string; const I_max_summand:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_Tbias:TF_DataType; const A_Tsummand:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList; const A_padding_list:TF_IntList):string;
+    function AddQuantizedDepthwiseConv2D(const I_input:string; const I_filter:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList):string;
+    function AddQuantizedDepthwiseConv2DWithBias(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList):string;
+    function AddQuantizedDepthwiseConv2DWithBiasAndRelu(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList; const A_padding_list:TF_IntList):string;
+    function AddQuantizedDepthwiseConv2DWithBiasAndReluAndRequantize(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_Tbias:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList; const A_padding_list:TF_IntList):string;
     function AddQuantizedInstanceNorm(const I_x:string; const I_x_min:string; const I_x_max:string; const O_y:string; const O_y_min:string; const O_y_max:string; const A_T:TF_DataType; const A_output_range_given:boolean; const A_given_y_min:real; const A_given_y_max:real; const A_variance_epsilon:real; const A_min_separation:real):string;
     function AddQuantizedMatMul(const I_a:string; const I_b:string; const I_min_a:string; const I_max_a:string; const I_min_b:string; const I_max_b:string; const O_out:string; const O_min_out:string; const O_max_out:string; const A_T1:TF_DataType; const A_T2:TF_DataType; const A_Toutput:TF_DataType; const A_transpose_a:boolean; const A_transpose_b:boolean; const A_Tactivation:TF_DataType):string;
     function AddQuantizedMatMulWithBias(const I_a:string; const I_b:string; const I_bias:string; const I_min_a:string; const I_max_a:string; const I_min_b:string; const I_max_b:string; const O_out:string; const O_min_out:string; const O_max_out:string; const A_T1:TF_DataType; const A_T2:TF_DataType; const A_Tbias:TF_DataType; const A_Toutput:TF_DataType; const A_transpose_a:boolean; const A_transpose_b:boolean; const A_input_quant_mode:string):string;
     function AddQuantizedMatMulWithBiasAndRelu(const I_a:string; const I_b:string; const I_bias:string; const I_min_a:string; const I_max_a:string; const I_min_b:string; const I_max_b:string; const O_out:string; const O_min_out:string; const O_max_out:string; const A_T1:TF_DataType; const A_T2:TF_DataType; const A_Toutput:TF_DataType; const A_transpose_a:boolean; const A_transpose_b:boolean; const A_input_quant_mode:string):string;
     function AddQuantizedMatMulWithBiasAndReluAndRequantize(const I_a:string; const I_b:string; const I_bias:string; const I_min_a:string; const I_max_a:string; const I_min_b:string; const I_max_b:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const O_out:string; const O_min_out:string; const O_max_out:string; const A_T1:TF_DataType; const A_T2:TF_DataType; const A_Tbias:TF_DataType; const A_Toutput:TF_DataType; const A_transpose_a:boolean; const A_transpose_b:boolean; const A_input_quant_mode:string):string;
     function AddQuantizedMatMulWithBiasAndRequantize(const I_a:string; const I_b:string; const I_bias:string; const I_min_a:string; const I_max_a:string; const I_min_b:string; const I_max_b:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const O_out:string; const O_min_out:string; const O_max_out:string; const A_T1:TF_DataType; const A_T2:TF_DataType; const A_Tbias:TF_DataType; const A_Toutput:TF_DataType; const A_transpose_a:boolean; const A_transpose_b:boolean; const A_input_quant_mode:string):string;
-    function AddQuantizedMaxPool(const I_input:string; const I_min_input:string; const I_max_input:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_T:TF_DataType; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string):string;
+    function AddQuantizedMaxPool(const I_input:string; const I_min_input:string; const I_max_input:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_T:TF_DataType; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string):string;
     function AddQuantizedMul(const I_x:string; const I_y:string; const I_min_x:string; const I_max_x:string; const I_min_y:string; const I_max_y:string; const O_z:string; const O_min_z:string; const O_max_z:string; const A_T1:TF_DataType; const A_T2:TF_DataType; const A_Toutput:TF_DataType):string;
     function AddQuantizedRelu(const I_features:string; const I_min_features:string; const I_max_features:string; const O_activations:string; const O_min_activations:string; const O_max_activations:string; const A_Tinput:TF_DataType; const A_out_type:TF_DataType):string;
     function AddQuantizedRelu6(const I_features:string; const I_min_features:string; const I_max_features:string; const O_activations:string; const O_min_activations:string; const O_max_activations:string; const A_Tinput:TF_DataType; const A_out_type:TF_DataType):string;
@@ -823,16 +822,16 @@ type
     function AddQuantizedResizeBilinear(const I_images:string; const I_size:string; const I_min:string; const I_max:string; const O_resized_images:string; const O_out_min:string; const O_out_max:string; const A_T:TF_DataType; const A_align_corners:boolean; const A_half_pixel_centers:boolean):string;
     function AddQueueClose(const I_handle:string; const A_cancel_pending_enqueues:boolean):string;
     function AddQueueCloseV2(const I_handle:string; const A_cancel_pending_enqueues:boolean):string;
-    function AddQueueDequeue(const I_handle:string; const OL_components:string; const A_component_types:array of TF_DataType; const A_timeout_ms:cint64):string;
-    function AddQueueDequeueMany(const I_handle:string; const I_n:string; const OL_components:string; const A_component_types:array of TF_DataType; const A_timeout_ms:cint64):string;
-    function AddQueueDequeueManyV2(const I_handle:string; const I_n:string; const OL_components:string; const A_component_types:array of TF_DataType; const A_timeout_ms:cint64):string;
-    function AddQueueDequeueUpTo(const I_handle:string; const I_n:string; const OL_components:string; const A_component_types:array of TF_DataType; const A_timeout_ms:cint64):string;
-    function AddQueueDequeueUpToV2(const I_handle:string; const I_n:string; const OL_components:string; const A_component_types:array of TF_DataType; const A_timeout_ms:cint64):string;
-    function AddQueueDequeueV2(const I_handle:string; const OL_components:string; const A_component_types:array of TF_DataType; const A_timeout_ms:cint64):string;
-    function AddQueueEnqueue(const I_handle:string; const I_components:string; const A_Tcomponents:array of TF_DataType; const A_timeout_ms:cint64):string;
-    function AddQueueEnqueueMany(const I_handle:string; const I_components:string; const A_Tcomponents:array of TF_DataType; const A_timeout_ms:cint64):string;
-    function AddQueueEnqueueManyV2(const I_handle:string; const I_components:string; const A_Tcomponents:array of TF_DataType; const A_timeout_ms:cint64):string;
-    function AddQueueEnqueueV2(const I_handle:string; const I_components:string; const A_Tcomponents:array of TF_DataType; const A_timeout_ms:cint64):string;
+    function AddQueueDequeue(const I_handle:string; const OL_components:string; const A_component_types:TF_TypeList; const A_timeout_ms:cint64):string;
+    function AddQueueDequeueMany(const I_handle:string; const I_n:string; const OL_components:string; const A_component_types:TF_TypeList; const A_timeout_ms:cint64):string;
+    function AddQueueDequeueManyV2(const I_handle:string; const I_n:string; const OL_components:string; const A_component_types:TF_TypeList; const A_timeout_ms:cint64):string;
+    function AddQueueDequeueUpTo(const I_handle:string; const I_n:string; const OL_components:string; const A_component_types:TF_TypeList; const A_timeout_ms:cint64):string;
+    function AddQueueDequeueUpToV2(const I_handle:string; const I_n:string; const OL_components:string; const A_component_types:TF_TypeList; const A_timeout_ms:cint64):string;
+    function AddQueueDequeueV2(const I_handle:string; const OL_components:string; const A_component_types:TF_TypeList; const A_timeout_ms:cint64):string;
+    function AddQueueEnqueue(const I_handle:string; const IL_components:string; const A_Tcomponents:TF_TypeList; const A_timeout_ms:cint64):string;
+    function AddQueueEnqueueMany(const I_handle:string; const IL_components:string; const A_Tcomponents:TF_TypeList; const A_timeout_ms:cint64):string;
+    function AddQueueEnqueueManyV2(const I_handle:string; const IL_components:string; const A_Tcomponents:TF_TypeList; const A_timeout_ms:cint64):string;
+    function AddQueueEnqueueV2(const I_handle:string; const IL_components:string; const A_Tcomponents:TF_TypeList; const A_timeout_ms:cint64):string;
     function AddQueueIsClosed(const I_handle:string; const O_is_closed:string):string;
     function AddQueueIsClosedV2(const I_handle:string; const O_is_closed:string):string;
     function AddQueueSize(const I_handle:string; const O_size:string):string;
@@ -845,22 +844,22 @@ type
     function AddRaggedRange(const I_starts:string; const I_limits:string; const I_deltas:string; const O_rt_nested_splits:string; const O_rt_dense_values:string; const A_T:TF_DataType; const A_Tsplits:TF_DataType):string;
     function AddRaggedTensorFromVariant(const I_encoded_ragged:string; const O_output_dense_values:string; const OL_output_nested_splits:string; const A_input_ragged_rank:cint64; const A_output_ragged_rank:cint64; const A_Tvalues:TF_DataType; const A_Tsplits:TF_DataType):string;
     function AddRaggedTensorToSparse(const I_rt_dense_values:string; const IL_rt_nested_splits:string; const O_sparse_indices:string; const O_sparse_values:string; const O_sparse_dense_shape:string; const A_RAGGED_RANK:cint64; const A_T:TF_DataType; const A_Tsplits:TF_DataType):string;
-    function AddRaggedTensorToTensor(const I_shape:string; const I_values:string; const I_default_value:string; const IL_row_partition_tensors:string; const O_result:string; const A_T:TF_DataType; const A_Tindex:TF_DataType; const A_Tshape:TF_DataType; const A_num_row_partition_tensors:cint64; const A_row_partition_types:array of string):string;
+    function AddRaggedTensorToTensor(const I_shape:string; const I_values:string; const I_default_value:string; const IL_row_partition_tensors:string; const O_result:string; const A_T:TF_DataType; const A_Tindex:TF_DataType; const A_Tshape:TF_DataType; const A_num_row_partition_tensors:cint64; const A_row_partition_types:TF_StringList):string;
     function AddRaggedTensorToVariant(const I_rt_dense_values:string; const IL_rt_nested_splits:string; const O_encoded_ragged:string; const A_RAGGED_RANK:cint64; const A_Tvalues:TF_DataType; const A_Tsplits:TF_DataType; const A_batched_input:boolean):string;
     function AddRandomCrop(const I_image:string; const I_size:string; const O_output:string; const A_T:TF_DataType; const A_seed:cint64; const A_seed2:cint64):string;
-    function AddRandomDataset(const I_seed:string; const I_seed2:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddRandomDataset(const I_seed:string; const I_seed2:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddRandomGamma(const I_shape:string; const I_alpha:string; const O_output:string; const A_seed:cint64; const A_seed2:cint64; const A_S:TF_DataType; const A_T:TF_DataType):string;
     function AddRandomGammaGrad(const I_alpha:string; const I_sample:string; const O_output:string; const A_T:TF_DataType):string;
     function AddRandomPoisson(const I_shape:string; const I_rate:string; const O_output:string; const A_seed:cint64; const A_seed2:cint64; const A_S:TF_DataType; const A_dtype:TF_DataType):string;
     function AddRandomPoissonV2(const I_shape:string; const I_rate:string; const O_output:string; const A_seed:cint64; const A_seed2:cint64; const A_S:TF_DataType; const A_R:TF_DataType; const A_dtype:TF_DataType):string;
     function AddRandomShuffle(const I_value:string; const O_output:string; const A_seed:cint64; const A_seed2:cint64; const A_T:TF_DataType):string;
-    function AddRandomShuffleQueue(const O_handle:string; const A_component_types:array of TF_DataType; const A_shapes:array of TF_Shape; const A_capacity:cint64; const A_min_after_dequeue:cint64; const A_seed:cint64; const A_seed2:cint64; const A_container:string; const A_shared_name:string):string;
-    function AddRandomShuffleQueueV2(const O_handle:string; const A_component_types:array of TF_DataType; const A_shapes:array of TF_Shape; const A_capacity:cint64; const A_min_after_dequeue:cint64; const A_seed:cint64; const A_seed2:cint64; const A_container:string; const A_shared_name:string):string;
+    function AddRandomShuffleQueue(const O_handle:string; const A_component_types:TF_TypeList; const A_shapes:TF_ShapeList; const A_capacity:cint64; const A_min_after_dequeue:cint64; const A_seed:cint64; const A_seed2:cint64; const A_container:string; const A_shared_name:string):string;
+    function AddRandomShuffleQueueV2(const O_handle:string; const A_component_types:TF_TypeList; const A_shapes:TF_ShapeList; const A_capacity:cint64; const A_min_after_dequeue:cint64; const A_seed:cint64; const A_seed2:cint64; const A_container:string; const A_shared_name:string):string;
     function AddRandomStandardNormal(const I_shape:string; const O_output:string; const A_seed:cint64; const A_seed2:cint64; const A_dtype:TF_DataType; const A_T:TF_DataType):string;
     function AddRandomUniform(const I_shape:string; const O_output:string; const A_seed:cint64; const A_seed2:cint64; const A_dtype:TF_DataType; const A_T:TF_DataType):string;
     function AddRandomUniformInt(const I_shape:string; const I_minval:string; const I_maxval:string; const O_output:string; const A_seed:cint64; const A_seed2:cint64; const A_Tout:TF_DataType; const A_T:TF_DataType):string;
     function AddRange(const I_start:string; const I_limit:string; const I_delta:string; const O_output:string; const A_Tidx:TF_DataType):string;
-    function AddRangeDataset(const I_start:string; const I_stop:string; const I_step:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddRangeDataset(const I_start:string; const I_stop:string; const I_step:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddRank(const I_input:string; const O_output:string; const A_T:TF_DataType):string;
     function AddReadFile(const I_filename:string; const O_contents:string):string;
     function AddReadVariableOp(const I_resource:string; const O_value:string; const A_dtype:TF_DataType):string;
@@ -880,13 +879,13 @@ type
     function AddReaderSerializeStateV2(const I_reader_handle:string; const O_state:string):string;
     function AddReal(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_Tout:TF_DataType):string;
     function AddRealDiv(const I_x:string; const I_y:string; const O_z:string; const A_T:TF_DataType):string;
-    function AddRebatchDataset(const I_input_dataset:string; const I_num_replicas:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_use_fallback:boolean):string;
+    function AddRebatchDataset(const I_input_dataset:string; const I_num_replicas:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_use_fallback:boolean):string;
     function AddReciprocal(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
     function AddReciprocalGrad(const I_y:string; const I_dy:string; const O_z:string; const A_T:TF_DataType):string;
     function AddRecordInput(const O_records:string; const A_file_pattern:string; const A_file_random_seed:cint64; const A_file_shuffle_shift_ratio:real; const A_file_buffer_size:cint64; const A_file_parallelism:cint64; const A_batch_size:cint64; const A_compression_type:string):string;
     function AddRecv(const O_tensor:string; const A_tensor_type:TF_DataType; const A_tensor_name:string; const A_send_device:string; const A_send_device_incarnation:cint64; const A_recv_device:string; const A_client_terminated:boolean):string;
     function AddRecvTPUEmbeddingActivations(const OL_outputs:string; const A_num_outputs:cint64; const A_config:string):string;
-    function AddReduceDataset(const I_input_dataset:string; const I_initial_state:string; const I_other_arguments:string; const OL_components:string; const A_f:TF_Function; const A_Tstate:array of TF_DataType; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_use_inter_op_parallelism:boolean):string;
+    function AddReduceDataset(const I_input_dataset:string; const IL_initial_state:string; const IL_other_arguments:string; const OL_components:string; const A_f:TF_Function; const A_Tstate:TF_TypeList; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_use_inter_op_parallelism:boolean):string;
     function AddReduceJoin(const I_inputs:string; const I_reduction_indices:string; const O_output:string; const A_keep_dims:boolean; const A_separator:string):string;
     function AddRefEnter(const I_data:string; const O_output:string; const A_T:TF_DataType; const A_frame_name:string; const A_is_constant:boolean; const A_parallel_iterations:cint64):string;
     function AddRefExit(const I_data:string; const O_output:string; const A_T:TF_DataType):string;
@@ -901,9 +900,9 @@ type
     function AddRelu6(const I_features:string; const O_activations:string; const A_T:TF_DataType):string;
     function AddRelu6Grad(const I_gradients:string; const I_features:string; const O_backprops:string; const A_T:TF_DataType):string;
     function AddReluGrad(const I_gradients:string; const I_features:string; const O_backprops:string; const A_T:TF_DataType):string;
-    function AddRemoteCall(const I_target:string; const I_args:string; const OL_output:string; const A_Tin:array of TF_DataType; const A_Tout:array of TF_DataType; const A_f:TF_Function):string;
-    function AddRemoteFusedGraphExecute(const I_inputs:string; const OL_outputs:string; const A_Tinputs:array of TF_DataType; const A_Toutputs:array of TF_DataType; const A_serialized_remote_fused_graph_execute_info:string):string;
-    function AddRepeatDataset(const I_input_dataset:string; const I_count:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddRemoteCall(const I_target:string; const IL_args:string; const OL_output:string; const A_Tin:TF_TypeList; const A_Tout:TF_TypeList; const A_f:TF_Function):string;
+    function AddRemoteFusedGraphExecute(const IL_inputs:string; const OL_outputs:string; const A_Tinputs:TF_TypeList; const A_Toutputs:TF_TypeList; const A_serialized_remote_fused_graph_execute_info:string):string;
+    function AddRepeatDataset(const I_input_dataset:string; const I_count:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddRequantizationRange(const I_input:string; const I_input_min:string; const I_input_max:string; const O_output_min:string; const O_output_max:string; const A_Tinput:TF_DataType):string;
     function AddRequantizationRangePerChannel(const I_input:string; const I_input_min:string; const I_input_max:string; const O_output_min:string; const O_output_max:string; const A_T:TF_DataType; const A_clip_value_max:real):string;
     function AddRequantize(const I_input:string; const I_input_min:string; const I_input_max:string; const I_requested_output_min:string; const I_requested_output_max:string; const O_output:string; const O_output_min:string; const O_output_max:string; const A_Tinput:TF_DataType; const A_out_type:TF_DataType):string;
@@ -967,7 +966,7 @@ type
     function AddResourceStridedSliceAssign(const I_ref:string; const I_begin:string; const I_end:string; const I_strides:string; const I_value:string; const A_T:TF_DataType; const A_Index:TF_DataType; const A_begin_mask:cint64; const A_end_mask:cint64; const A_ellipsis_mask:cint64; const A_new_axis_mask:cint64; const A_shrink_axis_mask:cint64):string;
     function AddRestore(const I_file_pattern:string; const I_tensor_name:string; const O_tensor:string; const A_dt:TF_DataType; const A_preferred_shard:cint64):string;
     function AddRestoreSlice(const I_file_pattern:string; const I_tensor_name:string; const I_shape_and_slice:string; const O_tensor:string; const A_dt:TF_DataType; const A_preferred_shard:cint64):string;
-    function AddRestoreV2(const I_prefix:string; const I_tensor_names:string; const I_shape_and_slices:string; const OL_tensors:string; const A_dtypes:array of TF_DataType):string;
+    function AddRestoreV2(const I_prefix:string; const I_tensor_names:string; const I_shape_and_slices:string; const OL_tensors:string; const A_dtypes:TF_TypeList):string;
     function AddRetrieveTPUEmbeddingADAMParameters(const O_parameters:string; const O_momenta:string; const O_velocities:string; const A_table_id:cint64; const A_table_name:string; const A_num_shards:cint64; const A_shard_id:cint64; const A_config:string):string;
     function AddRetrieveTPUEmbeddingADAMParametersGradAccumDebug(const O_parameters:string; const O_momenta:string; const O_velocities:string; const O_gradient_accumulators:string; const A_table_id:cint64; const A_table_name:string; const A_num_shards:cint64; const A_shard_id:cint64; const A_config:string):string;
     function AddRetrieveTPUEmbeddingAdadeltaParameters(const O_parameters:string; const O_accumulators:string; const O_updates:string; const A_table_id:cint64; const A_table_name:string; const A_num_shards:cint64; const A_shard_id:cint64; const A_config:string):string;
@@ -996,16 +995,16 @@ type
     function AddRpc(const I_address:string; const I_method:string; const I_request:string; const O_response:string; const A_protocol:string; const A_fail_fast:boolean; const A_timeout_in_ms:cint64):string;
     function AddRsqrt(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
     function AddRsqrtGrad(const I_y:string; const I_dy:string; const O_z:string; const A_T:TF_DataType):string;
-    function AddSampleDistortedBoundingBox(const I_image_size:string; const I_bounding_boxes:string; const O_begin:string; const O_size:string; const O_bboxes:string; const A_T:TF_DataType; const A_seed:cint64; const A_seed2:cint64; const A_min_object_covered:real; const A_aspect_ratio_range:array of real; const A_area_range:array of real; const A_max_attempts:cint64; const A_use_image_if_no_bounding_boxes:boolean):string;
-    function AddSampleDistortedBoundingBoxV2(const I_image_size:string; const I_bounding_boxes:string; const I_min_object_covered:string; const O_begin:string; const O_size:string; const O_bboxes:string; const A_T:TF_DataType; const A_seed:cint64; const A_seed2:cint64; const A_aspect_ratio_range:array of real; const A_area_range:array of real; const A_max_attempts:cint64; const A_use_image_if_no_bounding_boxes:boolean):string;
-    function AddSamplingDataset(const I_input_dataset:string; const I_rate:string; const I_seed:string; const I_seed2:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddSave(const I_filename:string; const I_tensor_names:string; const I_data:string; const A_T:array of TF_DataType):string;
-    function AddSaveSlices(const I_filename:string; const I_tensor_names:string; const I_shapes_and_slices:string; const I_data:string; const A_T:array of TF_DataType):string;
-    function AddSaveV2(const I_prefix:string; const I_tensor_names:string; const I_shape_and_slices:string; const I_tensors:string; const A_dtypes:array of TF_DataType):string;
+    function AddSampleDistortedBoundingBox(const I_image_size:string; const I_bounding_boxes:string; const O_begin:string; const O_size:string; const O_bboxes:string; const A_T:TF_DataType; const A_seed:cint64; const A_seed2:cint64; const A_min_object_covered:real; const A_aspect_ratio_range:TF_FloatList; const A_area_range:TF_FloatList; const A_max_attempts:cint64; const A_use_image_if_no_bounding_boxes:boolean):string;
+    function AddSampleDistortedBoundingBoxV2(const I_image_size:string; const I_bounding_boxes:string; const I_min_object_covered:string; const O_begin:string; const O_size:string; const O_bboxes:string; const A_T:TF_DataType; const A_seed:cint64; const A_seed2:cint64; const A_aspect_ratio_range:TF_FloatList; const A_area_range:TF_FloatList; const A_max_attempts:cint64; const A_use_image_if_no_bounding_boxes:boolean):string;
+    function AddSamplingDataset(const I_input_dataset:string; const I_rate:string; const I_seed:string; const I_seed2:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddSave(const I_filename:string; const I_tensor_names:string; const IL_data:string; const A_T:TF_TypeList):string;
+    function AddSaveSlices(const I_filename:string; const I_tensor_names:string; const I_shapes_and_slices:string; const IL_data:string; const A_T:TF_TypeList):string;
+    function AddSaveV2(const I_prefix:string; const I_tensor_names:string; const I_shape_and_slices:string; const IL_tensors:string; const A_dtypes:TF_TypeList):string;
     function AddScalarSummary(const I_tags:string; const I_values:string; const O_summary:string; const A_T:TF_DataType):string;
     function AddScaleAndTranslate(const I_images:string; const I_size:string; const I_scale:string; const I_translation:string; const O_resized_images:string; const A_T:TF_DataType; const A_kernel_type:string; const A_antialias:boolean):string;
     function AddScaleAndTranslateGrad(const I_grads:string; const I_original_image:string; const I_scale:string; const I_translation:string; const O_output:string; const A_T:TF_DataType; const A_kernel_type:string; const A_antialias:boolean):string;
-    function AddScanDataset(const I_input_dataset:string; const I_initial_state:string; const I_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Tstate:array of TF_DataType; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_preserve_cardinality:boolean; const A_use_default_device:boolean):string;
+    function AddScanDataset(const I_input_dataset:string; const IL_initial_state:string; const IL_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Tstate:TF_TypeList; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_preserve_cardinality:boolean; const A_use_default_device:boolean):string;
     function AddScatterAdd(const I_ref:string; const I_indices:string; const I_updates:string; const O_output_ref:string; const A_T:TF_DataType; const A_Tindices:TF_DataType; const A_use_locking:boolean):string;
     function AddScatterDiv(const I_ref:string; const I_indices:string; const I_updates:string; const O_output_ref:string; const A_T:TF_DataType; const A_Tindices:TF_DataType; const A_use_locking:boolean):string;
     function AddScatterMax(const I_ref:string; const I_indices:string; const I_updates:string; const O_output_ref:string; const A_T:TF_DataType; const A_Tindices:TF_DataType; const A_use_locking:boolean):string;
@@ -1040,15 +1039,15 @@ type
     function AddSerializeSparse(const I_sparse_indices:string; const I_sparse_values:string; const I_sparse_shape:string; const O_serialized_sparse:string; const A_T:TF_DataType; const A_out_type:TF_DataType):string;
     function AddSerializeTensor(const I_tensor:string; const O_serialized:string; const A_T:TF_DataType):string;
     function AddSetSize(const I_set_indices:string; const I_set_values:string; const I_set_shape:string; const O_size:string; const A_validate_indices:boolean; const A_T:TF_DataType):string;
-    function AddSetStatsAggregatorDataset(const I_input_dataset:string; const I_stats_aggregator:string; const I_tag:string; const I_counter_prefix:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddSetStatsAggregatorDataset(const I_input_dataset:string; const I_stats_aggregator:string; const I_tag:string; const I_counter_prefix:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddShape(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_out_type:TF_DataType):string;
     function AddShapeN(const IL_input:string; const OL_output:string; const A_N:cint64; const A_T:TF_DataType; const A_out_type:TF_DataType):string;
-    function AddShardDataset(const I_input_dataset:string; const I_num_shards:string; const I_index:string; const O_handle:string; const A_require_non_empty:boolean; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddShardDataset(const I_input_dataset:string; const I_num_shards:string; const I_index:string; const O_handle:string; const A_require_non_empty:boolean; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddShardedFilename(const I_basename:string; const I_shard:string; const I_num_shards:string; const O_filename:string):string;
     function AddShardedFilespec(const I_basename:string; const I_num_shards:string; const O_filename:string):string;
-    function AddShuffleAndRepeatDataset(const I_input_dataset:string; const I_buffer_size:string; const I_seed:string; const I_seed2:string; const I_count:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddShuffleDataset(const I_input_dataset:string; const I_buffer_size:string; const I_seed:string; const I_seed2:string; const O_handle:string; const A_reshuffle_each_iteration:boolean; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
-    function AddShuffleDatasetV2(const I_input_dataset:string; const I_buffer_size:string; const I_seed_generator:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddShuffleAndRepeatDataset(const I_input_dataset:string; const I_buffer_size:string; const I_seed:string; const I_seed2:string; const I_count:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddShuffleDataset(const I_input_dataset:string; const I_buffer_size:string; const I_seed:string; const I_seed2:string; const O_handle:string; const A_reshuffle_each_iteration:boolean; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
+    function AddShuffleDatasetV2(const I_input_dataset:string; const I_buffer_size:string; const I_seed_generator:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddShutdownDistributedTPU():string;
     function AddSigmoid(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
     function AddSigmoidGrad(const I_y:string; const I_dy:string; const O_z:string; const A_T:TF_DataType):string;
@@ -1056,13 +1055,13 @@ type
     function AddSin(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
     function AddSinh(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
     function AddSize(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_out_type:TF_DataType):string;
-    function AddSkipDataset(const I_input_dataset:string; const I_count:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddSkipDataset(const I_input_dataset:string; const I_count:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddSkipgram(const O_vocab_word:string; const O_vocab_freq:string; const O_words_per_epoch:string; const O_current_epoch:string; const O_total_words_processed:string; const O_examples:string; const O_labels:string; const A_filename:string; const A_batch_size:cint64; const A_window_size:cint64; const A_min_count:cint64; const A_subsample:real):string;
-    function AddSleepDataset(const I_input_dataset:string; const I_sleep_microseconds:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddSleepDataset(const I_input_dataset:string; const I_sleep_microseconds:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddSlice(const I_input:string; const I_begin:string; const I_size:string; const O_output:string; const A_T:TF_DataType; const A_Index:TF_DataType):string;
-    function AddSlidingWindowDataset(const I_input_dataset:string; const I_window_size:string; const I_window_shift:string; const I_window_stride:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddSlidingWindowDataset(const I_input_dataset:string; const I_window_size:string; const I_window_shift:string; const I_window_stride:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddSnapshot(const I_input:string; const O_output:string; const A_T:TF_DataType):string;
-    function AddSnapshotDataset(const I_input_dataset:string; const I_path:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_compression:string; const A_reader_path_prefix:string; const A_writer_path_prefix:string; const A_shard_size_bytes:cint64; const A_pending_snapshot_expiry_seconds:cint64; const A_num_reader_threads:cint64; const A_reader_buffer_size:cint64; const A_num_writer_threads:cint64; const A_writer_buffer_size:cint64; const A_shuffle_on_read:boolean; const A_seed:cint64; const A_seed2:cint64; const A_mode:string; const A_snapshot_name:string):string;
+    function AddSnapshotDataset(const I_input_dataset:string; const I_path:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_compression:string; const A_reader_path_prefix:string; const A_writer_path_prefix:string; const A_shard_size_bytes:cint64; const A_pending_snapshot_expiry_seconds:cint64; const A_num_reader_threads:cint64; const A_reader_buffer_size:cint64; const A_num_writer_threads:cint64; const A_writer_buffer_size:cint64; const A_shuffle_on_read:boolean; const A_seed:cint64; const A_seed2:cint64; const A_mode:string; const A_snapshot_name:string):string;
     function AddSobolSample(const I_dim:string; const I_num_results:string; const I_skip:string; const O_samples:string; const A_dtype:TF_DataType):string;
     function AddSoftmax(const I_logits:string; const O_softmax:string; const A_T:TF_DataType):string;
     function AddSoftmaxCrossEntropyWithLogits(const I_features:string; const I_labels:string; const O_loss:string; const O_backprop:string; const A_T:TF_DataType):string;
@@ -1090,7 +1089,7 @@ type
     function AddSparseApplyRMSProp(const I_var:string; const I_ms:string; const I_mom:string; const I_lr:string; const I_rho:string; const I_momentum:string; const I_epsilon:string; const I_grad:string; const I_indices:string; const O_out:string; const A_T:TF_DataType; const A_Tindices:TF_DataType; const A_use_locking:boolean):string;
     function AddSparseConcat(const IL_indices:string; const IL_values:string; const IL_shapes:string; const O_output_indices:string; const O_output_values:string; const O_output_shape:string; const A_concat_dim:cint64; const A_N:cint64; const A_T:TF_DataType):string;
     function AddSparseConditionalAccumulator(const O_handle:string; const A_dtype:TF_DataType; const A_shape:TF_Shape; const A_container:string; const A_shared_name:string; const A_reduction_type:string):string;
-    function AddSparseCross(const I_values:string; const I_dense_inputs:string; const IL_indices:string; const IL_shapes:string; const O_output_indices:string; const O_output_values:string; const O_output_shape:string; const A_N:cint64; const A_hashed_output:boolean; const A_num_buckets:cint64; const A_hash_key:cint64; const A_sparse_types:array of TF_DataType; const A_dense_types:array of TF_DataType; const A_out_type:TF_DataType; const A_internal_type:TF_DataType):string;
+    function AddSparseCross(const IL_indices:string; const IL_values:string; const IL_shapes:string; const IL_dense_inputs:string; const O_output_indices:string; const O_output_values:string; const O_output_shape:string; const A_N:cint64; const A_hashed_output:boolean; const A_num_buckets:cint64; const A_hash_key:cint64; const A_sparse_types:TF_TypeList; const A_dense_types:TF_TypeList; const A_out_type:TF_DataType; const A_internal_type:TF_DataType):string;
     function AddSparseDenseCwiseAdd(const I_sp_indices:string; const I_sp_values:string; const I_sp_shape:string; const I_dense:string; const O_output:string; const A_T:TF_DataType):string;
     function AddSparseDenseCwiseDiv(const I_sp_indices:string; const I_sp_values:string; const I_sp_shape:string; const I_dense:string; const O_output:string; const A_T:TF_DataType):string;
     function AddSparseDenseCwiseMul(const I_sp_indices:string; const I_sp_values:string; const I_sp_shape:string; const I_dense:string; const O_output:string; const A_T:TF_DataType):string;
@@ -1138,12 +1137,12 @@ type
     function AddSpence(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
     function AddSplit(const I_split_dim:string; const I_value:string; const OL_output:string; const A_num_split:cint64; const A_T:TF_DataType):string;
     function AddSplitV(const I_value:string; const I_size_splits:string; const I_split_dim:string; const OL_output:string; const A_num_split:cint64; const A_T:TF_DataType; const A_Tlen:TF_DataType):string;
-    function AddSqlDataset(const I_driver_name:string; const I_data_source_name:string; const I_query:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddSqlDataset(const I_driver_name:string; const I_data_source_name:string; const I_query:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddSqrt(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
     function AddSqrtGrad(const I_y:string; const I_dy:string; const O_z:string; const A_T:TF_DataType):string;
     function AddSquare(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
     function AddSquaredDifference(const I_x:string; const I_y:string; const O_z:string; const A_T:TF_DataType):string;
-    function AddSqueeze(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_squeeze_dims:array of cint64):string;
+    function AddSqueeze(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_squeeze_dims:TF_IntList):string;
     function AddStack(const O_handle:string; const A_elem_type:TF_DataType; const A_stack_name:string):string;
     function AddStackClose(const I_handle:string):string;
     function AddStackCloseV2(const I_handle:string):string;
@@ -1152,11 +1151,11 @@ type
     function AddStackPush(const I_handle:string; const I_elem:string; const O_output:string; const A_T:TF_DataType; const A_swap_memory:boolean):string;
     function AddStackPushV2(const I_handle:string; const I_elem:string; const O_output:string; const A_T:TF_DataType; const A_swap_memory:boolean):string;
     function AddStackV2(const I_max_size:string; const O_handle:string; const A_elem_type:TF_DataType; const A_stack_name:string):string;
-    function AddStage(const I_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
-    function AddStageClear(const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
-    function AddStagePeek(const I_index:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
-    function AddStageSize(const O_size:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
-    function AddStatefulPartitionedCall(const I_args:string; const OL_output:string; const A_Tin:array of TF_DataType; const A_Tout:array of TF_DataType; const A_f:TF_Function; const A_config:string; const A_config_proto:string; const A_executor_type:string):string;
+    function AddStage(const IL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
+    function AddStageClear(const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
+    function AddStagePeek(const I_index:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
+    function AddStageSize(const O_size:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
+    function AddStatefulPartitionedCall(const IL_args:string; const OL_output:string; const A_Tin:TF_TypeList; const A_Tout:TF_TypeList; const A_f:TF_Function; const A_config:string; const A_config_proto:string; const A_executor_type:string):string;
     function AddStatefulRandomBinomial(const I_resource:string; const I_algorithm:string; const I_shape:string; const I_counts:string; const I_probs:string; const O_output:string; const A_S:TF_DataType; const A_T:TF_DataType; const A_dtype:TF_DataType):string;
     function AddStatefulStandardNormal(const I_resource:string; const I_shape:string; const O_output:string; const A_dtype:TF_DataType; const A_shape_dtype:TF_DataType):string;
     function AddStatefulStandardNormalV2(const I_resource:string; const I_algorithm:string; const I_shape:string; const O_output:string; const A_dtype:TF_DataType; const A_shape_dtype:TF_DataType):string;
@@ -1164,7 +1163,7 @@ type
     function AddStatefulUniform(const I_resource:string; const I_algorithm:string; const I_shape:string; const O_output:string; const A_dtype:TF_DataType; const A_shape_dtype:TF_DataType):string;
     function AddStatefulUniformFullInt(const I_resource:string; const I_algorithm:string; const I_shape:string; const O_output:string; const A_dtype:TF_DataType; const A_shape_dtype:TF_DataType):string;
     function AddStatefulUniformInt(const I_resource:string; const I_algorithm:string; const I_shape:string; const I_minval:string; const I_maxval:string; const O_output:string; const A_dtype:TF_DataType; const A_shape_dtype:TF_DataType):string;
-    function AddStatelessIf(const I_cond:string; const I_input:string; const OL_output:string; const A_Tcond:TF_DataType; const A_Tin:array of TF_DataType; const A_Tout:array of TF_DataType; const A_then_branch:TF_Function; const A_else_branch:TF_Function; const A_output_shapes:array of TF_Shape):string;
+    function AddStatelessIf(const I_cond:string; const IL_input:string; const OL_output:string; const A_Tcond:TF_DataType; const A_Tin:TF_TypeList; const A_Tout:TF_TypeList; const A_then_branch:TF_Function; const A_else_branch:TF_Function; const A_output_shapes:TF_ShapeList):string;
     function AddStatelessMultinomial(const I_logits:string; const I_num_samples:string; const I_seed:string; const O_output:string; const A_T:TF_DataType; const A_Tseed:TF_DataType; const A_output_dtype:TF_DataType):string;
     function AddStatelessRandomBinomial(const I_shape:string; const I_seed:string; const I_counts:string; const I_probs:string; const O_output:string; const A_S:TF_DataType; const A_Tseed:TF_DataType; const A_T:TF_DataType; const A_dtype:TF_DataType):string;
     function AddStatelessRandomGammaV2(const I_shape:string; const I_seed:string; const I_alpha:string; const O_output:string; const A_dtype:TF_DataType; const A_T:TF_DataType; const A_Tseed:TF_DataType):string;
@@ -1173,7 +1172,7 @@ type
     function AddStatelessRandomUniform(const I_shape:string; const I_seed:string; const O_output:string; const A_dtype:TF_DataType; const A_T:TF_DataType; const A_Tseed:TF_DataType):string;
     function AddStatelessRandomUniformInt(const I_shape:string; const I_seed:string; const I_minval:string; const I_maxval:string; const O_output:string; const A_dtype:TF_DataType; const A_T:TF_DataType; const A_Tseed:TF_DataType):string;
     function AddStatelessTruncatedNormal(const I_shape:string; const I_seed:string; const O_output:string; const A_dtype:TF_DataType; const A_T:TF_DataType; const A_Tseed:TF_DataType):string;
-    function AddStatelessWhile(const I_input:string; const OL_output:string; const A_T:array of TF_DataType; const A_cond:TF_Function; const A_body:TF_Function; const A_output_shapes:array of TF_Shape; const A_parallel_iterations:cint64):string;
+    function AddStatelessWhile(const IL_input:string; const OL_output:string; const A_T:TF_TypeList; const A_cond:TF_Function; const A_body:TF_Function; const A_output_shapes:TF_ShapeList; const A_parallel_iterations:cint64):string;
     function AddStaticRegexFullMatch(const I_input:string; const O_output:string; const A_pattern:string):string;
     function AddStaticRegexReplace(const I_input:string; const O_output:string; const A_pattern:string; const A_rewrite:string; const A_replace_global:boolean):string;
     function AddStatsAggregatorHandle(const O_handle:string; const A_container:string; const A_shared_name:string):string;
@@ -1184,17 +1183,17 @@ type
     function AddStridedSlice(const I_input:string; const I_begin:string; const I_end:string; const I_strides:string; const O_output:string; const A_T:TF_DataType; const A_Index:TF_DataType; const A_begin_mask:cint64; const A_end_mask:cint64; const A_ellipsis_mask:cint64; const A_new_axis_mask:cint64; const A_shrink_axis_mask:cint64):string;
     function AddStridedSliceAssign(const I_ref:string; const I_begin:string; const I_end:string; const I_strides:string; const I_value:string; const O_output_ref:string; const A_T:TF_DataType; const A_Index:TF_DataType; const A_begin_mask:cint64; const A_end_mask:cint64; const A_ellipsis_mask:cint64; const A_new_axis_mask:cint64; const A_shrink_axis_mask:cint64):string;
     function AddStridedSliceGrad(const I_shape:string; const I_begin:string; const I_end:string; const I_strides:string; const I_dy:string; const O_output:string; const A_T:TF_DataType; const A_Index:TF_DataType; const A_begin_mask:cint64; const A_end_mask:cint64; const A_ellipsis_mask:cint64; const A_new_axis_mask:cint64; const A_shrink_axis_mask:cint64):string;
-    function AddStringFormat(const I_inputs:string; const O_output:string; const A_T:array of TF_DataType; const A_template:string; const A_placeholder:string; const A_summarize:cint64):string;
+    function AddStringFormat(const IL_inputs:string; const O_output:string; const A_T:TF_TypeList; const A_template:string; const A_placeholder:string; const A_summarize:cint64):string;
     function AddStringJoin(const IL_inputs:string; const O_output:string; const A_N:cint64; const A_separator:string):string;
     function AddStringLength(const I_input:string; const O_output:string; const A_unit:string):string;
     function AddStringLower(const I_input:string; const O_output:string; const A_encoding:string):string;
-    function AddStringNGrams(const I_data:string; const I_data_splits:string; const O_ngrams:string; const O_ngrams_splits:string; const A_separator:string; const A_ngram_widths:array of cint64; const A_left_pad:string; const A_right_pad:string; const A_pad_width:cint64; const A_preserve_short_sequences:boolean; const A_Tsplits:TF_DataType):string;
+    function AddStringNGrams(const I_data:string; const I_data_splits:string; const O_ngrams:string; const O_ngrams_splits:string; const A_separator:string; const A_ngram_widths:TF_IntList; const A_left_pad:string; const A_right_pad:string; const A_pad_width:cint64; const A_preserve_short_sequences:boolean; const A_Tsplits:TF_DataType):string;
     function AddStringSplit(const I_input:string; const I_delimiter:string; const O_indices:string; const O_values:string; const O_shape:string; const A_skip_empty:boolean):string;
     function AddStringSplitV2(const I_input:string; const I_sep:string; const O_indices:string; const O_values:string; const O_shape:string; const A_maxsplit:cint64):string;
     function AddStringStrip(const I_input:string; const O_output:string):string;
     function AddStringToHashBucket(const I_string_tensor:string; const O_output:string; const A_num_buckets:cint64):string;
     function AddStringToHashBucketFast(const I_input:string; const O_output:string; const A_num_buckets:cint64):string;
-    function AddStringToHashBucketStrong(const I_input:string; const O_output:string; const A_num_buckets:cint64; const A_key:array of cint64):string;
+    function AddStringToHashBucketStrong(const I_input:string; const O_output:string; const A_num_buckets:cint64; const A_key:TF_IntList):string;
     function AddStringToNumber(const I_string_tensor:string; const O_output:string; const A_out_type:TF_DataType):string;
     function AddStringUpper(const I_input:string; const O_output:string; const A_encoding:string):string;
     function AddSub(const I_x:string; const I_y:string; const O_z:string; const A_T:TF_DataType):string;
@@ -1203,20 +1202,20 @@ type
     function AddSummaryWriter(const O_writer:string; const A_shared_name:string; const A_container:string):string;
     function AddSvd(const I_input:string; const O_s:string; const O_u:string; const O_v:string; const A_compute_uv:boolean; const A_full_matrices:boolean; const A_T:TF_DataType):string;
     function AddSwitch(const I_data:string; const I_pred:string; const O_output_false:string; const O_output_true:string; const A_T:TF_DataType):string;
-    function AddSymbolicGradient(const I_input:string; const OL_output:string; const A_Tin:array of TF_DataType; const A_Tout:array of TF_DataType; const A_f:TF_Function):string;
+    function AddSymbolicGradient(const IL_input:string; const OL_output:string; const A_Tin:TF_TypeList; const A_Tout:TF_TypeList; const A_f:TF_Function):string;
     function AddTFRecordDataset(const I_filenames:string; const I_compression_type:string; const I_buffer_size:string; const O_handle:string):string;
     function AddTFRecordReader(const O_reader_handle:string; const A_container:string; const A_shared_name:string; const A_compression_type:string):string;
     function AddTFRecordReaderV2(const O_reader_handle:string; const A_container:string; const A_shared_name:string; const A_compression_type:string):string;
     function AddTPUCompilationResult(const O_output:string):string;
     function AddTPUEmbeddingActivations(const I_embedding_variable:string; const I_sliced_activations:string; const O_output:string; const A_table_id:cint64; const A_lookup_id:cint64):string;
     function AddTPUOrdinalSelector(const O_device_ordinals:string):string;
-    function AddTPUPartitionedCall(const I_args:string; const I_device_ordinal:string; const OL_output:string; const A_Tin:array of TF_DataType; const A_Tout:array of TF_DataType; const A_f:TF_Function; const A_autotuner_thresh:cint64):string;
-    function AddTPUReplicateMetadata(const A_num_replicas:cint64; const A_num_cores_per_replica:cint64; const A_topology:string; const A_use_tpu:boolean; const A_device_assignment:array of cint64; const A_computation_shape:array of cint64; const A_host_compute_core:array of string; const A_padding_map:array of string; const A_step_marker_location:string; const A_allow_soft_placement:boolean):string;
+    function AddTPUPartitionedCall(const I_device_ordinal:string; const IL_args:string; const OL_output:string; const A_Tin:TF_TypeList; const A_Tout:TF_TypeList; const A_f:TF_Function; const A_autotuner_thresh:cint64):string;
+    function AddTPUReplicateMetadata(const A_num_replicas:cint64; const A_num_cores_per_replica:cint64; const A_topology:string; const A_use_tpu:boolean; const A_device_assignment:TF_IntList; const A_computation_shape:TF_IntList; const A_host_compute_core:TF_StringList; const A_padding_map:TF_StringList; const A_step_marker_location:string; const A_allow_soft_placement:boolean):string;
     function AddTPUReplicatedInput(const IL_inputs:string; const O_output:string; const A_N:cint64; const A_T:TF_DataType; const A_is_mirrored_variable:boolean; const A_index:cint64):string;
     function AddTPUReplicatedOutput(const I_input:string; const OL_outputs:string; const A_num_replicas:cint64; const A_T:TF_DataType):string;
-    function AddTakeDataset(const I_input_dataset:string; const I_count:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddTakeDataset(const I_input_dataset:string; const I_count:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddTakeManySparseFromTensorsMap(const I_sparse_handles:string; const O_sparse_indices:string; const O_sparse_values:string; const O_sparse_shape:string; const A_dtype:TF_DataType; const A_container:string; const A_shared_name:string):string;
-    function AddTakeWhileDataset(const I_input_dataset:string; const I_other_arguments:string; const O_handle:string; const A_predicate:TF_Function; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddTakeWhileDataset(const I_input_dataset:string; const IL_other_arguments:string; const O_handle:string; const A_predicate:TF_Function; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddTan(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
     function AddTanh(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
     function AddTanhGrad(const I_y:string; const I_dy:string; const O_z:string; const A_T:TF_DataType):string;
@@ -1254,7 +1253,7 @@ type
     function AddTensorArrayWrite(const I_handle:string; const I_index:string; const I_value:string; const I_flow_in:string; const O_flow_out:string; const A_T:TF_DataType):string;
     function AddTensorArrayWriteV2(const I_handle:string; const I_index:string; const I_value:string; const I_flow_in:string; const O_flow_out:string; const A_T:TF_DataType):string;
     function AddTensorArrayWriteV3(const I_handle:string; const I_index:string; const I_value:string; const I_flow_in:string; const O_flow_out:string; const A_T:TF_DataType):string;
-    function AddTensorDataset(const I_components:string; const O_handle:string; const A_Toutput_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddTensorDataset(const IL_components:string; const O_handle:string; const A_Toutput_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddTensorForestCreateTreeVariable(const I_tree_handle:string; const I_tree_config:string):string;
     function AddTensorForestTreeDeserialize(const I_tree_handle:string; const I_tree_config:string):string;
     function AddTensorForestTreeIsInitializedOp(const I_tree_handle:string; const O_is_initialized:string):string;
@@ -1284,14 +1283,14 @@ type
     function AddTensorScatterAdd(const I_tensor:string; const I_indices:string; const I_updates:string; const O_output:string; const A_T:TF_DataType; const A_Tindices:TF_DataType):string;
     function AddTensorScatterSub(const I_tensor:string; const I_indices:string; const I_updates:string; const O_output:string; const A_T:TF_DataType; const A_Tindices:TF_DataType):string;
     function AddTensorScatterUpdate(const I_tensor:string; const I_indices:string; const I_updates:string; const O_output:string; const A_T:TF_DataType; const A_Tindices:TF_DataType):string;
-    function AddTensorSliceDataset(const I_components:string; const O_handle:string; const A_Toutput_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddTensorSliceDataset(const IL_components:string; const O_handle:string; const A_Toutput_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddTensorStridedSliceUpdate(const I_input:string; const I_begin:string; const I_end:string; const I_strides:string; const I_value:string; const O_output:string; const A_T:TF_DataType; const A_Index:TF_DataType; const A_begin_mask:cint64; const A_end_mask:cint64; const A_ellipsis_mask:cint64; const A_new_axis_mask:cint64; const A_shrink_axis_mask:cint64):string;
-    function AddTensorSummary(const I_tensor:string; const O_summary:string; const A_T:TF_DataType; const A_description:string; const A_labels:array of string; const A_display_name:string):string;
+    function AddTensorSummary(const I_tensor:string; const O_summary:string; const A_T:TF_DataType; const A_description:string; const A_labels:TF_StringList; const A_display_name:string):string;
     function AddTensorSummaryV2(const I_tag:string; const I_tensor:string; const I_serialized_summary_metadata:string; const O_summary:string; const A_T:TF_DataType):string;
     function AddTextLineDataset(const I_filenames:string; const I_compression_type:string; const I_buffer_size:string; const O_handle:string):string;
     function AddTextLineReader(const O_reader_handle:string; const A_skip_header_lines:cint64; const A_container:string; const A_shared_name:string):string;
     function AddTextLineReaderV2(const O_reader_handle:string; const A_skip_header_lines:cint64; const A_container:string; const A_shared_name:string):string;
-    function AddThreadPoolDataset(const I_input_dataset:string; const I_thread_pool:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddThreadPoolDataset(const I_input_dataset:string; const I_thread_pool:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddThreadPoolHandle(const O_handle:string; const A_num_threads:cint64; const A_max_intra_op_parallelism:cint64; const A_display_name:string; const A_container:string; const A_shared_name:string):string;
     function AddThreadUnsafeUnigramCandidateSampler(const I_true_classes:string; const O_sampled_candidates:string; const O_true_expected_count:string; const O_sampled_expected_count:string; const A_num_true:cint64; const A_num_sampled:cint64; const A_unique:boolean; const A_range_max:cint64; const A_seed:cint64; const A_seed2:cint64):string;
     function AddTile(const I_input:string; const I_multiples:string; const O_output:string; const A_T:TF_DataType; const A_Tmultiples:TF_DataType):string;
@@ -1308,7 +1307,7 @@ type
     function AddTruncatedNormal(const I_shape:string; const O_output:string; const A_seed:cint64; const A_seed2:cint64; const A_dtype:TF_DataType; const A_T:TF_DataType):string;
     function AddTryRpc(const I_address:string; const I_method:string; const I_request:string; const O_response:string; const O_status_code:string; const O_status_message:string; const A_protocol:string; const A_fail_fast:boolean; const A_timeout_in_ms:cint64):string;
     function AddUnbatch(const I_batched_tensor:string; const I_batch_index:string; const I_id:string; const O_unbatched_tensor:string; const A_timeout_micros:cint64; const A_container:string; const A_shared_name:string; const A_T:TF_DataType):string;
-    function AddUnbatchDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddUnbatchDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddUnbatchGrad(const I_original_input:string; const I_batch_index:string; const I_grad:string; const I_id:string; const O_batched_grad:string; const A_container:string; const A_shared_name:string; const A_T:TF_DataType):string;
     function AddUnicodeDecode(const I_input:string; const O_row_splits:string; const O_char_values:string; const A_input_encoding:string; const A_errors:string; const A_replacement_char:cint64; const A_replace_control_characters:boolean; const A_Tsplits:TF_DataType):string;
     function AddUnicodeDecodeWithOffsets(const I_input:string; const O_row_splits:string; const O_char_values:string; const O_char_to_byte_starts:string; const A_input_encoding:string; const A_errors:string; const A_replacement_char:cint64; const A_replace_control_characters:boolean; const A_Tsplits:TF_DataType):string;
@@ -1317,7 +1316,7 @@ type
     function AddUnicodeTranscode(const I_input:string; const O_output:string; const A_input_encoding:string; const A_output_encoding:string; const A_errors:string; const A_replacement_char:cint64; const A_replace_control_characters:boolean):string;
     function AddUniformCandidateSampler(const I_true_classes:string; const O_sampled_candidates:string; const O_true_expected_count:string; const O_sampled_expected_count:string; const A_num_true:cint64; const A_num_sampled:cint64; const A_unique:boolean; const A_range_max:cint64; const A_seed:cint64; const A_seed2:cint64):string;
     function AddUnique(const I_x:string; const O_y:string; const O_idx:string; const A_T:TF_DataType; const A_out_idx:TF_DataType):string;
-    function AddUniqueDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddUniqueDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddUniqueV2(const I_x:string; const I_axis:string; const O_y:string; const O_idx:string; const A_T:TF_DataType; const A_Taxis:TF_DataType; const A_out_idx:TF_DataType):string;
     function AddUniqueWithCounts(const I_x:string; const O_y:string; const O_idx:string; const O_count:string; const A_T:TF_DataType; const A_out_idx:TF_DataType):string;
     function AddUniqueWithCountsV2(const I_x:string; const I_axis:string; const O_y:string; const O_idx:string; const O_count:string; const A_T:TF_DataType; const A_Taxis:TF_DataType; const A_out_idx:TF_DataType):string;
@@ -1328,7 +1327,7 @@ type
     function AddUnsortedSegmentMin(const I_data:string; const I_segment_ids:string; const I_num_segments:string; const O_output:string; const A_T:TF_DataType; const A_Tindices:TF_DataType; const A_Tnumsegments:TF_DataType):string;
     function AddUnsortedSegmentProd(const I_data:string; const I_segment_ids:string; const I_num_segments:string; const O_output:string; const A_T:TF_DataType; const A_Tindices:TF_DataType; const A_Tnumsegments:TF_DataType):string;
     function AddUnsortedSegmentSum(const I_data:string; const I_segment_ids:string; const I_num_segments:string; const O_output:string; const A_T:TF_DataType; const A_Tindices:TF_DataType; const A_Tnumsegments:TF_DataType):string;
-    function AddUnstage(const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
+    function AddUnstage(const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
     function AddUnwrapDatasetVariant(const I_input_handle:string; const O_output_handle:string):string;
     function AddUpperBound(const I_sorted_inputs:string; const I_values:string; const O_output:string; const A_T:TF_DataType; const A_out_type:TF_DataType):string;
     function AddVarHandleOp(const O_resource:string; const A_container:string; const A_shared_name:string; const A_dtype:TF_DataType; const A_shape:TF_Shape):string;
@@ -1337,10 +1336,10 @@ type
     function AddVariableShape(const I_input:string; const O_output:string; const A_out_type:TF_DataType):string;
     function AddVariableV2(const O_ref:string; const A_shape:TF_Shape; const A_dtype:TF_DataType; const A_container:string; const A_shared_name:string):string;
     function AddWhere(const I_input:string; const O_index:string; const A_T:TF_DataType):string;
-    function AddWhile(const I_input:string; const OL_output:string; const A_T:array of TF_DataType; const A_cond:TF_Function; const A_body:TF_Function; const A_output_shapes:array of TF_Shape; const A_parallel_iterations:cint64):string;
+    function AddWhile(const IL_input:string; const OL_output:string; const A_T:TF_TypeList; const A_cond:TF_Function; const A_body:TF_Function; const A_output_shapes:TF_ShapeList; const A_parallel_iterations:cint64):string;
     function AddWholeFileReader(const O_reader_handle:string; const A_container:string; const A_shared_name:string):string;
     function AddWholeFileReaderV2(const O_reader_handle:string; const A_container:string; const A_shared_name:string):string;
-    function AddWindowDataset(const I_input_dataset:string; const I_size:string; const I_shift:string; const I_stride:string; const I_drop_remainder:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+    function AddWindowDataset(const I_input_dataset:string; const I_size:string; const I_shift:string; const I_stride:string; const I_drop_remainder:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
     function AddWorkerHeartbeat(const I_request:string; const O_response:string):string;
     function AddWrapDatasetVariant(const I_input_handle:string; const O_output_handle:string):string;
     function AddWriteAudioSummary(const I_writer:string; const I_step:string; const I_tag:string; const I_tensor:string; const I_sample_rate:string; const A_max_outputs:cint64):string;
@@ -1356,7 +1355,7 @@ type
     function AddXlogy(const I_x:string; const I_y:string; const O_z:string; const A_T:TF_DataType):string;
     function AddZerosLike(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
     function AddZeta(const I_x:string; const I_q:string; const O_z:string; const A_T:TF_DataType):string;
-    function AddZipDataset(const IL_input_datasets:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_N:cint64):string;
+    function AddZipDataset(const IL_input_datasets:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_N:cint64):string;
     end;
 
 
@@ -1465,7 +1464,6 @@ function ExecBroadcastTo(const I_input:TF_TensorPtr; const I_shape:TF_TensorPtr;
 function ExecBucketize(const I_input:TF_TensorPtr; const A_boundaries:array of real; const D_input:boolean=false):TF_TensorPtr;
 function ExecBytesProducedStatsDataset(const I_input_dataset:TF_TensorPtr; const I_tag:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_tag:boolean=false):TF_TensorPtr;
 function ExecCSRSparseMatrixToDense(const I_sparse_input:TF_TensorPtr; const A_type:TF_DataType; const D_sparse_input:boolean=false):TF_TensorPtr;
-function ExecCSVDataset(const I_filenames:TF_TensorPtr; const I_compression_type:TF_TensorPtr; const I_buffer_size:TF_TensorPtr; const I_header:TF_TensorPtr; const I_field_delim:TF_TensorPtr; const I_use_quote_delim:TF_TensorPtr; const I_na_value:TF_TensorPtr; const I_select_cols:TF_TensorPtr; const I_record_defaults:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_filenames:boolean=false; const D_compression_type:boolean=false; const D_buffer_size:boolean=false; const D_header:boolean=false; const D_field_delim:boolean=false; const D_use_quote_delim:boolean=false; const D_na_value:boolean=false; const D_select_cols:boolean=false; const D_record_defaults:boolean=false):TF_TensorPtr;
 function ExecCacheDataset(const I_input_dataset:TF_TensorPtr; const I_filename:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_filename:boolean=false):TF_TensorPtr;
 function ExecCacheDatasetV2(const I_input_dataset:TF_TensorPtr; const I_filename:TF_TensorPtr; const I_cache:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_filename:boolean=false; const D_cache:boolean=false):TF_TensorPtr;
 function ExecCast(const I_x:TF_TensorPtr; const A_DstT:TF_DataType; const A_Truncate:boolean; const D_x:boolean=false):TF_TensorPtr;
@@ -1474,7 +1472,6 @@ function ExecCheckNumerics(const I_tensor:TF_TensorPtr; const A_message:string; 
 function ExecCheckNumericsV2(const I_tensor:TF_TensorPtr; const A_message:string; const D_tensor:boolean=false):TF_TensorPtr;
 function ExecCholesky(const I_input:TF_TensorPtr; const D_input:boolean=false):TF_TensorPtr;
 function ExecCholeskyGrad(const I_l:TF_TensorPtr; const I_grad:TF_TensorPtr; const D_l:boolean=false; const D_grad:boolean=false):TF_TensorPtr;
-function ExecChooseFastestBranchDataset(const I_input_dataset:TF_TensorPtr; const I_ratio_numerator:TF_TensorPtr; const I_ratio_denominator:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const A_Targuments:array of TF_DataType; const A_num_elements_per_branch:integer; const A_branches:array of string; const A_other_arguments_lengths:array of integer; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_ratio_numerator:boolean=false; const D_ratio_denominator:boolean=false; const D_other_arguments:boolean=false):TF_TensorPtr;
 function ExecClipByValue(const I_t:TF_TensorPtr; const I_clip_value_min:TF_TensorPtr; const I_clip_value_max:TF_TensorPtr; const D_t:boolean=false; const D_clip_value_min:boolean=false; const D_clip_value_max:boolean=false):TF_TensorPtr;
 function ExecCollectiveBcastRecv(const A_T:TF_DataType; const A_group_size:integer; const A_group_key:integer; const A_instance_key:integer; const A_shape:TF_Shape; const A_communication_hint:string):TF_TensorPtr;
 function ExecCollectiveBcastSend(const I_input:TF_TensorPtr; const A_group_size:integer; const A_group_key:integer; const A_instance_key:integer; const A_shape:TF_Shape; const A_communication_hint:string; const D_input:boolean=false):TF_TensorPtr;
@@ -1564,7 +1561,6 @@ function ExecEncodeBase64(const I_input:TF_TensorPtr; const A_pad:boolean; const
 function ExecEncodeJpeg(const I_image:TF_TensorPtr; const A_format:string; const A_quality:integer; const A_progressive:boolean; const A_optimize_size:boolean; const A_chroma_downsampling:boolean; const A_density_unit:string; const A_x_density:integer; const A_y_density:integer; const A_xmp_metadata:string; const D_image:boolean=false):TF_TensorPtr;
 function ExecEncodeJpegVariableQuality(const I_images:TF_TensorPtr; const I_quality:TF_TensorPtr; const D_images:boolean=false; const D_quality:boolean=false):TF_TensorPtr;
 function ExecEncodePng(const I_image:TF_TensorPtr; const A_compression:integer; const D_image:boolean=false):TF_TensorPtr;
-function ExecEncodeProto(const I_sizes:TF_TensorPtr; const I_values:TF_TensorPtr; const A_field_names:array of string; const A_message_type:string; const A_descriptor_source:string; const A_Tinput_types:array of TF_DataType; const D_sizes:boolean=false; const D_values:boolean=false):TF_TensorPtr;
 function ExecEncodeWav(const I_audio:TF_TensorPtr; const I_sample_rate:TF_TensorPtr; const D_audio:boolean=false; const D_sample_rate:boolean=false):TF_TensorPtr;
 function ExecEnsureShape(const I_input:TF_TensorPtr; const A_shape:TF_Shape; const D_input:boolean=false):TF_TensorPtr;
 function ExecEnter(const I_data:TF_TensorPtr; const A_frame_name:string; const A_is_constant:boolean; const A_parallel_iterations:integer; const D_data:boolean=false):TF_TensorPtr;
@@ -1579,33 +1575,24 @@ function ExecExpandDims(const I_input:TF_TensorPtr; const I_dim:TF_TensorPtr; co
 function ExecExperimentalAssertNextDataset(const I_input_dataset:TF_TensorPtr; const I_transformations:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_transformations:boolean=false):TF_TensorPtr;
 function ExecExperimentalAutoShardDataset(const I_input_dataset:TF_TensorPtr; const I_num_workers:TF_TensorPtr; const I_index:TF_TensorPtr; const A_auto_shard_policy:integer; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_num_workers:boolean=false; const D_index:boolean=false):TF_TensorPtr;
 function ExecExperimentalBytesProducedStatsDataset(const I_input_dataset:TF_TensorPtr; const I_tag:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_tag:boolean=false):TF_TensorPtr;
-function ExecExperimentalCSVDataset(const I_filenames:TF_TensorPtr; const I_compression_type:TF_TensorPtr; const I_buffer_size:TF_TensorPtr; const I_header:TF_TensorPtr; const I_field_delim:TF_TensorPtr; const I_use_quote_delim:TF_TensorPtr; const I_na_value:TF_TensorPtr; const I_select_cols:TF_TensorPtr; const I_record_defaults:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_filenames:boolean=false; const D_compression_type:boolean=false; const D_buffer_size:boolean=false; const D_header:boolean=false; const D_field_delim:boolean=false; const D_use_quote_delim:boolean=false; const D_na_value:boolean=false; const D_select_cols:boolean=false; const D_record_defaults:boolean=false):TF_TensorPtr;
 function ExecExperimentalDatasetCardinality(const I_input_dataset:TF_TensorPtr; const D_input_dataset:boolean=false):TF_TensorPtr;
 function ExecExperimentalDenseToSparseBatchDataset(const I_input_dataset:TF_TensorPtr; const I_batch_size:TF_TensorPtr; const I_row_shape:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_batch_size:boolean=false; const D_row_shape:boolean=false):TF_TensorPtr;
-function ExecExperimentalGroupByReducerDataset(const I_input_dataset:TF_TensorPtr; const I_key_func_other_arguments:TF_TensorPtr; const I_init_func_other_arguments:TF_TensorPtr; const I_reduce_func_other_arguments:TF_TensorPtr; const I_finalize_func_other_arguments:TF_TensorPtr; const A_key_func:string; const A_init_func:string; const A_reduce_func:string; const A_finalize_func:string; const A_Tkey_func_other_arguments:array of TF_DataType; const A_Tinit_func_other_arguments:array of TF_DataType; const A_Treduce_func_other_arguments:array of TF_DataType; const A_Tfinalize_func_other_arguments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_key_func_other_arguments:boolean=false; const D_init_func_other_arguments:boolean=false; const D_reduce_func_other_arguments:boolean=false; const D_finalize_func_other_arguments:boolean=false):TF_TensorPtr;
-function ExecExperimentalGroupByWindowDataset(const I_input_dataset:TF_TensorPtr; const I_key_func_other_arguments:TF_TensorPtr; const I_reduce_func_other_arguments:TF_TensorPtr; const I_window_size_func_other_arguments:TF_TensorPtr; const A_key_func:string; const A_reduce_func:string; const A_window_size_func:string; const A_Tkey_func_other_arguments:array of TF_DataType; const A_Treduce_func_other_arguments:array of TF_DataType; const A_Twindow_size_func_other_arguments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_key_func_other_arguments:boolean=false; const D_reduce_func_other_arguments:boolean=false; const D_window_size_func_other_arguments:boolean=false):TF_TensorPtr;
 function ExecExperimentalIgnoreErrorsDataset(const I_input_dataset:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false):TF_TensorPtr;
 function ExecExperimentalIteratorGetDevice(const I_resource:TF_TensorPtr; const D_resource:boolean=false):TF_TensorPtr;
 function ExecExperimentalLMDBDataset(const I_filenames:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_filenames:boolean=false):TF_TensorPtr;
 function ExecExperimentalLatencyStatsDataset(const I_input_dataset:TF_TensorPtr; const I_tag:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_tag:boolean=false):TF_TensorPtr;
-function ExecExperimentalMapAndBatchDataset(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const I_batch_size:TF_TensorPtr; const I_num_parallel_calls:TF_TensorPtr; const I_drop_remainder:TF_TensorPtr; const A_f:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_preserve_cardinality:boolean; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false; const D_batch_size:boolean=false; const D_num_parallel_calls:boolean=false; const D_drop_remainder:boolean=false):TF_TensorPtr;
-function ExecExperimentalMapDataset(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const A_f:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_use_inter_op_parallelism:boolean; const A_preserve_cardinality:boolean; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false):TF_TensorPtr;
 function ExecExperimentalMatchingFilesDataset(const I_patterns:TF_TensorPtr; const D_patterns:boolean=false):TF_TensorPtr;
 function ExecExperimentalMaxIntraOpParallelismDataset(const I_input_dataset:TF_TensorPtr; const I_max_intra_op_parallelism:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_max_intra_op_parallelism:boolean=false):TF_TensorPtr;
 function ExecExperimentalNonSerializableDataset(const I_input_dataset:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false):TF_TensorPtr;
-function ExecExperimentalParallelInterleaveDataset(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const I_cycle_length:TF_TensorPtr; const I_block_length:TF_TensorPtr; const I_sloppy:TF_TensorPtr; const I_buffer_output_elements:TF_TensorPtr; const I_prefetch_input_elements:TF_TensorPtr; const A_f:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false; const D_cycle_length:boolean=false; const D_block_length:boolean=false; const D_sloppy:boolean=false; const D_buffer_output_elements:boolean=false; const D_prefetch_input_elements:boolean=false):TF_TensorPtr;
-function ExecExperimentalParseExampleDataset(const I_input_dataset:TF_TensorPtr; const I_num_parallel_calls:TF_TensorPtr; const I_dense_defaults:TF_TensorPtr; const A_sparse_keys:array of string; const A_dense_keys:array of string; const A_sparse_types:array of TF_DataType; const A_Tdense:array of TF_DataType; const A_dense_shapes:array of TF_Shape; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_sloppy:boolean; const D_input_dataset:boolean=false; const D_num_parallel_calls:boolean=false; const D_dense_defaults:boolean=false):TF_TensorPtr;
 function ExecExperimentalPrivateThreadPoolDataset(const I_input_dataset:TF_TensorPtr; const I_num_threads:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_num_threads:boolean=false):TF_TensorPtr;
 function ExecExperimentalRandomDataset(const I_seed:TF_TensorPtr; const I_seed2:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_seed:boolean=false; const D_seed2:boolean=false):TF_TensorPtr;
 function ExecExperimentalRebatchDataset(const I_input_dataset:TF_TensorPtr; const I_num_replicas:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_use_fallback:boolean; const D_input_dataset:boolean=false; const D_num_replicas:boolean=false):TF_TensorPtr;
-function ExecExperimentalScanDataset(const I_input_dataset:TF_TensorPtr; const I_initial_state:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const A_f:string; const A_Tstate:array of TF_DataType; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_preserve_cardinality:boolean; const D_input_dataset:boolean=false; const D_initial_state:boolean=false; const D_other_arguments:boolean=false):TF_TensorPtr;
 function ExecExperimentalSetStatsAggregatorDataset(const I_input_dataset:TF_TensorPtr; const I_stats_aggregator:TF_TensorPtr; const I_tag:TF_TensorPtr; const I_counter_prefix:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_stats_aggregator:boolean=false; const D_tag:boolean=false; const D_counter_prefix:boolean=false):TF_TensorPtr;
 function ExecExperimentalSleepDataset(const I_input_dataset:TF_TensorPtr; const I_sleep_microseconds:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_sleep_microseconds:boolean=false):TF_TensorPtr;
 function ExecExperimentalSlidingWindowDataset(const I_input_dataset:TF_TensorPtr; const I_window_size:TF_TensorPtr; const I_window_shift:TF_TensorPtr; const I_window_stride:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_window_size:boolean=false; const D_window_shift:boolean=false; const D_window_stride:boolean=false):TF_TensorPtr;
 function ExecExperimentalSqlDataset(const I_driver_name:TF_TensorPtr; const I_data_source_name:TF_TensorPtr; const I_query:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_driver_name:boolean=false; const D_data_source_name:boolean=false; const D_query:boolean=false):TF_TensorPtr;
 function ExecExperimentalStatsAggregatorHandle(const A_container:string; const A_shared_name:string):TF_TensorPtr;
 function ExecExperimentalStatsAggregatorSummary(const I_iterator:TF_TensorPtr; const D_iterator:boolean=false):TF_TensorPtr;
-function ExecExperimentalTakeWhileDataset(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const A_predicate:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false):TF_TensorPtr;
 function ExecExperimentalThreadPoolDataset(const I_input_dataset:TF_TensorPtr; const I_thread_pool:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_thread_pool:boolean=false):TF_TensorPtr;
 function ExecExperimentalThreadPoolHandle(const A_num_threads:integer; const A_max_intra_op_parallelism:integer; const A_display_name:string; const A_container:string; const A_shared_name:string):TF_TensorPtr;
 function ExecExperimentalUnbatchDataset(const I_input_dataset:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false):TF_TensorPtr;
@@ -1630,13 +1617,11 @@ function ExecFakeQuantWithMinMaxVarsPerChannel(const I_inputs:TF_TensorPtr; cons
 function ExecFakeQueue(const I_resource:TF_TensorPtr; const D_resource:boolean=false):TF_TensorPtr;
 function ExecFill(const I_dims:TF_TensorPtr; const I_value:TF_TensorPtr; const D_dims:boolean=false; const D_value:boolean=false):TF_TensorPtr;
 function ExecFilterByLastComponentDataset(const I_input_dataset:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false):TF_TensorPtr;
-function ExecFilterDataset(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const A_predicate:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false):TF_TensorPtr;
 function ExecFingerprint(const I_data:TF_TensorPtr; const I_method:TF_TensorPtr; const D_data:boolean=false; const D_method:boolean=false):TF_TensorPtr;
 function ExecFixedLengthRecordDataset(const I_filenames:TF_TensorPtr; const I_header_bytes:TF_TensorPtr; const I_record_bytes:TF_TensorPtr; const I_footer_bytes:TF_TensorPtr; const I_buffer_size:TF_TensorPtr; const D_filenames:boolean=false; const D_header_bytes:boolean=false; const D_record_bytes:boolean=false; const D_footer_bytes:boolean=false; const D_buffer_size:boolean=false):TF_TensorPtr;
 function ExecFixedLengthRecordDatasetV2(const I_filenames:TF_TensorPtr; const I_header_bytes:TF_TensorPtr; const I_record_bytes:TF_TensorPtr; const I_footer_bytes:TF_TensorPtr; const I_buffer_size:TF_TensorPtr; const I_compression_type:TF_TensorPtr; const D_filenames:boolean=false; const D_header_bytes:boolean=false; const D_record_bytes:boolean=false; const D_footer_bytes:boolean=false; const D_buffer_size:boolean=false; const D_compression_type:boolean=false):TF_TensorPtr;
 function ExecFixedLengthRecordReader(const A_header_bytes:integer; const A_record_bytes:integer; const A_footer_bytes:integer; const A_hop_bytes:integer; const A_container:string; const A_shared_name:string):TF_TensorPtr;
 function ExecFixedLengthRecordReaderV2(const A_header_bytes:integer; const A_record_bytes:integer; const A_footer_bytes:integer; const A_hop_bytes:integer; const A_container:string; const A_shared_name:string; const A_encoding:string):TF_TensorPtr;
-function ExecFlatMapDataset(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const A_f:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false):TF_TensorPtr;
 function ExecFloor(const I_x:TF_TensorPtr; const D_x:boolean=false):TF_TensorPtr;
 function ExecFloorDiv(const I_x:TF_TensorPtr; const I_y:TF_TensorPtr; const D_x:boolean=false; const D_y:boolean=false):TF_TensorPtr;
 function ExecFloorMod(const I_x:TF_TensorPtr; const I_y:TF_TensorPtr; const D_x:boolean=false; const D_y:boolean=false):TF_TensorPtr;
@@ -1649,14 +1634,11 @@ function ExecFusedResizeAndPadConv2D(const I_input:TF_TensorPtr; const I_size:TF
 function ExecGather(const I_params:TF_TensorPtr; const I_indices:TF_TensorPtr; const A_validate_indices:boolean; const D_params:boolean=false; const D_indices:boolean=false):TF_TensorPtr;
 function ExecGatherNd(const I_params:TF_TensorPtr; const I_indices:TF_TensorPtr; const D_params:boolean=false; const D_indices:boolean=false):TF_TensorPtr;
 function ExecGatherV2(const I_params:TF_TensorPtr; const I_indices:TF_TensorPtr; const I_axis:TF_TensorPtr; const A_batch_dims:integer; const D_params:boolean=false; const D_indices:boolean=false; const D_axis:boolean=false):TF_TensorPtr;
-function ExecGeneratorDataset(const I_init_func_other_args:TF_TensorPtr; const I_next_func_other_args:TF_TensorPtr; const I_finalize_func_other_args:TF_TensorPtr; const A_init_func:string; const A_next_func:string; const A_finalize_func:string; const A_Tinit_func_args:array of TF_DataType; const A_Tnext_func_args:array of TF_DataType; const A_Tfinalize_func_args:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_init_func_other_args:boolean=false; const D_next_func_other_args:boolean=false; const D_finalize_func_other_args:boolean=false):TF_TensorPtr;
 function ExecGetSessionHandle(const I_value:TF_TensorPtr; const D_value:boolean=false):TF_TensorPtr;
 function ExecGetSessionHandleV2(const I_value:TF_TensorPtr; const D_value:boolean=false):TF_TensorPtr;
 function ExecGetSessionTensor(const I_handle:TF_TensorPtr; const A_dtype:TF_DataType; const D_handle:boolean=false):TF_TensorPtr;
 function ExecGreater(const I_x:TF_TensorPtr; const I_y:TF_TensorPtr; const D_x:boolean=false; const D_y:boolean=false):TF_TensorPtr;
 function ExecGreaterEqual(const I_x:TF_TensorPtr; const I_y:TF_TensorPtr; const D_x:boolean=false; const D_y:boolean=false):TF_TensorPtr;
-function ExecGroupByReducerDataset(const I_input_dataset:TF_TensorPtr; const I_key_func_other_arguments:TF_TensorPtr; const I_init_func_other_arguments:TF_TensorPtr; const I_reduce_func_other_arguments:TF_TensorPtr; const I_finalize_func_other_arguments:TF_TensorPtr; const A_key_func:string; const A_init_func:string; const A_reduce_func:string; const A_finalize_func:string; const A_Tkey_func_other_arguments:array of TF_DataType; const A_Tinit_func_other_arguments:array of TF_DataType; const A_Treduce_func_other_arguments:array of TF_DataType; const A_Tfinalize_func_other_arguments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_key_func_other_arguments:boolean=false; const D_init_func_other_arguments:boolean=false; const D_reduce_func_other_arguments:boolean=false; const D_finalize_func_other_arguments:boolean=false):TF_TensorPtr;
-function ExecGroupByWindowDataset(const I_input_dataset:TF_TensorPtr; const I_key_func_other_arguments:TF_TensorPtr; const I_reduce_func_other_arguments:TF_TensorPtr; const I_window_size_func_other_arguments:TF_TensorPtr; const A_key_func:string; const A_reduce_func:string; const A_window_size_func:string; const A_Tkey_func_other_arguments:array of TF_DataType; const A_Treduce_func_other_arguments:array of TF_DataType; const A_Twindow_size_func_other_arguments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_key_func_other_arguments:boolean=false; const D_reduce_func_other_arguments:boolean=false; const D_window_size_func_other_arguments:boolean=false):TF_TensorPtr;
 function ExecGuaranteeConst(const I_input:TF_TensorPtr; const D_input:boolean=false):TF_TensorPtr;
 function ExecHSVToRGB(const I_images:TF_TensorPtr; const D_images:boolean=false):TF_TensorPtr;
 function ExecHashTable(const A_container:string; const A_shared_name:string; const A_use_node_name_sharing:boolean; const A_key_dtype:TF_DataType; const A_value_dtype:TF_DataType):TF_TensorPtr;
@@ -1687,7 +1669,6 @@ function ExecInfeedDequeue(const A_dtype:TF_DataType; const A_shape:TF_Shape):TF
 function ExecInplaceAdd(const I_x:TF_TensorPtr; const I_i:TF_TensorPtr; const I_v:TF_TensorPtr; const D_x:boolean=false; const D_i:boolean=false; const D_v:boolean=false):TF_TensorPtr;
 function ExecInplaceSub(const I_x:TF_TensorPtr; const I_i:TF_TensorPtr; const I_v:TF_TensorPtr; const D_x:boolean=false; const D_i:boolean=false; const D_v:boolean=false):TF_TensorPtr;
 function ExecInplaceUpdate(const I_x:TF_TensorPtr; const I_i:TF_TensorPtr; const I_v:TF_TensorPtr; const D_x:boolean=false; const D_i:boolean=false; const D_v:boolean=false):TF_TensorPtr;
-function ExecInterleaveDataset(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const I_cycle_length:TF_TensorPtr; const I_block_length:TF_TensorPtr; const A_f:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false; const D_cycle_length:boolean=false; const D_block_length:boolean=false):TF_TensorPtr;
 function ExecInv(const I_x:TF_TensorPtr; const D_x:boolean=false):TF_TensorPtr;
 function ExecInvGrad(const I_y:TF_TensorPtr; const I_dy:TF_TensorPtr; const D_y:boolean=false; const D_dy:boolean=false):TF_TensorPtr;
 function ExecInvert(const I_x:TF_TensorPtr; const D_x:boolean=false):TF_TensorPtr;
@@ -1733,8 +1714,6 @@ function ExecLookupTableSize(const I_table_handle:TF_TensorPtr; const D_table_ha
 function ExecLookupTableSizeV2(const I_table_handle:TF_TensorPtr; const D_table_handle:boolean=false):TF_TensorPtr;
 function ExecLoopCond(const I_input:TF_TensorPtr; const D_input:boolean=false):TF_TensorPtr;
 function ExecLowerBound(const I_sorted_inputs:TF_TensorPtr; const I_values:TF_TensorPtr; const A_out_type:TF_DataType; const D_sorted_inputs:boolean=false; const D_values:boolean=false):TF_TensorPtr;
-function ExecMapAndBatchDataset(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const I_batch_size:TF_TensorPtr; const I_num_parallel_calls:TF_TensorPtr; const I_drop_remainder:TF_TensorPtr; const A_f:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_preserve_cardinality:boolean; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false; const D_batch_size:boolean=false; const D_num_parallel_calls:boolean=false; const D_drop_remainder:boolean=false):TF_TensorPtr;
-function ExecMapDataset(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const A_f:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_use_inter_op_parallelism:boolean; const A_preserve_cardinality:boolean; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false):TF_TensorPtr;
 function ExecMapIncompleteSize(const A_capacity:integer; const A_memory_limit:integer; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):TF_TensorPtr;
 function ExecMapSize(const A_capacity:integer; const A_memory_limit:integer; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):TF_TensorPtr;
 function ExecMatMul(const I_a:TF_TensorPtr; const I_b:TF_TensorPtr; const A_transpose_a:boolean; const A_transpose_b:boolean; const D_a:boolean=false; const D_b:boolean=false):TF_TensorPtr;
@@ -1813,7 +1792,6 @@ function ExecOneHot(const I_indices:TF_TensorPtr; const I_depth:TF_TensorPtr; co
 function ExecOneShotIterator(const A_dataset_factory:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_container:string; const A_shared_name:string):TF_TensorPtr;
 function ExecOnesLike(const I_x:TF_TensorPtr; const D_x:boolean=false):TF_TensorPtr;
 function ExecOptimizeDataset(const I_input_dataset:TF_TensorPtr; const I_optimizations:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_optimization_configs:array of string; const D_input_dataset:boolean=false; const D_optimizations:boolean=false):TF_TensorPtr;
-function ExecOptionalFromValue(const I_components:TF_TensorPtr; const A_Toutput_types:array of TF_DataType; const D_components:boolean=false):TF_TensorPtr;
 function ExecOptionalHasValue(const I_optional:TF_TensorPtr; const D_optional:boolean=false):TF_TensorPtr;
 function ExecOptionalNone():TF_TensorPtr;
 function ExecOrderedMapIncompleteSize(const A_capacity:integer; const A_memory_limit:integer; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):TF_TensorPtr;
@@ -1823,12 +1801,7 @@ function ExecPad(const I_input:TF_TensorPtr; const I_paddings:TF_TensorPtr; cons
 function ExecPadV2(const I_input:TF_TensorPtr; const I_paddings:TF_TensorPtr; const I_constant_values:TF_TensorPtr; const D_input:boolean=false; const D_paddings:boolean=false; const D_constant_values:boolean=false):TF_TensorPtr;
 function ExecPaddingFIFOQueue(const A_component_types:array of TF_DataType; const A_shapes:array of TF_Shape; const A_capacity:integer; const A_container:string; const A_shared_name:string):TF_TensorPtr;
 function ExecPaddingFIFOQueueV2(const A_component_types:array of TF_DataType; const A_shapes:array of TF_Shape; const A_capacity:integer; const A_container:string; const A_shared_name:string):TF_TensorPtr;
-function ExecParallelInterleaveDataset(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const I_cycle_length:TF_TensorPtr; const I_block_length:TF_TensorPtr; const I_sloppy:TF_TensorPtr; const I_buffer_output_elements:TF_TensorPtr; const I_prefetch_input_elements:TF_TensorPtr; const A_f:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false; const D_cycle_length:boolean=false; const D_block_length:boolean=false; const D_sloppy:boolean=false; const D_buffer_output_elements:boolean=false; const D_prefetch_input_elements:boolean=false):TF_TensorPtr;
-function ExecParallelInterleaveDatasetV2(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const I_cycle_length:TF_TensorPtr; const I_block_length:TF_TensorPtr; const I_num_parallel_calls:TF_TensorPtr; const A_f:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_sloppy:boolean; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false; const D_cycle_length:boolean=false; const D_block_length:boolean=false; const D_num_parallel_calls:boolean=false):TF_TensorPtr;
-function ExecParallelInterleaveDatasetV3(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const I_cycle_length:TF_TensorPtr; const I_block_length:TF_TensorPtr; const I_num_parallel_calls:TF_TensorPtr; const A_f:string; const A_deterministic:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false; const D_cycle_length:boolean=false; const D_block_length:boolean=false; const D_num_parallel_calls:boolean=false):TF_TensorPtr;
-function ExecParallelMapDataset(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const I_num_parallel_calls:TF_TensorPtr; const A_f:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_use_inter_op_parallelism:boolean; const A_sloppy:boolean; const A_preserve_cardinality:boolean; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false; const D_num_parallel_calls:boolean=false):TF_TensorPtr;
 function ExecParameterizedTruncatedNormal(const I_shape:TF_TensorPtr; const I_means:TF_TensorPtr; const I_stdevs:TF_TensorPtr; const I_minvals:TF_TensorPtr; const I_maxvals:TF_TensorPtr; const A_seed:integer; const A_seed2:integer; const D_shape:boolean=false; const D_means:boolean=false; const D_stdevs:boolean=false; const D_minvals:boolean=false; const D_maxvals:boolean=false):TF_TensorPtr;
-function ExecParseExampleDataset(const I_input_dataset:TF_TensorPtr; const I_num_parallel_calls:TF_TensorPtr; const I_dense_defaults:TF_TensorPtr; const A_sparse_keys:array of string; const A_dense_keys:array of string; const A_sparse_types:array of TF_DataType; const A_Tdense:array of TF_DataType; const A_dense_shapes:array of TF_Shape; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_sloppy:boolean; const A_ragged_keys:array of string; const A_ragged_value_types:array of TF_DataType; const A_ragged_split_types:array of TF_DataType; const D_input_dataset:boolean=false; const D_num_parallel_calls:boolean=false; const D_dense_defaults:boolean=false):TF_TensorPtr;
 function ExecParseTensor(const I_serialized:TF_TensorPtr; const A_out_type:TF_DataType; const D_serialized:boolean=false):TF_TensorPtr;
 function ExecPlaceholder(const A_dtype:TF_DataType; const A_shape:TF_Shape):TF_TensorPtr;
 function ExecPlaceholderV2(const A_dtype:TF_DataType; const A_shape:TF_Shape):TF_TensorPtr;
@@ -1838,9 +1811,7 @@ function ExecPopulationCount(const I_x:TF_TensorPtr; const D_x:boolean=false):TF
 function ExecPow(const I_x:TF_TensorPtr; const I_y:TF_TensorPtr; const D_x:boolean=false; const D_y:boolean=false):TF_TensorPtr;
 function ExecPrefetchDataset(const I_input_dataset:TF_TensorPtr; const I_buffer_size:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_slack_period:integer; const A_legacy_autotune:boolean; const D_input_dataset:boolean=false; const D_buffer_size:boolean=false):TF_TensorPtr;
 function ExecPrelinearize(const I_input:TF_TensorPtr; const A_shape:TF_Shape; const A_layout:array of integer; const D_input:boolean=false):TF_TensorPtr;
-function ExecPrelinearizeTuple(const I_inputs:TF_TensorPtr; const A_dtypes:array of TF_DataType; const A_shapes:array of TF_Shape; const A_layouts:array of integer; const D_inputs:boolean=false):TF_TensorPtr;
 function ExecPreventGradient(const I_input:TF_TensorPtr; const A_message:string; const D_input:boolean=false):TF_TensorPtr;
-function ExecPrint(const I_input:TF_TensorPtr; const I_data:TF_TensorPtr; const A_U:array of TF_DataType; const A_message:string; const A_first_n:integer; const A_summarize:integer; const D_input:boolean=false; const D_data:boolean=false):TF_TensorPtr;
 function ExecPriorityQueue(const A_component_types:array of TF_DataType; const A_shapes:array of TF_Shape; const A_capacity:integer; const A_container:string; const A_shared_name:string):TF_TensorPtr;
 function ExecPriorityQueueV2(const A_component_types:array of TF_DataType; const A_shapes:array of TF_Shape; const A_capacity:integer; const A_container:string; const A_shared_name:string):TF_TensorPtr;
 function ExecPrivateThreadPoolDataset(const I_input_dataset:TF_TensorPtr; const I_num_threads:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_num_threads:boolean=false):TF_TensorPtr;
@@ -1929,7 +1900,6 @@ function ExecSamplingDataset(const I_input_dataset:TF_TensorPtr; const I_rate:TF
 function ExecScalarSummary(const I_tags:TF_TensorPtr; const I_values:TF_TensorPtr; const D_tags:boolean=false; const D_values:boolean=false):TF_TensorPtr;
 function ExecScaleAndTranslate(const I_images:TF_TensorPtr; const I_size:TF_TensorPtr; const I_scale:TF_TensorPtr; const I_translation:TF_TensorPtr; const A_kernel_type:string; const A_antialias:boolean; const D_images:boolean=false; const D_size:boolean=false; const D_scale:boolean=false; const D_translation:boolean=false):TF_TensorPtr;
 function ExecScaleAndTranslateGrad(const I_grads:TF_TensorPtr; const I_original_image:TF_TensorPtr; const I_scale:TF_TensorPtr; const I_translation:TF_TensorPtr; const A_kernel_type:string; const A_antialias:boolean; const D_grads:boolean=false; const D_original_image:boolean=false; const D_scale:boolean=false; const D_translation:boolean=false):TF_TensorPtr;
-function ExecScanDataset(const I_input_dataset:TF_TensorPtr; const I_initial_state:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const A_f:string; const A_Tstate:array of TF_DataType; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_preserve_cardinality:boolean; const A_use_default_device:boolean; const D_input_dataset:boolean=false; const D_initial_state:boolean=false; const D_other_arguments:boolean=false):TF_TensorPtr;
 function ExecScatterAdd(const I_ref:TF_TensorPtr; const I_indices:TF_TensorPtr; const I_updates:TF_TensorPtr; const A_use_locking:boolean; const D_ref:boolean=false; const D_indices:boolean=false; const D_updates:boolean=false):TF_TensorPtr;
 function ExecScatterDiv(const I_ref:TF_TensorPtr; const I_indices:TF_TensorPtr; const I_updates:TF_TensorPtr; const A_use_locking:boolean; const D_ref:boolean=false; const D_indices:boolean=false; const D_updates:boolean=false):TF_TensorPtr;
 function ExecScatterMax(const I_ref:TF_TensorPtr; const I_indices:TF_TensorPtr; const I_updates:TF_TensorPtr; const A_use_locking:boolean; const D_ref:boolean=false; const D_indices:boolean=false; const D_updates:boolean=false):TF_TensorPtr;
@@ -2069,7 +2039,6 @@ function ExecStopGradient(const I_input:TF_TensorPtr; const D_input:boolean=fals
 function ExecStridedSlice(const I_input:TF_TensorPtr; const I_begin:TF_TensorPtr; const I_end:TF_TensorPtr; const I_strides:TF_TensorPtr; const A_begin_mask:integer; const A_end_mask:integer; const A_ellipsis_mask:integer; const A_new_axis_mask:integer; const A_shrink_axis_mask:integer; const D_input:boolean=false; const D_begin:boolean=false; const D_end:boolean=false; const D_strides:boolean=false):TF_TensorPtr;
 function ExecStridedSliceAssign(const I_ref:TF_TensorPtr; const I_begin:TF_TensorPtr; const I_end:TF_TensorPtr; const I_strides:TF_TensorPtr; const I_value:TF_TensorPtr; const A_begin_mask:integer; const A_end_mask:integer; const A_ellipsis_mask:integer; const A_new_axis_mask:integer; const A_shrink_axis_mask:integer; const D_ref:boolean=false; const D_begin:boolean=false; const D_end:boolean=false; const D_strides:boolean=false; const D_value:boolean=false):TF_TensorPtr;
 function ExecStridedSliceGrad(const I_shape:TF_TensorPtr; const I_begin:TF_TensorPtr; const I_end:TF_TensorPtr; const I_strides:TF_TensorPtr; const I_dy:TF_TensorPtr; const A_begin_mask:integer; const A_end_mask:integer; const A_ellipsis_mask:integer; const A_new_axis_mask:integer; const A_shrink_axis_mask:integer; const D_shape:boolean=false; const D_begin:boolean=false; const D_end:boolean=false; const D_strides:boolean=false; const D_dy:boolean=false):TF_TensorPtr;
-function ExecStringFormat(const I_inputs:TF_TensorPtr; const A_T:array of TF_DataType; const A_template:string; const A_placeholder:string; const A_summarize:integer; const D_inputs:boolean=false):TF_TensorPtr;
 function ExecStringLength(const I_input:TF_TensorPtr; const A_unit:string; const D_input:boolean=false):TF_TensorPtr;
 function ExecStringLower(const I_input:TF_TensorPtr; const A_encoding:string; const D_input:boolean=false):TF_TensorPtr;
 function ExecStringStrip(const I_input:TF_TensorPtr; const D_input:boolean=false):TF_TensorPtr;
@@ -2089,7 +2058,6 @@ function ExecTPUCompilationResult():TF_TensorPtr;
 function ExecTPUEmbeddingActivations(const I_embedding_variable:TF_TensorPtr; const I_sliced_activations:TF_TensorPtr; const A_table_id:integer; const A_lookup_id:integer; const D_embedding_variable:boolean=false; const D_sliced_activations:boolean=false):TF_TensorPtr;
 function ExecTPUOrdinalSelector():TF_TensorPtr;
 function ExecTakeDataset(const I_input_dataset:TF_TensorPtr; const I_count:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_count:boolean=false):TF_TensorPtr;
-function ExecTakeWhileDataset(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const A_predicate:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false):TF_TensorPtr;
 function ExecTan(const I_x:TF_TensorPtr; const D_x:boolean=false):TF_TensorPtr;
 function ExecTanh(const I_x:TF_TensorPtr; const D_x:boolean=false):TF_TensorPtr;
 function ExecTanhGrad(const I_y:TF_TensorPtr; const I_dy:TF_TensorPtr; const D_y:boolean=false; const D_dy:boolean=false):TF_TensorPtr;
@@ -2118,7 +2086,6 @@ function ExecTensorArrayV2(const I_size:TF_TensorPtr; const A_dtype:TF_DataType;
 function ExecTensorArrayWrite(const I_handle:TF_TensorPtr; const I_index:TF_TensorPtr; const I_value:TF_TensorPtr; const I_flow_in:TF_TensorPtr; const D_handle:boolean=false; const D_index:boolean=false; const D_value:boolean=false; const D_flow_in:boolean=false):TF_TensorPtr;
 function ExecTensorArrayWriteV2(const I_handle:TF_TensorPtr; const I_index:TF_TensorPtr; const I_value:TF_TensorPtr; const I_flow_in:TF_TensorPtr; const D_handle:boolean=false; const D_index:boolean=false; const D_value:boolean=false; const D_flow_in:boolean=false):TF_TensorPtr;
 function ExecTensorArrayWriteV3(const I_handle:TF_TensorPtr; const I_index:TF_TensorPtr; const I_value:TF_TensorPtr; const I_flow_in:TF_TensorPtr; const D_handle:boolean=false; const D_index:boolean=false; const D_value:boolean=false; const D_flow_in:boolean=false):TF_TensorPtr;
-function ExecTensorDataset(const I_components:TF_TensorPtr; const A_Toutput_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_components:boolean=false):TF_TensorPtr;
 function ExecTensorForestTreeIsInitializedOp(const I_tree_handle:TF_TensorPtr; const D_tree_handle:boolean=false):TF_TensorPtr;
 function ExecTensorForestTreePredict(const I_tree_handle:TF_TensorPtr; const I_dense_features:TF_TensorPtr; const A_logits_dimension:integer; const D_tree_handle:boolean=false; const D_dense_features:boolean=false):TF_TensorPtr;
 function ExecTensorForestTreeResourceHandleOp(const A_container:string; const A_shared_name:string):TF_TensorPtr;
@@ -2143,7 +2110,6 @@ function ExecTensorListStack(const I_input_handle:TF_TensorPtr; const I_element_
 function ExecTensorScatterAdd(const I_tensor:TF_TensorPtr; const I_indices:TF_TensorPtr; const I_updates:TF_TensorPtr; const D_tensor:boolean=false; const D_indices:boolean=false; const D_updates:boolean=false):TF_TensorPtr;
 function ExecTensorScatterSub(const I_tensor:TF_TensorPtr; const I_indices:TF_TensorPtr; const I_updates:TF_TensorPtr; const D_tensor:boolean=false; const D_indices:boolean=false; const D_updates:boolean=false):TF_TensorPtr;
 function ExecTensorScatterUpdate(const I_tensor:TF_TensorPtr; const I_indices:TF_TensorPtr; const I_updates:TF_TensorPtr; const D_tensor:boolean=false; const D_indices:boolean=false; const D_updates:boolean=false):TF_TensorPtr;
-function ExecTensorSliceDataset(const I_components:TF_TensorPtr; const A_Toutput_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_components:boolean=false):TF_TensorPtr;
 function ExecTensorStridedSliceUpdate(const I_input:TF_TensorPtr; const I_begin:TF_TensorPtr; const I_end:TF_TensorPtr; const I_strides:TF_TensorPtr; const I_value:TF_TensorPtr; const A_begin_mask:integer; const A_end_mask:integer; const A_ellipsis_mask:integer; const A_new_axis_mask:integer; const A_shrink_axis_mask:integer; const D_input:boolean=false; const D_begin:boolean=false; const D_end:boolean=false; const D_strides:boolean=false; const D_value:boolean=false):TF_TensorPtr;
 function ExecTensorSummary(const I_tensor:TF_TensorPtr; const A_description:string; const A_labels:array of string; const A_display_name:string; const D_tensor:boolean=false):TF_TensorPtr;
 function ExecTensorSummaryV2(const I_tag:TF_TensorPtr; const I_tensor:TF_TensorPtr; const I_serialized_summary_metadata:TF_TensorPtr; const D_tag:boolean=false; const D_tensor:boolean=false; const D_serialized_summary_metadata:boolean=false):TF_TensorPtr;
@@ -2197,6 +2163,7 @@ function ExecZeta(const I_x:TF_TensorPtr; const I_q:TF_TensorPtr; const D_x:bool
 
 implementation
 
+//  The TGraphExt methods
 function TGraphExt.AddAbort(const A_error_msg:string; const A_exit_without_error:boolean):string;
   begin
   result:=AddOper('Abort',[],[],[],[],['error_msg','exit_without_error'],['string','bool'],[@A_error_msg,@A_exit_without_error])
@@ -2207,7 +2174,7 @@ function TGraphExt.AddAbs(const I_x:string; const O_y:string; const A_T:TF_DataT
   end;
 function TGraphExt.AddAccumulateNV2(const IL_inputs:string; const O_sum:string; const A_N:cint64; const A_T:TF_DataType; const A_shape:TF_Shape):string;
   begin
-  result:=AddOper('AccumulateNV2',[],[IL_inputs],[],[O_sum],['N','T','shape'],['int','type','shape'],[@A_N,@A_T,@A_shape])
+  result:=AddOper('AccumulateNV2',[],[IL_inputs],[A_N],[O_sum],['N','T','shape'],['int','type','shape'],[@A_N,@A_T,@A_shape])
   end;
 function TGraphExt.AddAccumulatorApplyGradient(const I_handle:string; const I_local_step:string; const I_gradient:string; const A_dtype:TF_DataType):string;
   begin
@@ -2243,7 +2210,7 @@ function TGraphExt.AddAddManySparseToTensorsMap(const I_sparse_indices:string; c
   end;
 function TGraphExt.AddAddN(const IL_inputs:string; const O_sum:string; const A_N:cint64; const A_T:TF_DataType):string;
   begin
-  result:=AddOper('AddN',[],[IL_inputs],[],[O_sum],['N','T'],['int','type'],[@A_N,@A_T])
+  result:=AddOper('AddN',[],[IL_inputs],[A_N],[O_sum],['N','T'],['int','type'],[@A_N,@A_T])
   end;
 function TGraphExt.AddAddSparseToTensorsMap(const I_sparse_indices:string; const I_sparse_values:string; const I_sparse_shape:string; const O_sparse_handle:string; const A_T:TF_DataType; const A_container:string; const A_shared_name:string):string;
   begin
@@ -2285,11 +2252,11 @@ function TGraphExt.AddAngle(const I_input:string; const O_output:string; const A
   begin
   result:=AddOper('Angle',[I_input],[],[],[O_output],['T','Tout'],['type','type'],[@A_T,@A_Tout])
   end;
-function TGraphExt.AddAnonymousIterator(const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddAnonymousIterator(const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('AnonymousIterator',[],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddAnonymousIteratorV2(const O_handle:string; const O_deleter:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddAnonymousIteratorV2(const O_handle:string; const O_deleter:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('AnonymousIteratorV2',[],[],[],[O_handle,O_deleter],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -2297,7 +2264,7 @@ function TGraphExt.AddAnonymousMemoryCache(const O_handle:string; const O_delete
   begin
   result:=AddOper('AnonymousMemoryCache',[],[],[],[O_handle,O_deleter],[],[],[])
   end;
-function TGraphExt.AddAnonymousMultiDeviceIterator(const O_handle:string; const O_deleter:string; const A_devices:array of string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddAnonymousMultiDeviceIterator(const O_handle:string; const O_deleter:string; const A_devices:TF_StringList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('AnonymousMultiDeviceIterator',[],[],[],[O_handle,O_deleter],['devices','output_types','output_shapes'],['list(string)','list(type)','list(shape)'],[@A_devices,@A_output_types,@A_output_shapes])
   end;
@@ -2397,11 +2364,11 @@ function TGraphExt.AddAsinh(const I_x:string; const O_y:string; const A_T:TF_Dat
   begin
   result:=AddOper('Asinh',[I_x],[],[],[O_y],['T'],['type'],[@A_T])
   end;
-function TGraphExt.AddAssert(const I_condition:string; const I_data:string; const A_T:array of TF_DataType; const A_summarize:cint64):string;
+function TGraphExt.AddAssert(const I_condition:string; const IL_data:string; const A_T:TF_TypeList; const A_summarize:cint64):string;
   begin
-  result:=AddOper('Assert',[I_condition,I_data],[],[],[],['T','summarize'],['list(type)','int'],[@A_T,@A_summarize])
+  result:=AddOper('Assert',[I_condition],[IL_data],[Length(A_T)],[],['T','summarize'],['list(type)','int'],[@A_T,@A_summarize])
   end;
-function TGraphExt.AddAssertNextDataset(const I_input_dataset:string; const I_transformations:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddAssertNextDataset(const I_input_dataset:string; const I_transformations:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('AssertNextDataset',[I_input_dataset,I_transformations],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -2453,27 +2420,27 @@ function TGraphExt.AddAudioSummaryV2(const I_tag:string; const I_tensor:string; 
   begin
   result:=AddOper('AudioSummaryV2',[I_tag,I_tensor,I_sample_rate],[],[],[O_summary],['max_outputs'],['int'],[@A_max_outputs])
   end;
-function TGraphExt.AddAutoShardDataset(const I_input_dataset:string; const I_num_workers:string; const I_index:string; const O_handle:string; const A_auto_shard_policy:cint64; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddAutoShardDataset(const I_input_dataset:string; const I_num_workers:string; const I_index:string; const O_handle:string; const A_auto_shard_policy:cint64; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('AutoShardDataset',[I_input_dataset,I_num_workers,I_index],[],[],[O_handle],['auto_shard_policy','output_types','output_shapes'],['int','list(type)','list(shape)'],[@A_auto_shard_policy,@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddAvgPool(const I_value:string; const O_output:string; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
+function TGraphExt.AddAvgPool(const I_value:string; const O_output:string; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
   begin
   result:=AddOper('AvgPool',[I_value],[],[],[O_output],['ksize','strides','padding','data_format','T'],['list(int)','list(int)','string','string','type'],[@A_ksize,@A_strides,@A_padding,@A_data_format,@A_T])
   end;
-function TGraphExt.AddAvgPool3D(const I_input:string; const O_output:string; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
+function TGraphExt.AddAvgPool3D(const I_input:string; const O_output:string; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
   begin
   result:=AddOper('AvgPool3D',[I_input],[],[],[O_output],['ksize','strides','padding','data_format','T'],['list(int)','list(int)','string','string','type'],[@A_ksize,@A_strides,@A_padding,@A_data_format,@A_T])
   end;
-function TGraphExt.AddAvgPool3DGrad(const I_orig_input_shape:string; const I_grad:string; const O_output:string; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
+function TGraphExt.AddAvgPool3DGrad(const I_orig_input_shape:string; const I_grad:string; const O_output:string; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
   begin
   result:=AddOper('AvgPool3DGrad',[I_orig_input_shape,I_grad],[],[],[O_output],['ksize','strides','padding','data_format','T'],['list(int)','list(int)','string','string','type'],[@A_ksize,@A_strides,@A_padding,@A_data_format,@A_T])
   end;
-function TGraphExt.AddAvgPoolGrad(const I_orig_input_shape:string; const I_grad:string; const O_output:string; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
+function TGraphExt.AddAvgPoolGrad(const I_orig_input_shape:string; const I_grad:string; const O_output:string; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
   begin
   result:=AddOper('AvgPoolGrad',[I_orig_input_shape,I_grad],[],[],[O_output],['ksize','strides','padding','data_format','T'],['list(int)','list(int)','string','string','type'],[@A_ksize,@A_strides,@A_padding,@A_data_format,@A_T])
   end;
-function TGraphExt.AddBarrier(const O_handle:string; const A_component_types:array of TF_DataType; const A_shapes:array of TF_Shape; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddBarrier(const O_handle:string; const A_component_types:TF_TypeList; const A_shapes:TF_ShapeList; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
   begin
   result:=AddOper('Barrier',[],[],[],[O_handle],['component_types','shapes','capacity','container','shared_name'],['list(type)','list(shape)','int','string','string'],[@A_component_types,@A_shapes,@A_capacity,@A_container,@A_shared_name])
   end;
@@ -2493,13 +2460,13 @@ function TGraphExt.AddBarrierReadySize(const I_handle:string; const O_size:strin
   begin
   result:=AddOper('BarrierReadySize',[I_handle],[],[],[O_size],[],[],[])
   end;
-function TGraphExt.AddBarrierTakeMany(const I_handle:string; const I_num_elements:string; const O_indices:string; const O_keys:string; const OL_values:string; const A_component_types:array of TF_DataType; const A_allow_small_batch:boolean; const A_wait_for_incomplete:boolean; const A_timeout_ms:cint64):string;
+function TGraphExt.AddBarrierTakeMany(const I_handle:string; const I_num_elements:string; const O_indices:string; const O_keys:string; const OL_values:string; const A_component_types:TF_TypeList; const A_allow_small_batch:boolean; const A_wait_for_incomplete:boolean; const A_timeout_ms:cint64):string;
   begin
   result:=AddOper('BarrierTakeMany',[I_handle,I_num_elements],[],[],[O_indices,O_keys,OL_values],['component_types','allow_small_batch','wait_for_incomplete','timeout_ms'],['list(type)','bool','bool','int'],[@A_component_types,@A_allow_small_batch,@A_wait_for_incomplete,@A_timeout_ms])
   end;
-function TGraphExt.AddBatch(const I_in_tensors:string; const O_batch_index:string; const O_id:string; const OL_batched_tensors:string; const A_num_batch_threads:cint64; const A_max_batch_size:cint64; const A_max_enqueued_batches:cint64; const A_batch_timeout_micros:cint64; const A_allowed_batch_sizes:array of cint64; const A_grad_timeout_micros:cint64; const A_container:string; const A_shared_name:string; const A_batching_queue:string; const A_T:array of TF_DataType):string;
+function TGraphExt.AddBatch(const IL_in_tensors:string; const O_batch_index:string; const O_id:string; const OL_batched_tensors:string; const A_num_batch_threads:cint64; const A_max_batch_size:cint64; const A_max_enqueued_batches:cint64; const A_batch_timeout_micros:cint64; const A_allowed_batch_sizes:TF_IntList; const A_grad_timeout_micros:cint64; const A_container:string; const A_shared_name:string; const A_batching_queue:string; const A_T:TF_TypeList):string;
   begin
-  result:=AddOper('Batch',[I_in_tensors],[],[],[O_batch_index,O_id,OL_batched_tensors],['num_batch_threads','max_batch_size','max_enqueued_batches','batch_timeout_micros','allowed_batch_sizes','grad_timeout_micros','container','shared_name','batching_queue','T'],['int','int','int','int','list(int)','int','string','string','string','list(type)'],[@A_num_batch_threads,@A_max_batch_size,@A_max_enqueued_batches,@A_batch_timeout_micros,@A_allowed_batch_sizes,@A_grad_timeout_micros,@A_container,@A_shared_name,@A_batching_queue,@A_T])
+  result:=AddOper('Batch',[],[IL_in_tensors],[Length(A_T)],[O_batch_index,O_id,OL_batched_tensors],['num_batch_threads','max_batch_size','max_enqueued_batches','batch_timeout_micros','allowed_batch_sizes','grad_timeout_micros','container','shared_name','batching_queue','T'],['int','int','int','int','list(int)','int','string','string','string','list(type)'],[@A_num_batch_threads,@A_max_batch_size,@A_max_enqueued_batches,@A_batch_timeout_micros,@A_allowed_batch_sizes,@A_grad_timeout_micros,@A_container,@A_shared_name,@A_batching_queue,@A_T])
   end;
 function TGraphExt.AddBatchCholesky(const I_input:string; const O_output:string; const A_T:TF_DataType):string;
   begin
@@ -2509,11 +2476,11 @@ function TGraphExt.AddBatchCholeskyGrad(const I_l:string; const I_grad:string; c
   begin
   result:=AddOper('BatchCholeskyGrad',[I_l,I_grad],[],[],[O_output],['T'],['type'],[@A_T])
   end;
-function TGraphExt.AddBatchDataset(const I_input_dataset:string; const I_batch_size:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddBatchDataset(const I_input_dataset:string; const I_batch_size:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('BatchDataset',[I_input_dataset,I_batch_size],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddBatchDatasetV2(const I_input_dataset:string; const I_batch_size:string; const I_drop_remainder:string; const O_handle:string; const A_parallel_copy:boolean; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddBatchDatasetV2(const I_input_dataset:string; const I_batch_size:string; const I_drop_remainder:string; const O_handle:string; const A_parallel_copy:boolean; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('BatchDatasetV2',[I_input_dataset,I_batch_size,I_drop_remainder],[],[],[O_handle],['parallel_copy','output_types','output_shapes'],['bool','list(type)','list(shape)'],[@A_parallel_copy,@A_output_types,@A_output_shapes])
   end;
@@ -2529,9 +2496,9 @@ function TGraphExt.AddBatchFFT3D(const I_input:string; const O_output:string):st
   begin
   result:=AddOper('BatchFFT3D',[I_input],[],[],[O_output],[],[],[])
   end;
-function TGraphExt.AddBatchFunction(const I_in_tensors:string; const I_captured_tensors:string; const OL_out_tensors:string; const A_f:TF_Function; const A_num_batch_threads:cint64; const A_max_batch_size:cint64; const A_batch_timeout_micros:cint64; const A_max_enqueued_batches:cint64; const A_allowed_batch_sizes:array of cint64; const A_container:string; const A_shared_name:string; const A_batching_queue:string; const A_Tin:array of TF_DataType; const A_Tcaptured:array of TF_DataType; const A_Tout:array of TF_DataType):string;
+function TGraphExt.AddBatchFunction(const IL_in_tensors:string; const IL_captured_tensors:string; const OL_out_tensors:string; const A_f:TF_Function; const A_num_batch_threads:cint64; const A_max_batch_size:cint64; const A_batch_timeout_micros:cint64; const A_max_enqueued_batches:cint64; const A_allowed_batch_sizes:TF_IntList; const A_container:string; const A_shared_name:string; const A_batching_queue:string; const A_Tin:TF_TypeList; const A_Tcaptured:TF_TypeList; const A_Tout:TF_TypeList):string;
   begin
-  result:=AddOper('BatchFunction',[I_in_tensors,I_captured_tensors],[],[],[OL_out_tensors],['f','num_batch_threads','max_batch_size','batch_timeout_micros','max_enqueued_batches','allowed_batch_sizes','container','shared_name','batching_queue','Tin','Tcaptured','Tout'],['func','int','int','int','int','list(int)','string','string','string','list(type)','list(type)','list(type)'],[@A_f,@A_num_batch_threads,@A_max_batch_size,@A_batch_timeout_micros,@A_max_enqueued_batches,@A_allowed_batch_sizes,@A_container,@A_shared_name,@A_batching_queue,@A_Tin,@A_Tcaptured,@A_Tout])
+  result:=AddOper('BatchFunction',[],[IL_in_tensors,IL_captured_tensors],[Length(A_Tin),Length(A_Tcaptured)],[OL_out_tensors],['f','num_batch_threads','max_batch_size','batch_timeout_micros','max_enqueued_batches','allowed_batch_sizes','container','shared_name','batching_queue','Tin','Tcaptured','Tout'],['func','int','int','int','int','list(int)','string','string','string','list(type)','list(type)','list(type)'],[@A_f,@A_num_batch_threads,@A_max_batch_size,@A_batch_timeout_micros,@A_max_enqueued_batches,@A_allowed_batch_sizes,@A_container,@A_shared_name,@A_batching_queue,@A_Tin,@A_Tcaptured,@A_Tout])
   end;
 function TGraphExt.AddBatchIFFT(const I_input:string; const O_output:string):string;
   begin
@@ -2683,7 +2650,7 @@ function TGraphExt.AddBoostedTreesAggregateStats(const I_node_ids:string; const 
   end;
 function TGraphExt.AddBoostedTreesBucketize(const IL_float_values:string; const IL_bucket_boundaries:string; const OL_buckets:string; const A_num_features:cint64):string;
   begin
-  result:=AddOper('BoostedTreesBucketize',[],[IL_float_values,IL_bucket_boundaries],[],[OL_buckets],['num_features'],['int'],[@A_num_features])
+  result:=AddOper('BoostedTreesBucketize',[],[IL_float_values,IL_bucket_boundaries],[A_num_features,A_num_features],[OL_buckets],['num_features'],['int'],[@A_num_features])
   end;
 function TGraphExt.AddBoostedTreesCalculateBestFeatureSplit(const I_node_id_range:string; const I_stats_summary:string; const I_l1:string; const I_l2:string; const I_tree_complexity:string; const I_min_node_weight:string; const O_node_ids:string; const O_gains:string; const O_feature_dimensions:string; const O_thresholds:string; const O_left_node_contribs:string; const O_right_node_contribs:string; const O_split_with_default_directions:string; const A_logits_dimension:cint64; const A_split_type:string):string;
   begin
@@ -2691,11 +2658,11 @@ function TGraphExt.AddBoostedTreesCalculateBestFeatureSplit(const I_node_id_rang
   end;
 function TGraphExt.AddBoostedTreesCalculateBestFeatureSplitV2(const I_node_id_range:string; const I_split_types:string; const I_candidate_feature_ids:string; const I_l1:string; const I_l2:string; const I_tree_complexity:string; const I_min_node_weight:string; const IL_stats_summaries_list:string; const O_node_ids:string; const O_gains:string; const O_feature_ids:string; const O_feature_dimensions:string; const O_thresholds:string; const O_left_node_contribs:string; const O_right_node_contribs:string; const O_split_with_default_directions:string; const A_num_features:cint64; const A_logits_dimension:cint64):string;
   begin
-  result:=AddOper('BoostedTreesCalculateBestFeatureSplitV2',[I_node_id_range,I_split_types,I_candidate_feature_ids,I_l1,I_l2,I_tree_complexity,I_min_node_weight],[IL_stats_summaries_list],[],[O_node_ids,O_gains,O_feature_ids,O_feature_dimensions,O_thresholds,O_left_node_contribs,O_right_node_contribs,O_split_with_default_directions],['num_features','logits_dimension'],['int','int'],[@A_num_features,@A_logits_dimension])
+  result:=AddOper('BoostedTreesCalculateBestFeatureSplitV2',[I_node_id_range,I_split_types,I_candidate_feature_ids,I_l1,I_l2,I_tree_complexity,I_min_node_weight],[IL_stats_summaries_list],[A_num_features],[O_node_ids,O_gains,O_feature_ids,O_feature_dimensions,O_thresholds,O_left_node_contribs,O_right_node_contribs,O_split_with_default_directions],['num_features','logits_dimension'],['int','int'],[@A_num_features,@A_logits_dimension])
   end;
 function TGraphExt.AddBoostedTreesCalculateBestGainsPerFeature(const I_node_id_range:string; const I_l1:string; const I_l2:string; const I_tree_complexity:string; const I_min_node_weight:string; const IL_stats_summary_list:string; const OL_node_ids_list:string; const OL_gains_list:string; const OL_thresholds_list:string; const OL_left_node_contribs_list:string; const OL_right_node_contribs_list:string; const A_max_splits:cint64; const A_num_features:cint64):string;
   begin
-  result:=AddOper('BoostedTreesCalculateBestGainsPerFeature',[I_node_id_range,I_l1,I_l2,I_tree_complexity,I_min_node_weight],[IL_stats_summary_list],[],[OL_node_ids_list,OL_gains_list,OL_thresholds_list,OL_left_node_contribs_list,OL_right_node_contribs_list],['max_splits','num_features'],['int','int'],[@A_max_splits,@A_num_features])
+  result:=AddOper('BoostedTreesCalculateBestGainsPerFeature',[I_node_id_range,I_l1,I_l2,I_tree_complexity,I_min_node_weight],[IL_stats_summary_list],[A_num_features],[OL_node_ids_list,OL_gains_list,OL_thresholds_list,OL_left_node_contribs_list,OL_right_node_contribs_list],['max_splits','num_features'],['int','int'],[@A_max_splits,@A_num_features])
   end;
 function TGraphExt.AddBoostedTreesCenterBias(const I_tree_ensemble_handle:string; const I_mean_gradients:string; const I_mean_hessians:string; const I_l1:string; const I_l2:string; const O_continue_centering:string):string;
   begin
@@ -2719,7 +2686,7 @@ function TGraphExt.AddBoostedTreesEnsembleResourceHandleOp(const O_resource:stri
   end;
 function TGraphExt.AddBoostedTreesExampleDebugOutputs(const I_tree_ensemble_handle:string; const IL_bucketized_features:string; const O_examples_debug_outputs_serialized:string; const A_num_bucketized_features:cint64; const A_logits_dimension:cint64):string;
   begin
-  result:=AddOper('BoostedTreesExampleDebugOutputs',[I_tree_ensemble_handle],[IL_bucketized_features],[],[O_examples_debug_outputs_serialized],['num_bucketized_features','logits_dimension'],['int','int'],[@A_num_bucketized_features,@A_logits_dimension])
+  result:=AddOper('BoostedTreesExampleDebugOutputs',[I_tree_ensemble_handle],[IL_bucketized_features],[A_num_bucketized_features],[O_examples_debug_outputs_serialized],['num_bucketized_features','logits_dimension'],['int','int'],[@A_num_bucketized_features,@A_logits_dimension])
   end;
 function TGraphExt.AddBoostedTreesFlushQuantileSummaries(const I_quantile_stream_resource_handle:string; const OL_summaries:string; const A_num_features:cint64):string;
   begin
@@ -2731,23 +2698,23 @@ function TGraphExt.AddBoostedTreesGetEnsembleStates(const I_tree_ensemble_handle
   end;
 function TGraphExt.AddBoostedTreesMakeQuantileSummaries(const I_example_weights:string; const I_epsilon:string; const IL_float_values:string; const OL_summaries:string; const A_num_features:cint64):string;
   begin
-  result:=AddOper('BoostedTreesMakeQuantileSummaries',[I_example_weights,I_epsilon],[IL_float_values],[],[OL_summaries],['num_features'],['int'],[@A_num_features])
+  result:=AddOper('BoostedTreesMakeQuantileSummaries',[I_example_weights,I_epsilon],[IL_float_values],[A_num_features],[OL_summaries],['num_features'],['int'],[@A_num_features])
   end;
 function TGraphExt.AddBoostedTreesMakeStatsSummary(const I_node_ids:string; const I_gradients:string; const I_hessians:string; const IL_bucketized_features_list:string; const O_stats_summary:string; const A_max_splits:cint64; const A_num_buckets:cint64; const A_num_features:cint64):string;
   begin
-  result:=AddOper('BoostedTreesMakeStatsSummary',[I_node_ids,I_gradients,I_hessians],[IL_bucketized_features_list],[],[O_stats_summary],['max_splits','num_buckets','num_features'],['int','int','int'],[@A_max_splits,@A_num_buckets,@A_num_features])
+  result:=AddOper('BoostedTreesMakeStatsSummary',[I_node_ids,I_gradients,I_hessians],[IL_bucketized_features_list],[A_num_features],[O_stats_summary],['max_splits','num_buckets','num_features'],['int','int','int'],[@A_max_splits,@A_num_buckets,@A_num_features])
   end;
 function TGraphExt.AddBoostedTreesPredict(const I_tree_ensemble_handle:string; const IL_bucketized_features:string; const O_logits:string; const A_num_bucketized_features:cint64; const A_logits_dimension:cint64):string;
   begin
-  result:=AddOper('BoostedTreesPredict',[I_tree_ensemble_handle],[IL_bucketized_features],[],[O_logits],['num_bucketized_features','logits_dimension'],['int','int'],[@A_num_bucketized_features,@A_logits_dimension])
+  result:=AddOper('BoostedTreesPredict',[I_tree_ensemble_handle],[IL_bucketized_features],[A_num_bucketized_features],[O_logits],['num_bucketized_features','logits_dimension'],['int','int'],[@A_num_bucketized_features,@A_logits_dimension])
   end;
 function TGraphExt.AddBoostedTreesQuantileStreamResourceAddSummaries(const I_quantile_stream_resource_handle:string; const IL_summaries:string; const A_num_features:cint64):string;
   begin
-  result:=AddOper('BoostedTreesQuantileStreamResourceAddSummaries',[I_quantile_stream_resource_handle],[IL_summaries],[],[],['num_features'],['int'],[@A_num_features])
+  result:=AddOper('BoostedTreesQuantileStreamResourceAddSummaries',[I_quantile_stream_resource_handle],[IL_summaries],[A_num_features],[],['num_features'],['int'],[@A_num_features])
   end;
 function TGraphExt.AddBoostedTreesQuantileStreamResourceDeserialize(const I_quantile_stream_resource_handle:string; const IL_bucket_boundaries:string; const A_num_streams:cint64):string;
   begin
-  result:=AddOper('BoostedTreesQuantileStreamResourceDeserialize',[I_quantile_stream_resource_handle],[IL_bucket_boundaries],[],[],['num_streams'],['int'],[@A_num_streams])
+  result:=AddOper('BoostedTreesQuantileStreamResourceDeserialize',[I_quantile_stream_resource_handle],[IL_bucket_boundaries],[A_num_streams],[],['num_streams'],['int'],[@A_num_streams])
   end;
 function TGraphExt.AddBoostedTreesQuantileStreamResourceFlush(const I_quantile_stream_resource_handle:string; const I_num_buckets:string; const A_generate_quantiles:boolean):string;
   begin
@@ -2775,15 +2742,15 @@ function TGraphExt.AddBoostedTreesSparseCalculateBestFeatureSplit(const I_node_i
   end;
 function TGraphExt.AddBoostedTreesTrainingPredict(const I_tree_ensemble_handle:string; const I_cached_tree_ids:string; const I_cached_node_ids:string; const IL_bucketized_features:string; const O_partial_logits:string; const O_tree_ids:string; const O_node_ids:string; const A_num_bucketized_features:cint64; const A_logits_dimension:cint64):string;
   begin
-  result:=AddOper('BoostedTreesTrainingPredict',[I_tree_ensemble_handle,I_cached_tree_ids,I_cached_node_ids],[IL_bucketized_features],[],[O_partial_logits,O_tree_ids,O_node_ids],['num_bucketized_features','logits_dimension'],['int','int'],[@A_num_bucketized_features,@A_logits_dimension])
+  result:=AddOper('BoostedTreesTrainingPredict',[I_tree_ensemble_handle,I_cached_tree_ids,I_cached_node_ids],[IL_bucketized_features],[A_num_bucketized_features],[O_partial_logits,O_tree_ids,O_node_ids],['num_bucketized_features','logits_dimension'],['int','int'],[@A_num_bucketized_features,@A_logits_dimension])
   end;
 function TGraphExt.AddBoostedTreesUpdateEnsemble(const I_tree_ensemble_handle:string; const I_feature_ids:string; const I_max_depth:string; const I_learning_rate:string; const IL_node_ids:string; const IL_gains:string; const IL_thresholds:string; const IL_left_node_contribs:string; const IL_right_node_contribs:string; const A_pruning_mode:cint64; const A_num_features:cint64):string;
   begin
-  result:=AddOper('BoostedTreesUpdateEnsemble',[I_tree_ensemble_handle,I_feature_ids,I_max_depth,I_learning_rate],[IL_node_ids,IL_gains,IL_thresholds,IL_left_node_contribs,IL_right_node_contribs],[],[],['pruning_mode','num_features'],['int','int'],[@A_pruning_mode,@A_num_features])
+  result:=AddOper('BoostedTreesUpdateEnsemble',[I_tree_ensemble_handle,I_feature_ids,I_max_depth,I_learning_rate],[IL_node_ids,IL_gains,IL_thresholds,IL_left_node_contribs,IL_right_node_contribs],[A_num_features,A_num_features,A_num_features,A_num_features,A_num_features],[],['pruning_mode','num_features'],['int','int'],[@A_pruning_mode,@A_num_features])
   end;
 function TGraphExt.AddBoostedTreesUpdateEnsembleV2(const I_tree_ensemble_handle:string; const I_max_depth:string; const I_learning_rate:string; const I_pruning_mode:string; const IL_feature_ids:string; const IL_dimension_ids:string; const IL_node_ids:string; const IL_gains:string; const IL_thresholds:string; const IL_left_node_contribs:string; const IL_right_node_contribs:string; const IL_split_types:string; const A_num_features:cint64; const A_logits_dimension:cint64; const A_num_groups:cint64):string;
   begin
-  result:=AddOper('BoostedTreesUpdateEnsembleV2',[I_tree_ensemble_handle,I_max_depth,I_learning_rate,I_pruning_mode],[IL_feature_ids,IL_dimension_ids,IL_node_ids,IL_gains,IL_thresholds,IL_left_node_contribs,IL_right_node_contribs,IL_split_types],[],[],['num_features','logits_dimension','num_groups'],['int','int','int'],[@A_num_features,@A_logits_dimension,@A_num_groups])
+  result:=AddOper('BoostedTreesUpdateEnsembleV2',[I_tree_ensemble_handle,I_max_depth,I_learning_rate,I_pruning_mode],[IL_feature_ids,IL_dimension_ids,IL_node_ids,IL_gains,IL_thresholds,IL_left_node_contribs,IL_right_node_contribs,IL_split_types],[A_num_groups,A_num_features,A_num_features,A_num_features,A_num_features,A_num_features,A_num_features,A_num_features],[],['num_features','logits_dimension','num_groups'],['int','int','int'],[@A_num_features,@A_logits_dimension,@A_num_groups])
   end;
 function TGraphExt.AddBroadcastArgs(const I_s0:string; const I_s1:string; const O_r0:string; const A_T:TF_DataType):string;
   begin
@@ -2797,11 +2764,11 @@ function TGraphExt.AddBroadcastTo(const I_input:string; const I_shape:string; co
   begin
   result:=AddOper('BroadcastTo',[I_input,I_shape],[],[],[O_output],['T','Tidx'],['type','type'],[@A_T,@A_Tidx])
   end;
-function TGraphExt.AddBucketize(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_boundaries:array of real):string;
+function TGraphExt.AddBucketize(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_boundaries:TF_FloatList):string;
   begin
   result:=AddOper('Bucketize',[I_input],[],[],[O_output],['T','boundaries'],['type','list(float)'],[@A_T,@A_boundaries])
   end;
-function TGraphExt.AddBytesProducedStatsDataset(const I_input_dataset:string; const I_tag:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddBytesProducedStatsDataset(const I_input_dataset:string; const I_tag:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('BytesProducedStatsDataset',[I_input_dataset,I_tag],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -2817,9 +2784,9 @@ function TGraphExt.AddCSRSparseMatrixToSparseTensor(const I_sparse_matrix:string
   begin
   result:=AddOper('CSRSparseMatrixToSparseTensor',[I_sparse_matrix],[],[],[O_indices,O_values,O_dense_shape],['type'],['type'],[@A_type])
   end;
-function TGraphExt.AddCSVDataset(const I_filenames:string; const I_compression_type:string; const I_buffer_size:string; const I_header:string; const I_field_delim:string; const I_use_quote_delim:string; const I_na_value:string; const I_select_cols:string; const I_record_defaults:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddCSVDataset(const I_filenames:string; const I_compression_type:string; const I_buffer_size:string; const I_header:string; const I_field_delim:string; const I_use_quote_delim:string; const I_na_value:string; const I_select_cols:string; const IL_record_defaults:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('CSVDataset',[I_filenames,I_compression_type,I_buffer_size,I_header,I_field_delim,I_use_quote_delim,I_na_value,I_select_cols,I_record_defaults],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
+  result:=AddOper('CSVDataset',[I_filenames,I_compression_type,I_buffer_size,I_header,I_field_delim,I_use_quote_delim,I_na_value,I_select_cols],[IL_record_defaults],[Length(A_output_types)],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
 function TGraphExt.AddCTCBeamSearchDecoder(const I_inputs:string; const I_sequence_length:string; const O_log_probability:string; const OL_decoded_indices:string; const OL_decoded_values:string; const OL_decoded_shape:string; const A_beam_width:cint64; const A_top_paths:cint64; const A_merge_repeated:boolean; const A_T:TF_DataType):string;
   begin
@@ -2837,17 +2804,17 @@ function TGraphExt.AddCTCLossV2(const I_inputs:string; const I_labels_indices:st
   begin
   result:=AddOper('CTCLossV2',[I_inputs,I_labels_indices,I_labels_values,I_sequence_length],[],[],[O_loss,O_gradient],['preprocess_collapse_repeated','ctc_merge_repeated','ignore_longer_outputs_than_inputs'],['bool','bool','bool'],[@A_preprocess_collapse_repeated,@A_ctc_merge_repeated,@A_ignore_longer_outputs_than_inputs])
   end;
-function TGraphExt.AddCacheDataset(const I_input_dataset:string; const I_filename:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddCacheDataset(const I_input_dataset:string; const I_filename:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('CacheDataset',[I_input_dataset,I_filename],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddCacheDatasetV2(const I_input_dataset:string; const I_filename:string; const I_cache:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddCacheDatasetV2(const I_input_dataset:string; const I_filename:string; const I_cache:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('CacheDatasetV2',[I_input_dataset,I_filename,I_cache],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddCase(const I_branch_index:string; const I_input:string; const OL_output:string; const A_Tin:array of TF_DataType; const A_Tout:array of TF_DataType; const A_branches:array of TF_Function; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddCase(const I_branch_index:string; const IL_input:string; const OL_output:string; const A_Tin:TF_TypeList; const A_Tout:TF_TypeList; const A_branches:TF_FuncnameList; const A_output_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('Case',[I_branch_index,I_input],[],[],[OL_output],['Tin','Tout','branches','output_shapes'],['list(type)','list(type)','list(func)','list(shape)'],[@A_Tin,@A_Tout,@A_branches,@A_output_shapes])
+  result:=AddOper('Case',[I_branch_index],[IL_input],[Length(A_Tin)],[OL_output],['Tin','Tout','branches','output_shapes'],['list(type)','list(type)','list(func)','list(shape)'],[@A_Tin,@A_Tout,@A_branches,@A_output_shapes])
   end;
 function TGraphExt.AddCast(const I_x:string; const O_y:string; const A_SrcT:TF_DataType; const A_DstT:TF_DataType; const A_Truncate:boolean):string;
   begin
@@ -2873,13 +2840,13 @@ function TGraphExt.AddCholeskyGrad(const I_l:string; const I_grad:string; const 
   begin
   result:=AddOper('CholeskyGrad',[I_l,I_grad],[],[],[O_output],['T'],['type'],[@A_T])
   end;
-function TGraphExt.AddChooseFastestBranchDataset(const I_input_dataset:string; const I_ratio_numerator:string; const I_ratio_denominator:string; const I_other_arguments:string; const O_handle:string; const A_Targuments:array of TF_DataType; const A_num_elements_per_branch:cint64; const A_branches:array of TF_Function; const A_other_arguments_lengths:array of cint64; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddChooseFastestBranchDataset(const I_input_dataset:string; const I_ratio_numerator:string; const I_ratio_denominator:string; const IL_other_arguments:string; const O_handle:string; const A_Targuments:TF_TypeList; const A_num_elements_per_branch:cint64; const A_branches:TF_FuncnameList; const A_other_arguments_lengths:TF_IntList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('ChooseFastestBranchDataset',[I_input_dataset,I_ratio_numerator,I_ratio_denominator,I_other_arguments],[],[],[O_handle],['Targuments','num_elements_per_branch','branches','other_arguments_lengths','output_types','output_shapes'],['list(type)','int','list(func)','list(int)','list(type)','list(shape)'],[@A_Targuments,@A_num_elements_per_branch,@A_branches,@A_other_arguments_lengths,@A_output_types,@A_output_shapes])
+  result:=AddOper('ChooseFastestBranchDataset',[I_input_dataset,I_ratio_numerator,I_ratio_denominator],[IL_other_arguments],[Length(A_Targuments)],[O_handle],['Targuments','num_elements_per_branch','branches','other_arguments_lengths','output_types','output_shapes'],['list(type)','int','list(func)','list(int)','list(type)','list(shape)'],[@A_Targuments,@A_num_elements_per_branch,@A_branches,@A_other_arguments_lengths,@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddChooseFastestDataset(const IL_input_datasets:string; const O_handle:string; const A_N:cint64; const A_num_experiments:cint64; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddChooseFastestDataset(const IL_input_datasets:string; const O_handle:string; const A_N:cint64; const A_num_experiments:cint64; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('ChooseFastestDataset',[],[IL_input_datasets],[],[O_handle],['N','num_experiments','output_types','output_shapes'],['int','int','list(type)','list(shape)'],[@A_N,@A_num_experiments,@A_output_types,@A_output_shapes])
+  result:=AddOper('ChooseFastestDataset',[],[IL_input_datasets],[A_N],[O_handle],['N','num_experiments','output_types','output_shapes'],['int','int','list(type)','list(shape)'],[@A_N,@A_num_experiments,@A_output_types,@A_output_shapes])
   end;
 function TGraphExt.AddClipByValue(const I_t:string; const I_clip_value_min:string; const I_clip_value_max:string; const O_output:string; const A_T:TF_DataType):string;
   begin
@@ -2905,7 +2872,7 @@ function TGraphExt.AddCollectivePermute(const I_input:string; const I_source_tar
   begin
   result:=AddOper('CollectivePermute',[I_input,I_source_target_pairs],[],[],[O_output],['T'],['type'],[@A_T])
   end;
-function TGraphExt.AddCollectiveReduce(const I_input:string; const O_data:string; const A_T:TF_DataType; const A_group_size:cint64; const A_group_key:cint64; const A_instance_key:cint64; const A_merge_op:string; const A_final_op:string; const A_subdiv_offsets:array of cint64; const A_wait_for:array of cint64; const A_communication_hint:string):string;
+function TGraphExt.AddCollectiveReduce(const I_input:string; const O_data:string; const A_T:TF_DataType; const A_group_size:cint64; const A_group_key:cint64; const A_instance_key:cint64; const A_merge_op:string; const A_final_op:string; const A_subdiv_offsets:TF_IntList; const A_wait_for:TF_IntList; const A_communication_hint:string):string;
   begin
   result:=AddOper('CollectiveReduce',[I_input],[],[],[O_data],['T','group_size','group_key','instance_key','merge_op','final_op','subdiv_offsets','wait_for','communication_hint'],['type','int','int','int','string','string','list(int)','list(int)','string'],[@A_T,@A_group_size,@A_group_key,@A_instance_key,@A_merge_op,@A_final_op,@A_subdiv_offsets,@A_wait_for,@A_communication_hint])
   end;
@@ -2931,17 +2898,17 @@ function TGraphExt.AddComputeAccidentalHits(const I_true_classes:string; const I
   end;
 function TGraphExt.AddConcat(const I_concat_dim:string; const IL_values:string; const O_output:string; const A_N:cint64; const A_T:TF_DataType):string;
   begin
-  result:=AddOper('Concat',[I_concat_dim],[IL_values],[],[O_output],['N','T'],['int','type'],[@A_N,@A_T])
+  result:=AddOper('Concat',[I_concat_dim],[IL_values],[A_N],[O_output],['N','T'],['int','type'],[@A_N,@A_T])
   end;
 function TGraphExt.AddConcatOffset(const I_concat_dim:string; const IL_shape:string; const OL_offset:string; const A_N:cint64):string;
   begin
-  result:=AddOper('ConcatOffset',[I_concat_dim],[IL_shape],[],[OL_offset],['N'],['int'],[@A_N])
+  result:=AddOper('ConcatOffset',[I_concat_dim],[IL_shape],[A_N],[OL_offset],['N'],['int'],[@A_N])
   end;
 function TGraphExt.AddConcatV2(const I_axis:string; const IL_values:string; const O_output:string; const A_N:cint64; const A_T:TF_DataType; const A_Tidx:TF_DataType):string;
   begin
-  result:=AddOper('ConcatV2',[I_axis],[IL_values],[],[O_output],['N','T','Tidx'],['int','type','type'],[@A_N,@A_T,@A_Tidx])
+  result:=AddOper('ConcatV2',[I_axis],[IL_values],[A_N],[O_output],['N','T','Tidx'],['int','type','type'],[@A_N,@A_T,@A_Tidx])
   end;
-function TGraphExt.AddConcatenateDataset(const I_input_dataset:string; const I_another_dataset:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddConcatenateDataset(const I_input_dataset:string; const I_another_dataset:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('ConcatenateDataset',[I_input_dataset,I_another_dataset],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -2977,43 +2944,43 @@ function TGraphExt.AddControlTrigger():string;
   begin
   result:=AddOper('ControlTrigger',[],[],[],[],[],[],[])
   end;
-function TGraphExt.AddConv2D(const I_input:string; const I_filter:string; const O_output:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_use_cudnn_on_gpu:boolean; const A_padding:string; const A_explicit_paddings:array of cint64; const A_data_format:string; const A_dilations:array of cint64):string;
+function TGraphExt.AddConv2D(const I_input:string; const I_filter:string; const O_output:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_use_cudnn_on_gpu:boolean; const A_padding:string; const A_explicit_paddings:TF_IntList; const A_data_format:string; const A_dilations:TF_IntList):string;
   begin
   result:=AddOper('Conv2D',[I_input,I_filter],[],[],[O_output],['T','strides','use_cudnn_on_gpu','padding','explicit_paddings','data_format','dilations'],['type','list(int)','bool','string','list(int)','string','list(int)'],[@A_T,@A_strides,@A_use_cudnn_on_gpu,@A_padding,@A_explicit_paddings,@A_data_format,@A_dilations])
   end;
-function TGraphExt.AddConv2DBackpropFilter(const I_input:string; const I_filter_sizes:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_use_cudnn_on_gpu:boolean; const A_padding:string; const A_explicit_paddings:array of cint64; const A_data_format:string; const A_dilations:array of cint64):string;
+function TGraphExt.AddConv2DBackpropFilter(const I_input:string; const I_filter_sizes:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_use_cudnn_on_gpu:boolean; const A_padding:string; const A_explicit_paddings:TF_IntList; const A_data_format:string; const A_dilations:TF_IntList):string;
   begin
   result:=AddOper('Conv2DBackpropFilter',[I_input,I_filter_sizes,I_out_backprop],[],[],[O_output],['T','strides','use_cudnn_on_gpu','padding','explicit_paddings','data_format','dilations'],['type','list(int)','bool','string','list(int)','string','list(int)'],[@A_T,@A_strides,@A_use_cudnn_on_gpu,@A_padding,@A_explicit_paddings,@A_data_format,@A_dilations])
   end;
-function TGraphExt.AddConv2DBackpropInput(const I_input_sizes:string; const I_filter:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_use_cudnn_on_gpu:boolean; const A_padding:string; const A_explicit_paddings:array of cint64; const A_data_format:string; const A_dilations:array of cint64):string;
+function TGraphExt.AddConv2DBackpropInput(const I_input_sizes:string; const I_filter:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_use_cudnn_on_gpu:boolean; const A_padding:string; const A_explicit_paddings:TF_IntList; const A_data_format:string; const A_dilations:TF_IntList):string;
   begin
   result:=AddOper('Conv2DBackpropInput',[I_input_sizes,I_filter,I_out_backprop],[],[],[O_output],['T','strides','use_cudnn_on_gpu','padding','explicit_paddings','data_format','dilations'],['type','list(int)','bool','string','list(int)','string','list(int)'],[@A_T,@A_strides,@A_use_cudnn_on_gpu,@A_padding,@A_explicit_paddings,@A_data_format,@A_dilations])
   end;
-function TGraphExt.AddConv3D(const I_input:string; const I_filter:string; const O_output:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_dilations:array of cint64):string;
+function TGraphExt.AddConv3D(const I_input:string; const I_filter:string; const O_output:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_dilations:TF_IntList):string;
   begin
   result:=AddOper('Conv3D',[I_input,I_filter],[],[],[O_output],['T','strides','padding','data_format','dilations'],['type','list(int)','string','string','list(int)'],[@A_T,@A_strides,@A_padding,@A_data_format,@A_dilations])
   end;
-function TGraphExt.AddConv3DBackpropFilter(const I_input:string; const I_filter:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64):string;
+function TGraphExt.AddConv3DBackpropFilter(const I_input:string; const I_filter:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList):string;
   begin
   result:=AddOper('Conv3DBackpropFilter',[I_input,I_filter,I_out_backprop],[],[],[O_output],['T','strides','padding','dilations'],['type','list(int)','string','list(int)'],[@A_T,@A_strides,@A_padding,@A_dilations])
   end;
-function TGraphExt.AddConv3DBackpropFilterV2(const I_input:string; const I_filter_sizes:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_dilations:array of cint64):string;
+function TGraphExt.AddConv3DBackpropFilterV2(const I_input:string; const I_filter_sizes:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_dilations:TF_IntList):string;
   begin
   result:=AddOper('Conv3DBackpropFilterV2',[I_input,I_filter_sizes,I_out_backprop],[],[],[O_output],['T','strides','padding','data_format','dilations'],['type','list(int)','string','string','list(int)'],[@A_T,@A_strides,@A_padding,@A_data_format,@A_dilations])
   end;
-function TGraphExt.AddConv3DBackpropInput(const I_input:string; const I_filter:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64):string;
+function TGraphExt.AddConv3DBackpropInput(const I_input:string; const I_filter:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList):string;
   begin
   result:=AddOper('Conv3DBackpropInput',[I_input,I_filter,I_out_backprop],[],[],[O_output],['T','strides','padding','dilations'],['type','list(int)','string','list(int)'],[@A_T,@A_strides,@A_padding,@A_dilations])
   end;
-function TGraphExt.AddConv3DBackpropInputV2(const I_input_sizes:string; const I_filter:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_dilations:array of cint64; const A_Tshape:TF_DataType):string;
+function TGraphExt.AddConv3DBackpropInputV2(const I_input_sizes:string; const I_filter:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_dilations:TF_IntList; const A_Tshape:TF_DataType):string;
   begin
   result:=AddOper('Conv3DBackpropInputV2',[I_input_sizes,I_filter,I_out_backprop],[],[],[O_output],['T','strides','padding','data_format','dilations','Tshape'],['type','list(int)','string','string','list(int)','type'],[@A_T,@A_strides,@A_padding,@A_data_format,@A_dilations,@A_Tshape])
   end;
-function TGraphExt.AddCopy(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_tensor_name:string; const A_debug_ops_spec:array of string):string;
+function TGraphExt.AddCopy(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_tensor_name:string; const A_debug_ops_spec:TF_StringList):string;
   begin
   result:=AddOper('Copy',[I_input],[],[],[O_output],['T','tensor_name','debug_ops_spec'],['type','string','list(string)'],[@A_T,@A_tensor_name,@A_debug_ops_spec])
   end;
-function TGraphExt.AddCopyHost(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_tensor_name:string; const A_debug_ops_spec:array of string):string;
+function TGraphExt.AddCopyHost(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_tensor_name:string; const A_debug_ops_spec:TF_StringList):string;
   begin
   result:=AddOper('CopyHost',[I_input],[],[],[O_output],['T','tensor_name','debug_ops_spec'],['type','string','list(string)'],[@A_T,@A_tensor_name,@A_debug_ops_spec])
   end;
@@ -3075,11 +3042,11 @@ function TGraphExt.AddCudnnRNNBackpropV3(const I_input:string; const I_input_h:s
   end;
 function TGraphExt.AddCudnnRNNCanonicalToParams(const I_num_layers:string; const I_num_units:string; const I_input_size:string; const IL_weights:string; const IL_biases:string; const O_params:string; const A_T:TF_DataType; const A_num_params:cint64; const A_rnn_mode:string; const A_input_mode:string; const A_direction:string; const A_dropout:real; const A_seed:cint64; const A_seed2:cint64):string;
   begin
-  result:=AddOper('CudnnRNNCanonicalToParams',[I_num_layers,I_num_units,I_input_size],[IL_weights,IL_biases],[],[O_params],['T','num_params','rnn_mode','input_mode','direction','dropout','seed','seed2'],['type','int','string','string','string','float','int','int'],[@A_T,@A_num_params,@A_rnn_mode,@A_input_mode,@A_direction,@A_dropout,@A_seed,@A_seed2])
+  result:=AddOper('CudnnRNNCanonicalToParams',[I_num_layers,I_num_units,I_input_size],[IL_weights,IL_biases],[A_num_params,A_num_params],[O_params],['T','num_params','rnn_mode','input_mode','direction','dropout','seed','seed2'],['type','int','string','string','string','float','int','int'],[@A_T,@A_num_params,@A_rnn_mode,@A_input_mode,@A_direction,@A_dropout,@A_seed,@A_seed2])
   end;
 function TGraphExt.AddCudnnRNNCanonicalToParamsV2(const I_num_layers:string; const I_num_units:string; const I_input_size:string; const IL_weights:string; const IL_biases:string; const O_params:string; const A_T:TF_DataType; const A_num_params_weights:cint64; const A_num_params_biases:cint64; const A_rnn_mode:string; const A_input_mode:string; const A_direction:string; const A_dropout:real; const A_seed:cint64; const A_seed2:cint64; const A_num_proj:cint64):string;
   begin
-  result:=AddOper('CudnnRNNCanonicalToParamsV2',[I_num_layers,I_num_units,I_input_size],[IL_weights,IL_biases],[],[O_params],['T','num_params_weights','num_params_biases','rnn_mode','input_mode','direction','dropout','seed','seed2','num_proj'],['type','int','int','string','string','string','float','int','int','int'],[@A_T,@A_num_params_weights,@A_num_params_biases,@A_rnn_mode,@A_input_mode,@A_direction,@A_dropout,@A_seed,@A_seed2,@A_num_proj])
+  result:=AddOper('CudnnRNNCanonicalToParamsV2',[I_num_layers,I_num_units,I_input_size],[IL_weights,IL_biases],[A_num_params_weights,A_num_params_biases],[O_params],['T','num_params_weights','num_params_biases','rnn_mode','input_mode','direction','dropout','seed','seed2','num_proj'],['type','int','int','string','string','string','float','int','int','int'],[@A_T,@A_num_params_weights,@A_num_params_biases,@A_rnn_mode,@A_input_mode,@A_direction,@A_dropout,@A_seed,@A_seed2,@A_num_proj])
   end;
 function TGraphExt.AddCudnnRNNParamsSize(const I_num_layers:string; const I_num_units:string; const I_input_size:string; const O_params_size:string; const A_T:TF_DataType; const A_S:TF_DataType; const A_rnn_mode:string; const A_input_mode:string; const A_direction:string; const A_dropout:real; const A_seed:cint64; const A_seed2:cint64; const A_num_proj:cint64):string;
   begin
@@ -3129,7 +3096,7 @@ function TGraphExt.AddDatasetFromGraph(const I_graph_def:string; const O_handle:
   begin
   result:=AddOper('DatasetFromGraph',[I_graph_def],[],[],[O_handle],[],[],[])
   end;
-function TGraphExt.AddDatasetToGraph(const I_input_dataset:string; const O_graph:string; const A_stateful_whitelist:array of string; const A_allow_stateful:boolean; const A_strip_device_assignment:boolean):string;
+function TGraphExt.AddDatasetToGraph(const I_input_dataset:string; const O_graph:string; const A_stateful_whitelist:TF_StringList; const A_allow_stateful:boolean; const A_strip_device_assignment:boolean):string;
   begin
   result:=AddOper('DatasetToGraph',[I_input_dataset],[],[],[O_graph],['stateful_whitelist','allow_stateful','strip_device_assignment'],['list(string)','bool','bool'],[@A_stateful_whitelist,@A_allow_stateful,@A_strip_device_assignment])
   end;
@@ -3137,7 +3104,7 @@ function TGraphExt.AddDatasetToGraphV2(const I_input_dataset:string; const O_gra
   begin
   result:=AddOper('DatasetToGraphV2',[I_input_dataset],[],[],[O_graph],['external_state_policy','strip_device_assignment'],['int','bool'],[@A_external_state_policy,@A_strip_device_assignment])
   end;
-function TGraphExt.AddDatasetToSingleElement(const I_dataset:string; const OL_components:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddDatasetToSingleElement(const I_dataset:string; const OL_components:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('DatasetToSingleElement',[I_dataset],[],[],[OL_components],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -3157,19 +3124,19 @@ function TGraphExt.AddDebugGradientRefIdentity(const I_input:string; const O_out
   begin
   result:=AddOper('DebugGradientRefIdentity',[I_input],[],[],[O_output],['T'],['type'],[@A_T])
   end;
-function TGraphExt.AddDebugIdentity(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_device_name:string; const A_tensor_name:string; const A_debug_urls:array of string; const A_gated_grpc:boolean):string;
+function TGraphExt.AddDebugIdentity(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_device_name:string; const A_tensor_name:string; const A_debug_urls:TF_StringList; const A_gated_grpc:boolean):string;
   begin
   result:=AddOper('DebugIdentity',[I_input],[],[],[O_output],['T','device_name','tensor_name','debug_urls','gated_grpc'],['type','string','string','list(string)','bool'],[@A_T,@A_device_name,@A_tensor_name,@A_debug_urls,@A_gated_grpc])
   end;
-function TGraphExt.AddDebugIdentityV2(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_tfdbg_context_id:string; const A_op_name:string; const A_output_slot:cint64; const A_tensor_debug_mode:cint64; const A_debug_urls:array of string):string;
+function TGraphExt.AddDebugIdentityV2(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_tfdbg_context_id:string; const A_op_name:string; const A_output_slot:cint64; const A_tensor_debug_mode:cint64; const A_debug_urls:TF_StringList):string;
   begin
   result:=AddOper('DebugIdentityV2',[I_input],[],[],[O_output],['T','tfdbg_context_id','op_name','output_slot','tensor_debug_mode','debug_urls'],['type','string','string','int','int','list(string)'],[@A_T,@A_tfdbg_context_id,@A_op_name,@A_output_slot,@A_tensor_debug_mode,@A_debug_urls])
   end;
-function TGraphExt.AddDebugNanCount(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_device_name:string; const A_tensor_name:string; const A_debug_urls:array of string; const A_gated_grpc:boolean):string;
+function TGraphExt.AddDebugNanCount(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_device_name:string; const A_tensor_name:string; const A_debug_urls:TF_StringList; const A_gated_grpc:boolean):string;
   begin
   result:=AddOper('DebugNanCount',[I_input],[],[],[O_output],['T','device_name','tensor_name','debug_urls','gated_grpc'],['type','string','string','list(string)','bool'],[@A_T,@A_device_name,@A_tensor_name,@A_debug_urls,@A_gated_grpc])
   end;
-function TGraphExt.AddDebugNumericSummary(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_device_name:string; const A_tensor_name:string; const A_debug_urls:array of string; const A_lower_bound:real; const A_upper_bound:real; const A_mute_if_healthy:boolean; const A_gated_grpc:boolean):string;
+function TGraphExt.AddDebugNumericSummary(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_device_name:string; const A_tensor_name:string; const A_debug_urls:TF_StringList; const A_lower_bound:real; const A_upper_bound:real; const A_mute_if_healthy:boolean; const A_gated_grpc:boolean):string;
   begin
   result:=AddOper('DebugNumericSummary',[I_input],[],[],[O_output],['T','device_name','tensor_name','debug_urls','lower_bound','upper_bound','mute_if_healthy','gated_grpc'],['type','string','string','list(string)','float','float','bool','bool'],[@A_T,@A_device_name,@A_tensor_name,@A_debug_urls,@A_lower_bound,@A_upper_bound,@A_mute_if_healthy,@A_gated_grpc])
   end;
@@ -3189,9 +3156,9 @@ function TGraphExt.AddDecodeBmp(const I_contents:string; const O_image:string; c
   begin
   result:=AddOper('DecodeBmp',[I_contents],[],[],[O_image],['channels'],['int'],[@A_channels])
   end;
-function TGraphExt.AddDecodeCSV(const I_records:string; const I_record_defaults:string; const OL_output:string; const A_OUT_TYPE:array of TF_DataType; const A_field_delim:string; const A_use_quote_delim:boolean; const A_na_value:string; const A_select_cols:array of cint64):string;
+function TGraphExt.AddDecodeCSV(const I_records:string; const IL_record_defaults:string; const OL_output:string; const A_OUT_TYPE:TF_TypeList; const A_field_delim:string; const A_use_quote_delim:boolean; const A_na_value:string; const A_select_cols:TF_IntList):string;
   begin
-  result:=AddOper('DecodeCSV',[I_records,I_record_defaults],[],[],[OL_output],['OUT_TYPE','field_delim','use_quote_delim','na_value','select_cols'],['list(type)','string','bool','string','list(int)'],[@A_OUT_TYPE,@A_field_delim,@A_use_quote_delim,@A_na_value,@A_select_cols])
+  result:=AddOper('DecodeCSV',[I_records],[IL_record_defaults],[Length(A_OUT_TYPE)],[OL_output],['OUT_TYPE','field_delim','use_quote_delim','na_value','select_cols'],['list(type)','string','bool','string','list(int)'],[@A_OUT_TYPE,@A_field_delim,@A_use_quote_delim,@A_na_value,@A_select_cols])
   end;
 function TGraphExt.AddDecodeCompressed(const I_bytes:string; const O_output:string; const A_compression_type:string):string;
   begin
@@ -3217,7 +3184,7 @@ function TGraphExt.AddDecodePng(const I_contents:string; const O_image:string; c
   begin
   result:=AddOper('DecodePng',[I_contents],[],[],[O_image],['channels','dtype'],['int','type'],[@A_channels,@A_dtype])
   end;
-function TGraphExt.AddDecodeProtoV2(const I_bytes:string; const O_sizes:string; const OL_values:string; const A_message_type:string; const A_field_names:array of string; const A_output_types:array of TF_DataType; const A_descriptor_source:string; const A_message_format:string; const A_sanitize:boolean):string;
+function TGraphExt.AddDecodeProtoV2(const I_bytes:string; const O_sizes:string; const OL_values:string; const A_message_type:string; const A_field_names:TF_StringList; const A_output_types:TF_TypeList; const A_descriptor_source:string; const A_message_format:string; const A_sanitize:boolean):string;
   begin
   result:=AddOper('DecodeProtoV2',[I_bytes],[],[],[O_sizes,OL_values],['message_type','field_names','output_types','descriptor_source','message_format','sanitize'],['string','list(string)','list(type)','string','string','bool'],[@A_message_type,@A_field_names,@A_output_types,@A_descriptor_source,@A_message_format,@A_sanitize])
   end;
@@ -3243,7 +3210,7 @@ function TGraphExt.AddDeleteMemoryCache(const I_handle:string; const I_deleter:s
   end;
 function TGraphExt.AddDeleteMultiDeviceIterator(const I_multi_device_iterator:string; const I_deleter:string; const IL_iterators:string; const A_N:cint64):string;
   begin
-  result:=AddOper('DeleteMultiDeviceIterator',[I_multi_device_iterator,I_deleter],[IL_iterators],[],[],['N'],['int'],[@A_N])
+  result:=AddOper('DeleteMultiDeviceIterator',[I_multi_device_iterator,I_deleter],[IL_iterators],[A_N],[],['N'],['int'],[@A_N])
   end;
 function TGraphExt.AddDeleteRandomSeedGenerator(const I_handle:string; const I_deleter:string):string;
   begin
@@ -3261,7 +3228,7 @@ function TGraphExt.AddDenseToDenseSetOperation(const I_set1:string; const I_set2
   begin
   result:=AddOper('DenseToDenseSetOperation',[I_set1,I_set2],[],[],[O_result_indices,O_result_values,O_result_shape],['set_operation','validate_indices','T'],['string','bool','type'],[@A_set_operation,@A_validate_indices,@A_T])
   end;
-function TGraphExt.AddDenseToSparseBatchDataset(const I_input_dataset:string; const I_batch_size:string; const I_row_shape:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddDenseToSparseBatchDataset(const I_input_dataset:string; const I_batch_size:string; const I_row_shape:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('DenseToSparseBatchDataset',[I_input_dataset,I_batch_size,I_row_shape],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -3273,15 +3240,15 @@ function TGraphExt.AddDepthToSpace(const I_input:string; const O_output:string; 
   begin
   result:=AddOper('DepthToSpace',[I_input],[],[],[O_output],['T','block_size','data_format'],['type','int','string'],[@A_T,@A_block_size,@A_data_format])
   end;
-function TGraphExt.AddDepthwiseConv2dNative(const I_input:string; const I_filter:string; const O_output:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_dilations:array of cint64):string;
+function TGraphExt.AddDepthwiseConv2dNative(const I_input:string; const I_filter:string; const O_output:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_dilations:TF_IntList):string;
   begin
   result:=AddOper('DepthwiseConv2dNative',[I_input,I_filter],[],[],[O_output],['T','strides','padding','data_format','dilations'],['type','list(int)','string','string','list(int)'],[@A_T,@A_strides,@A_padding,@A_data_format,@A_dilations])
   end;
-function TGraphExt.AddDepthwiseConv2dNativeBackpropFilter(const I_input:string; const I_filter_sizes:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_dilations:array of cint64):string;
+function TGraphExt.AddDepthwiseConv2dNativeBackpropFilter(const I_input:string; const I_filter_sizes:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_dilations:TF_IntList):string;
   begin
   result:=AddOper('DepthwiseConv2dNativeBackpropFilter',[I_input,I_filter_sizes,I_out_backprop],[],[],[O_output],['T','strides','padding','data_format','dilations'],['type','list(int)','string','string','list(int)'],[@A_T,@A_strides,@A_padding,@A_data_format,@A_dilations])
   end;
-function TGraphExt.AddDepthwiseConv2dNativeBackpropInput(const I_input_sizes:string; const I_filter:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_dilations:array of cint64):string;
+function TGraphExt.AddDepthwiseConv2dNativeBackpropInput(const I_input_sizes:string; const I_filter:string; const I_out_backprop:string; const O_output:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_dilations:TF_IntList):string;
   begin
   result:=AddOper('DepthwiseConv2dNativeBackpropInput',[I_input_sizes,I_filter,I_out_backprop],[],[],[O_output],['T','strides','padding','data_format','dilations'],['type','list(int)','string','string','list(int)'],[@A_T,@A_strides,@A_padding,@A_data_format,@A_dilations])
   end;
@@ -3321,21 +3288,21 @@ function TGraphExt.AddDigamma(const I_x:string; const O_y:string; const A_T:TF_D
   begin
   result:=AddOper('Digamma',[I_x],[],[],[O_y],['T'],['type'],[@A_T])
   end;
-function TGraphExt.AddDilation2D(const I_input:string; const I_filter:string; const O_output:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_rates:array of cint64; const A_padding:string):string;
+function TGraphExt.AddDilation2D(const I_input:string; const I_filter:string; const O_output:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_rates:TF_IntList; const A_padding:string):string;
   begin
   result:=AddOper('Dilation2D',[I_input,I_filter],[],[],[O_output],['T','strides','rates','padding'],['type','list(int)','list(int)','string'],[@A_T,@A_strides,@A_rates,@A_padding])
   end;
-function TGraphExt.AddDilation2DBackpropFilter(const I_input:string; const I_filter:string; const I_out_backprop:string; const O_filter_backprop:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_rates:array of cint64; const A_padding:string):string;
+function TGraphExt.AddDilation2DBackpropFilter(const I_input:string; const I_filter:string; const I_out_backprop:string; const O_filter_backprop:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_rates:TF_IntList; const A_padding:string):string;
   begin
   result:=AddOper('Dilation2DBackpropFilter',[I_input,I_filter,I_out_backprop],[],[],[O_filter_backprop],['T','strides','rates','padding'],['type','list(int)','list(int)','string'],[@A_T,@A_strides,@A_rates,@A_padding])
   end;
-function TGraphExt.AddDilation2DBackpropInput(const I_input:string; const I_filter:string; const I_out_backprop:string; const O_in_backprop:string; const A_T:TF_DataType; const A_strides:array of cint64; const A_rates:array of cint64; const A_padding:string):string;
+function TGraphExt.AddDilation2DBackpropInput(const I_input:string; const I_filter:string; const I_out_backprop:string; const O_in_backprop:string; const A_T:TF_DataType; const A_strides:TF_IntList; const A_rates:TF_IntList; const A_padding:string):string;
   begin
   result:=AddOper('Dilation2DBackpropInput',[I_input,I_filter,I_out_backprop],[],[],[O_in_backprop],['T','strides','rates','padding'],['type','list(int)','list(int)','string'],[@A_T,@A_strides,@A_rates,@A_padding])
   end;
-function TGraphExt.AddDirectedInterleaveDataset(const I_selector_input_dataset:string; const IL_data_input_datasets:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_N:cint64):string;
+function TGraphExt.AddDirectedInterleaveDataset(const I_selector_input_dataset:string; const IL_data_input_datasets:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_N:cint64):string;
   begin
-  result:=AddOper('DirectedInterleaveDataset',[I_selector_input_dataset],[IL_data_input_datasets],[],[O_handle],['output_types','output_shapes','N'],['list(type)','list(shape)','int'],[@A_output_types,@A_output_shapes,@A_N])
+  result:=AddOper('DirectedInterleaveDataset',[I_selector_input_dataset],[IL_data_input_datasets],[A_N],[O_handle],['output_types','output_shapes','N'],['list(type)','list(shape)','int'],[@A_output_types,@A_output_shapes,@A_N])
   end;
 function TGraphExt.AddDiv(const I_x:string; const I_y:string; const O_z:string; const A_T:TF_DataType):string;
   begin
@@ -3359,11 +3326,11 @@ function TGraphExt.AddDynamicPartition(const I_data:string; const I_partitions:s
   end;
 function TGraphExt.AddDynamicStitch(const IL_indices:string; const IL_data:string; const O_merged:string; const A_N:cint64; const A_T:TF_DataType):string;
   begin
-  result:=AddOper('DynamicStitch',[],[IL_indices,IL_data],[],[O_merged],['N','T'],['int','type'],[@A_N,@A_T])
+  result:=AddOper('DynamicStitch',[],[IL_indices,IL_data],[A_N,A_N],[O_merged],['N','T'],['int','type'],[@A_N,@A_T])
   end;
-function TGraphExt.AddEagerPyFunc(const I_input:string; const OL_output:string; const A_token:string; const A_is_async:boolean; const A_Tin:array of TF_DataType; const A_Tout:array of TF_DataType):string;
+function TGraphExt.AddEagerPyFunc(const IL_input:string; const OL_output:string; const A_token:string; const A_is_async:boolean; const A_Tin:TF_TypeList; const A_Tout:TF_TypeList):string;
   begin
-  result:=AddOper('EagerPyFunc',[I_input],[],[],[OL_output],['token','is_async','Tin','Tout'],['string','bool','list(type)','list(type)'],[@A_token,@A_is_async,@A_Tin,@A_Tout])
+  result:=AddOper('EagerPyFunc',[],[IL_input],[Length(A_Tin)],[OL_output],['token','is_async','Tin','Tout'],['string','bool','list(type)','list(type)'],[@A_token,@A_is_async,@A_Tin,@A_Tout])
   end;
 function TGraphExt.AddEditDistance(const I_hypothesis_indices:string; const I_hypothesis_values:string; const I_hypothesis_shape:string; const I_truth_indices:string; const I_truth_values:string; const I_truth_shape:string; const O_output:string; const A_normalize:boolean; const A_T:TF_DataType):string;
   begin
@@ -3375,7 +3342,7 @@ function TGraphExt.AddEig(const I_input:string; const O_e:string; const O_v:stri
   end;
 function TGraphExt.AddEinsum(const IL_inputs:string; const O_output:string; const A_equation:string; const A_N:cint64; const A_T:TF_DataType):string;
   begin
-  result:=AddOper('Einsum',[],[IL_inputs],[],[O_output],['equation','N','T'],['string','int','type'],[@A_equation,@A_N,@A_T])
+  result:=AddOper('Einsum',[],[IL_inputs],[A_N],[O_output],['equation','N','T'],['string','int','type'],[@A_equation,@A_N,@A_T])
   end;
 function TGraphExt.AddElu(const I_features:string; const O_activations:string; const A_T:TF_DataType):string;
   begin
@@ -3409,9 +3376,9 @@ function TGraphExt.AddEncodePng(const I_image:string; const O_contents:string; c
   begin
   result:=AddOper('EncodePng',[I_image],[],[],[O_contents],['compression','T'],['int','type'],[@A_compression,@A_T])
   end;
-function TGraphExt.AddEncodeProto(const I_sizes:string; const I_values:string; const O_bytes:string; const A_field_names:array of string; const A_message_type:string; const A_descriptor_source:string; const A_Tinput_types:array of TF_DataType):string;
+function TGraphExt.AddEncodeProto(const I_sizes:string; const IL_values:string; const O_bytes:string; const A_field_names:TF_StringList; const A_message_type:string; const A_descriptor_source:string; const A_Tinput_types:TF_TypeList):string;
   begin
-  result:=AddOper('EncodeProto',[I_sizes,I_values],[],[],[O_bytes],['field_names','message_type','descriptor_source','Tinput_types'],['list(string)','string','string','list(type)'],[@A_field_names,@A_message_type,@A_descriptor_source,@A_Tinput_types])
+  result:=AddOper('EncodeProto',[I_sizes],[IL_values],[Length(A_Tinput_types)],[O_bytes],['field_names','message_type','descriptor_source','Tinput_types'],['list(string)','string','string','list(type)'],[@A_field_names,@A_message_type,@A_descriptor_source,@A_Tinput_types])
   end;
 function TGraphExt.AddEncodeWav(const I_audio:string; const I_sample_rate:string; const O_contents:string):string;
   begin
@@ -3419,15 +3386,15 @@ function TGraphExt.AddEncodeWav(const I_audio:string; const I_sample_rate:string
   end;
 function TGraphExt.AddEnqueueTPUEmbeddingIntegerBatch(const I_mode_override:string; const IL_batch:string; const A_N:cint64; const A_device_ordinal:cint64):string;
   begin
-  result:=AddOper('EnqueueTPUEmbeddingIntegerBatch',[I_mode_override],[IL_batch],[],[],['N','device_ordinal'],['int','int'],[@A_N,@A_device_ordinal])
+  result:=AddOper('EnqueueTPUEmbeddingIntegerBatch',[I_mode_override],[IL_batch],[A_N],[],['N','device_ordinal'],['int','int'],[@A_N,@A_device_ordinal])
   end;
-function TGraphExt.AddEnqueueTPUEmbeddingSparseBatch(const I_mode_override:string; const IL_sample_indices:string; const IL_embedding_indices:string; const IL_aggregation_weights:string; const A_T1:TF_DataType; const A_T2:TF_DataType; const A_T3:TF_DataType; const A_N:cint64; const A_device_ordinal:cint64; const A_combiners:array of string):string;
+function TGraphExt.AddEnqueueTPUEmbeddingSparseBatch(const I_mode_override:string; const IL_sample_indices:string; const IL_embedding_indices:string; const IL_aggregation_weights:string; const A_T1:TF_DataType; const A_T2:TF_DataType; const A_T3:TF_DataType; const A_N:cint64; const A_device_ordinal:cint64; const A_combiners:TF_StringList):string;
   begin
-  result:=AddOper('EnqueueTPUEmbeddingSparseBatch',[I_mode_override],[IL_sample_indices,IL_embedding_indices,IL_aggregation_weights],[],[],['T1','T2','T3','N','device_ordinal','combiners'],['type','type','type','int','int','list(string)'],[@A_T1,@A_T2,@A_T3,@A_N,@A_device_ordinal,@A_combiners])
+  result:=AddOper('EnqueueTPUEmbeddingSparseBatch',[I_mode_override],[IL_sample_indices,IL_embedding_indices,IL_aggregation_weights],[A_N,A_N,A_N],[],['T1','T2','T3','N','device_ordinal','combiners'],['type','type','type','int','int','list(string)'],[@A_T1,@A_T2,@A_T3,@A_N,@A_device_ordinal,@A_combiners])
   end;
-function TGraphExt.AddEnqueueTPUEmbeddingSparseTensorBatch(const I_mode_override:string; const IL_sample_indices:string; const IL_embedding_indices:string; const IL_aggregation_weights:string; const A_T1:TF_DataType; const A_T2:TF_DataType; const A_T3:TF_DataType; const A_N:cint64; const A_device_ordinal:cint64; const A_combiners:array of string; const A_table_ids:array of cint64; const A_max_sequence_lengths:array of cint64):string;
+function TGraphExt.AddEnqueueTPUEmbeddingSparseTensorBatch(const I_mode_override:string; const IL_sample_indices:string; const IL_embedding_indices:string; const IL_aggregation_weights:string; const A_T1:TF_DataType; const A_T2:TF_DataType; const A_T3:TF_DataType; const A_N:cint64; const A_device_ordinal:cint64; const A_combiners:TF_StringList; const A_table_ids:TF_IntList; const A_max_sequence_lengths:TF_IntList):string;
   begin
-  result:=AddOper('EnqueueTPUEmbeddingSparseTensorBatch',[I_mode_override],[IL_sample_indices,IL_embedding_indices,IL_aggregation_weights],[],[],['T1','T2','T3','N','device_ordinal','combiners','table_ids','max_sequence_lengths'],['type','type','type','int','int','list(string)','list(int)','list(int)'],[@A_T1,@A_T2,@A_T3,@A_N,@A_device_ordinal,@A_combiners,@A_table_ids,@A_max_sequence_lengths])
+  result:=AddOper('EnqueueTPUEmbeddingSparseTensorBatch',[I_mode_override],[IL_sample_indices,IL_embedding_indices,IL_aggregation_weights],[A_N,A_N,A_N],[],['T1','T2','T3','N','device_ordinal','combiners','table_ids','max_sequence_lengths'],['type','type','type','int','int','list(string)','list(int)','list(int)'],[@A_T1,@A_T2,@A_T3,@A_N,@A_device_ordinal,@A_combiners,@A_table_ids,@A_max_sequence_lengths])
   end;
 function TGraphExt.AddEnsureShape(const I_input:string; const O_output:string; const A_shape:TF_Shape; const A_T:TF_DataType):string;
   begin
@@ -3469,25 +3436,25 @@ function TGraphExt.AddExpandDims(const I_input:string; const I_dim:string; const
   begin
   result:=AddOper('ExpandDims',[I_input,I_dim],[],[],[O_output],['T','Tdim'],['type','type'],[@A_T,@A_Tdim])
   end;
-function TGraphExt.AddExperimentalAssertNextDataset(const I_input_dataset:string; const I_transformations:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddExperimentalAssertNextDataset(const I_input_dataset:string; const I_transformations:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('ExperimentalAssertNextDataset',[I_input_dataset,I_transformations],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddExperimentalAutoShardDataset(const I_input_dataset:string; const I_num_workers:string; const I_index:string; const O_handle:string; const A_auto_shard_policy:cint64; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddExperimentalAutoShardDataset(const I_input_dataset:string; const I_num_workers:string; const I_index:string; const O_handle:string; const A_auto_shard_policy:cint64; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('ExperimentalAutoShardDataset',[I_input_dataset,I_num_workers,I_index],[],[],[O_handle],['auto_shard_policy','output_types','output_shapes'],['int','list(type)','list(shape)'],[@A_auto_shard_policy,@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddExperimentalBytesProducedStatsDataset(const I_input_dataset:string; const I_tag:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddExperimentalBytesProducedStatsDataset(const I_input_dataset:string; const I_tag:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('ExperimentalBytesProducedStatsDataset',[I_input_dataset,I_tag],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddExperimentalCSVDataset(const I_filenames:string; const I_compression_type:string; const I_buffer_size:string; const I_header:string; const I_field_delim:string; const I_use_quote_delim:string; const I_na_value:string; const I_select_cols:string; const I_record_defaults:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddExperimentalCSVDataset(const I_filenames:string; const I_compression_type:string; const I_buffer_size:string; const I_header:string; const I_field_delim:string; const I_use_quote_delim:string; const I_na_value:string; const I_select_cols:string; const IL_record_defaults:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('ExperimentalCSVDataset',[I_filenames,I_compression_type,I_buffer_size,I_header,I_field_delim,I_use_quote_delim,I_na_value,I_select_cols,I_record_defaults],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
+  result:=AddOper('ExperimentalCSVDataset',[I_filenames,I_compression_type,I_buffer_size,I_header,I_field_delim,I_use_quote_delim,I_na_value,I_select_cols],[IL_record_defaults],[Length(A_output_types)],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddExperimentalChooseFastestDataset(const IL_input_datasets:string; const O_handle:string; const A_N:cint64; const A_num_experiments:cint64; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddExperimentalChooseFastestDataset(const IL_input_datasets:string; const O_handle:string; const A_N:cint64; const A_num_experiments:cint64; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('ExperimentalChooseFastestDataset',[],[IL_input_datasets],[],[O_handle],['N','num_experiments','output_types','output_shapes'],['int','int','list(type)','list(shape)'],[@A_N,@A_num_experiments,@A_output_types,@A_output_shapes])
+  result:=AddOper('ExperimentalChooseFastestDataset',[],[IL_input_datasets],[A_N],[O_handle],['N','num_experiments','output_types','output_shapes'],['int','int','list(type)','list(shape)'],[@A_N,@A_num_experiments,@A_output_types,@A_output_shapes])
   end;
 function TGraphExt.AddExperimentalDatasetCardinality(const I_input_dataset:string; const O_cardinality:string):string;
   begin
@@ -3497,23 +3464,23 @@ function TGraphExt.AddExperimentalDatasetToTFRecord(const I_input_dataset:string
   begin
   result:=AddOper('ExperimentalDatasetToTFRecord',[I_input_dataset,I_filename,I_compression_type],[],[],[],[],[],[])
   end;
-function TGraphExt.AddExperimentalDenseToSparseBatchDataset(const I_input_dataset:string; const I_batch_size:string; const I_row_shape:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddExperimentalDenseToSparseBatchDataset(const I_input_dataset:string; const I_batch_size:string; const I_row_shape:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('ExperimentalDenseToSparseBatchDataset',[I_input_dataset,I_batch_size,I_row_shape],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddExperimentalDirectedInterleaveDataset(const I_selector_input_dataset:string; const IL_data_input_datasets:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_N:cint64):string;
+function TGraphExt.AddExperimentalDirectedInterleaveDataset(const I_selector_input_dataset:string; const IL_data_input_datasets:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_N:cint64):string;
   begin
-  result:=AddOper('ExperimentalDirectedInterleaveDataset',[I_selector_input_dataset],[IL_data_input_datasets],[],[O_handle],['output_types','output_shapes','N'],['list(type)','list(shape)','int'],[@A_output_types,@A_output_shapes,@A_N])
+  result:=AddOper('ExperimentalDirectedInterleaveDataset',[I_selector_input_dataset],[IL_data_input_datasets],[A_N],[O_handle],['output_types','output_shapes','N'],['list(type)','list(shape)','int'],[@A_output_types,@A_output_shapes,@A_N])
   end;
-function TGraphExt.AddExperimentalGroupByReducerDataset(const I_input_dataset:string; const I_key_func_other_arguments:string; const I_init_func_other_arguments:string; const I_reduce_func_other_arguments:string; const I_finalize_func_other_arguments:string; const O_handle:string; const A_key_func:TF_Function; const A_init_func:TF_Function; const A_reduce_func:TF_Function; const A_finalize_func:TF_Function; const A_Tkey_func_other_arguments:array of TF_DataType; const A_Tinit_func_other_arguments:array of TF_DataType; const A_Treduce_func_other_arguments:array of TF_DataType; const A_Tfinalize_func_other_arguments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddExperimentalGroupByReducerDataset(const I_input_dataset:string; const IL_key_func_other_arguments:string; const IL_init_func_other_arguments:string; const IL_reduce_func_other_arguments:string; const IL_finalize_func_other_arguments:string; const O_handle:string; const A_key_func:TF_Function; const A_init_func:TF_Function; const A_reduce_func:TF_Function; const A_finalize_func:TF_Function; const A_Tkey_func_other_arguments:TF_TypeList; const A_Tinit_func_other_arguments:TF_TypeList; const A_Treduce_func_other_arguments:TF_TypeList; const A_Tfinalize_func_other_arguments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('ExperimentalGroupByReducerDataset',[I_input_dataset,I_key_func_other_arguments,I_init_func_other_arguments,I_reduce_func_other_arguments,I_finalize_func_other_arguments],[],[],[O_handle],['key_func','init_func','reduce_func','finalize_func','Tkey_func_other_arguments','Tinit_func_other_arguments','Treduce_func_other_arguments','Tfinalize_func_other_arguments','output_types','output_shapes'],['func','func','func','func','list(type)','list(type)','list(type)','list(type)','list(type)','list(shape)'],[@A_key_func,@A_init_func,@A_reduce_func,@A_finalize_func,@A_Tkey_func_other_arguments,@A_Tinit_func_other_arguments,@A_Treduce_func_other_arguments,@A_Tfinalize_func_other_arguments,@A_output_types,@A_output_shapes])
+  result:=AddOper('ExperimentalGroupByReducerDataset',[I_input_dataset],[IL_key_func_other_arguments,IL_init_func_other_arguments,IL_reduce_func_other_arguments,IL_finalize_func_other_arguments],[Length(A_Tkey_func_other_arguments),Length(A_Tinit_func_other_arguments),Length(A_Treduce_func_other_arguments),Length(A_Tfinalize_func_other_arguments)],[O_handle],['key_func','init_func','reduce_func','finalize_func','Tkey_func_other_arguments','Tinit_func_other_arguments','Treduce_func_other_arguments','Tfinalize_func_other_arguments','output_types','output_shapes'],['func','func','func','func','list(type)','list(type)','list(type)','list(type)','list(type)','list(shape)'],[@A_key_func,@A_init_func,@A_reduce_func,@A_finalize_func,@A_Tkey_func_other_arguments,@A_Tinit_func_other_arguments,@A_Treduce_func_other_arguments,@A_Tfinalize_func_other_arguments,@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddExperimentalGroupByWindowDataset(const I_input_dataset:string; const I_key_func_other_arguments:string; const I_reduce_func_other_arguments:string; const I_window_size_func_other_arguments:string; const O_handle:string; const A_key_func:TF_Function; const A_reduce_func:TF_Function; const A_window_size_func:TF_Function; const A_Tkey_func_other_arguments:array of TF_DataType; const A_Treduce_func_other_arguments:array of TF_DataType; const A_Twindow_size_func_other_arguments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddExperimentalGroupByWindowDataset(const I_input_dataset:string; const IL_key_func_other_arguments:string; const IL_reduce_func_other_arguments:string; const IL_window_size_func_other_arguments:string; const O_handle:string; const A_key_func:TF_Function; const A_reduce_func:TF_Function; const A_window_size_func:TF_Function; const A_Tkey_func_other_arguments:TF_TypeList; const A_Treduce_func_other_arguments:TF_TypeList; const A_Twindow_size_func_other_arguments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('ExperimentalGroupByWindowDataset',[I_input_dataset,I_key_func_other_arguments,I_reduce_func_other_arguments,I_window_size_func_other_arguments],[],[],[O_handle],['key_func','reduce_func','window_size_func','Tkey_func_other_arguments','Treduce_func_other_arguments','Twindow_size_func_other_arguments','output_types','output_shapes'],['func','func','func','list(type)','list(type)','list(type)','list(type)','list(shape)'],[@A_key_func,@A_reduce_func,@A_window_size_func,@A_Tkey_func_other_arguments,@A_Treduce_func_other_arguments,@A_Twindow_size_func_other_arguments,@A_output_types,@A_output_shapes])
+  result:=AddOper('ExperimentalGroupByWindowDataset',[I_input_dataset],[IL_key_func_other_arguments,IL_reduce_func_other_arguments,IL_window_size_func_other_arguments],[Length(A_Tkey_func_other_arguments),Length(A_Treduce_func_other_arguments),Length(A_Twindow_size_func_other_arguments)],[O_handle],['key_func','reduce_func','window_size_func','Tkey_func_other_arguments','Treduce_func_other_arguments','Twindow_size_func_other_arguments','output_types','output_shapes'],['func','func','func','list(type)','list(type)','list(type)','list(type)','list(shape)'],[@A_key_func,@A_reduce_func,@A_window_size_func,@A_Tkey_func_other_arguments,@A_Treduce_func_other_arguments,@A_Twindow_size_func_other_arguments,@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddExperimentalIgnoreErrorsDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddExperimentalIgnoreErrorsDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('ExperimentalIgnoreErrorsDataset',[I_input_dataset],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -3521,71 +3488,71 @@ function TGraphExt.AddExperimentalIteratorGetDevice(const I_resource:string; con
   begin
   result:=AddOper('ExperimentalIteratorGetDevice',[I_resource],[],[],[O_device],[],[],[])
   end;
-function TGraphExt.AddExperimentalLMDBDataset(const I_filenames:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddExperimentalLMDBDataset(const I_filenames:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('ExperimentalLMDBDataset',[I_filenames],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddExperimentalLatencyStatsDataset(const I_input_dataset:string; const I_tag:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddExperimentalLatencyStatsDataset(const I_input_dataset:string; const I_tag:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('ExperimentalLatencyStatsDataset',[I_input_dataset,I_tag],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddExperimentalMapAndBatchDataset(const I_input_dataset:string; const I_other_arguments:string; const I_batch_size:string; const I_num_parallel_calls:string; const I_drop_remainder:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_preserve_cardinality:boolean):string;
+function TGraphExt.AddExperimentalMapAndBatchDataset(const I_input_dataset:string; const I_batch_size:string; const I_num_parallel_calls:string; const I_drop_remainder:string; const IL_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_preserve_cardinality:boolean):string;
   begin
-  result:=AddOper('ExperimentalMapAndBatchDataset',[I_input_dataset,I_other_arguments,I_batch_size,I_num_parallel_calls,I_drop_remainder],[],[],[O_handle],['f','Targuments','output_types','output_shapes','preserve_cardinality'],['func','list(type)','list(type)','list(shape)','bool'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes,@A_preserve_cardinality])
+  result:=AddOper('ExperimentalMapAndBatchDataset',[I_input_dataset,I_batch_size,I_num_parallel_calls,I_drop_remainder],[IL_other_arguments],[Length(A_Targuments)],[O_handle],['f','Targuments','output_types','output_shapes','preserve_cardinality'],['func','list(type)','list(type)','list(shape)','bool'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes,@A_preserve_cardinality])
   end;
-function TGraphExt.AddExperimentalMapDataset(const I_input_dataset:string; const I_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_use_inter_op_parallelism:boolean; const A_preserve_cardinality:boolean):string;
+function TGraphExt.AddExperimentalMapDataset(const I_input_dataset:string; const IL_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_use_inter_op_parallelism:boolean; const A_preserve_cardinality:boolean):string;
   begin
-  result:=AddOper('ExperimentalMapDataset',[I_input_dataset,I_other_arguments],[],[],[O_handle],['f','Targuments','output_types','output_shapes','use_inter_op_parallelism','preserve_cardinality'],['func','list(type)','list(type)','list(shape)','bool','bool'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes,@A_use_inter_op_parallelism,@A_preserve_cardinality])
+  result:=AddOper('ExperimentalMapDataset',[I_input_dataset],[IL_other_arguments],[Length(A_Targuments)],[O_handle],['f','Targuments','output_types','output_shapes','use_inter_op_parallelism','preserve_cardinality'],['func','list(type)','list(type)','list(shape)','bool','bool'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes,@A_use_inter_op_parallelism,@A_preserve_cardinality])
   end;
 function TGraphExt.AddExperimentalMatchingFilesDataset(const I_patterns:string; const O_handle:string):string;
   begin
   result:=AddOper('ExperimentalMatchingFilesDataset',[I_patterns],[],[],[O_handle],[],[],[])
   end;
-function TGraphExt.AddExperimentalMaxIntraOpParallelismDataset(const I_input_dataset:string; const I_max_intra_op_parallelism:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddExperimentalMaxIntraOpParallelismDataset(const I_input_dataset:string; const I_max_intra_op_parallelism:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('ExperimentalMaxIntraOpParallelismDataset',[I_input_dataset,I_max_intra_op_parallelism],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddExperimentalNonSerializableDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddExperimentalNonSerializableDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('ExperimentalNonSerializableDataset',[I_input_dataset],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddExperimentalParallelInterleaveDataset(const I_input_dataset:string; const I_other_arguments:string; const I_cycle_length:string; const I_block_length:string; const I_sloppy:string; const I_buffer_output_elements:string; const I_prefetch_input_elements:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddExperimentalParallelInterleaveDataset(const I_input_dataset:string; const I_cycle_length:string; const I_block_length:string; const I_sloppy:string; const I_buffer_output_elements:string; const I_prefetch_input_elements:string; const IL_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('ExperimentalParallelInterleaveDataset',[I_input_dataset,I_other_arguments,I_cycle_length,I_block_length,I_sloppy,I_buffer_output_elements,I_prefetch_input_elements],[],[],[O_handle],['f','Targuments','output_types','output_shapes'],['func','list(type)','list(type)','list(shape)'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes])
+  result:=AddOper('ExperimentalParallelInterleaveDataset',[I_input_dataset,I_cycle_length,I_block_length,I_sloppy,I_buffer_output_elements,I_prefetch_input_elements],[IL_other_arguments],[Length(A_Targuments)],[O_handle],['f','Targuments','output_types','output_shapes'],['func','list(type)','list(type)','list(shape)'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddExperimentalParseExampleDataset(const I_input_dataset:string; const I_num_parallel_calls:string; const I_dense_defaults:string; const O_handle:string; const A_sparse_keys:array of string; const A_dense_keys:array of string; const A_sparse_types:array of TF_DataType; const A_Tdense:array of TF_DataType; const A_dense_shapes:array of TF_Shape; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_sloppy:boolean):string;
+function TGraphExt.AddExperimentalParseExampleDataset(const I_input_dataset:string; const I_num_parallel_calls:string; const IL_dense_defaults:string; const O_handle:string; const A_sparse_keys:TF_StringList; const A_dense_keys:TF_StringList; const A_sparse_types:TF_TypeList; const A_Tdense:TF_TypeList; const A_dense_shapes:TF_ShapeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_sloppy:boolean):string;
   begin
-  result:=AddOper('ExperimentalParseExampleDataset',[I_input_dataset,I_num_parallel_calls,I_dense_defaults],[],[],[O_handle],['sparse_keys','dense_keys','sparse_types','Tdense','dense_shapes','output_types','output_shapes','sloppy'],['list(string)','list(string)','list(type)','list(type)','list(shape)','list(type)','list(shape)','bool'],[@A_sparse_keys,@A_dense_keys,@A_sparse_types,@A_Tdense,@A_dense_shapes,@A_output_types,@A_output_shapes,@A_sloppy])
+  result:=AddOper('ExperimentalParseExampleDataset',[I_input_dataset,I_num_parallel_calls],[IL_dense_defaults],[Length(A_Tdense)],[O_handle],['sparse_keys','dense_keys','sparse_types','Tdense','dense_shapes','output_types','output_shapes','sloppy'],['list(string)','list(string)','list(type)','list(type)','list(shape)','list(type)','list(shape)','bool'],[@A_sparse_keys,@A_dense_keys,@A_sparse_types,@A_Tdense,@A_dense_shapes,@A_output_types,@A_output_shapes,@A_sloppy])
   end;
-function TGraphExt.AddExperimentalPrivateThreadPoolDataset(const I_input_dataset:string; const I_num_threads:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddExperimentalPrivateThreadPoolDataset(const I_input_dataset:string; const I_num_threads:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('ExperimentalPrivateThreadPoolDataset',[I_input_dataset,I_num_threads],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddExperimentalRandomDataset(const I_seed:string; const I_seed2:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddExperimentalRandomDataset(const I_seed:string; const I_seed2:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('ExperimentalRandomDataset',[I_seed,I_seed2],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddExperimentalRebatchDataset(const I_input_dataset:string; const I_num_replicas:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_use_fallback:boolean):string;
+function TGraphExt.AddExperimentalRebatchDataset(const I_input_dataset:string; const I_num_replicas:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_use_fallback:boolean):string;
   begin
   result:=AddOper('ExperimentalRebatchDataset',[I_input_dataset,I_num_replicas],[],[],[O_handle],['output_types','output_shapes','use_fallback'],['list(type)','list(shape)','bool'],[@A_output_types,@A_output_shapes,@A_use_fallback])
   end;
-function TGraphExt.AddExperimentalScanDataset(const I_input_dataset:string; const I_initial_state:string; const I_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Tstate:array of TF_DataType; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_preserve_cardinality:boolean):string;
+function TGraphExt.AddExperimentalScanDataset(const I_input_dataset:string; const IL_initial_state:string; const IL_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Tstate:TF_TypeList; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_preserve_cardinality:boolean):string;
   begin
-  result:=AddOper('ExperimentalScanDataset',[I_input_dataset,I_initial_state,I_other_arguments],[],[],[O_handle],['f','Tstate','Targuments','output_types','output_shapes','preserve_cardinality'],['func','list(type)','list(type)','list(type)','list(shape)','bool'],[@A_f,@A_Tstate,@A_Targuments,@A_output_types,@A_output_shapes,@A_preserve_cardinality])
+  result:=AddOper('ExperimentalScanDataset',[I_input_dataset],[IL_initial_state,IL_other_arguments],[Length(A_Tstate),Length(A_Targuments)],[O_handle],['f','Tstate','Targuments','output_types','output_shapes','preserve_cardinality'],['func','list(type)','list(type)','list(type)','list(shape)','bool'],[@A_f,@A_Tstate,@A_Targuments,@A_output_types,@A_output_shapes,@A_preserve_cardinality])
   end;
-function TGraphExt.AddExperimentalSetStatsAggregatorDataset(const I_input_dataset:string; const I_stats_aggregator:string; const I_tag:string; const I_counter_prefix:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddExperimentalSetStatsAggregatorDataset(const I_input_dataset:string; const I_stats_aggregator:string; const I_tag:string; const I_counter_prefix:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('ExperimentalSetStatsAggregatorDataset',[I_input_dataset,I_stats_aggregator,I_tag,I_counter_prefix],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddExperimentalSleepDataset(const I_input_dataset:string; const I_sleep_microseconds:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddExperimentalSleepDataset(const I_input_dataset:string; const I_sleep_microseconds:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('ExperimentalSleepDataset',[I_input_dataset,I_sleep_microseconds],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddExperimentalSlidingWindowDataset(const I_input_dataset:string; const I_window_size:string; const I_window_shift:string; const I_window_stride:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddExperimentalSlidingWindowDataset(const I_input_dataset:string; const I_window_size:string; const I_window_shift:string; const I_window_stride:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('ExperimentalSlidingWindowDataset',[I_input_dataset,I_window_size,I_window_shift,I_window_stride],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddExperimentalSqlDataset(const I_driver_name:string; const I_data_source_name:string; const I_query:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddExperimentalSqlDataset(const I_driver_name:string; const I_data_source_name:string; const I_query:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('ExperimentalSqlDataset',[I_driver_name,I_data_source_name,I_query],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -3597,11 +3564,11 @@ function TGraphExt.AddExperimentalStatsAggregatorSummary(const I_iterator:string
   begin
   result:=AddOper('ExperimentalStatsAggregatorSummary',[I_iterator],[],[],[O_summary],[],[],[])
   end;
-function TGraphExt.AddExperimentalTakeWhileDataset(const I_input_dataset:string; const I_other_arguments:string; const O_handle:string; const A_predicate:TF_Function; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddExperimentalTakeWhileDataset(const I_input_dataset:string; const IL_other_arguments:string; const O_handle:string; const A_predicate:TF_Function; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('ExperimentalTakeWhileDataset',[I_input_dataset,I_other_arguments],[],[],[O_handle],['predicate','Targuments','output_types','output_shapes'],['func','list(type)','list(type)','list(shape)'],[@A_predicate,@A_Targuments,@A_output_types,@A_output_shapes])
+  result:=AddOper('ExperimentalTakeWhileDataset',[I_input_dataset],[IL_other_arguments],[Length(A_Targuments)],[O_handle],['predicate','Targuments','output_types','output_shapes'],['func','list(type)','list(type)','list(shape)'],[@A_predicate,@A_Targuments,@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddExperimentalThreadPoolDataset(const I_input_dataset:string; const I_thread_pool:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddExperimentalThreadPoolDataset(const I_input_dataset:string; const I_thread_pool:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('ExperimentalThreadPoolDataset',[I_input_dataset,I_thread_pool],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -3609,11 +3576,11 @@ function TGraphExt.AddExperimentalThreadPoolHandle(const O_handle:string; const 
   begin
   result:=AddOper('ExperimentalThreadPoolHandle',[],[],[],[O_handle],['num_threads','max_intra_op_parallelism','display_name','container','shared_name'],['int','int','string','string','string'],[@A_num_threads,@A_max_intra_op_parallelism,@A_display_name,@A_container,@A_shared_name])
   end;
-function TGraphExt.AddExperimentalUnbatchDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddExperimentalUnbatchDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('ExperimentalUnbatchDataset',[I_input_dataset],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddExperimentalUniqueDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddExperimentalUniqueDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('ExperimentalUniqueDataset',[I_input_dataset],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -3629,7 +3596,7 @@ function TGraphExt.AddExtractGlimpse(const I_input:string; const I_size:string; 
   begin
   result:=AddOper('ExtractGlimpse',[I_input,I_size,I_offsets],[],[],[O_glimpse],['centered','normalized','uniform_noise','noise'],['bool','bool','bool','string'],[@A_centered,@A_normalized,@A_uniform_noise,@A_noise])
   end;
-function TGraphExt.AddExtractImagePatches(const I_images:string; const O_patches:string; const A_ksizes:array of cint64; const A_strides:array of cint64; const A_rates:array of cint64; const A_T:TF_DataType; const A_padding:string):string;
+function TGraphExt.AddExtractImagePatches(const I_images:string; const O_patches:string; const A_ksizes:TF_IntList; const A_strides:TF_IntList; const A_rates:TF_IntList; const A_T:TF_DataType; const A_padding:string):string;
   begin
   result:=AddOper('ExtractImagePatches',[I_images],[],[],[O_patches],['ksizes','strides','rates','T','padding'],['list(int)','list(int)','list(int)','type','string'],[@A_ksizes,@A_strides,@A_rates,@A_T,@A_padding])
   end;
@@ -3637,7 +3604,7 @@ function TGraphExt.AddExtractJpegShape(const I_contents:string; const O_image_sh
   begin
   result:=AddOper('ExtractJpegShape',[I_contents],[],[],[O_image_shape],['output_type'],['type'],[@A_output_type])
   end;
-function TGraphExt.AddExtractVolumePatches(const I_input:string; const O_patches:string; const A_ksizes:array of cint64; const A_strides:array of cint64; const A_T:TF_DataType; const A_padding:string):string;
+function TGraphExt.AddExtractVolumePatches(const I_input:string; const O_patches:string; const A_ksizes:TF_IntList; const A_strides:TF_IntList; const A_T:TF_DataType; const A_padding:string):string;
   begin
   result:=AddOper('ExtractVolumePatches',[I_input],[],[],[O_patches],['ksizes','strides','T','padding'],['list(int)','list(int)','type','string'],[@A_ksizes,@A_strides,@A_T,@A_padding])
   end;
@@ -3653,11 +3620,11 @@ function TGraphExt.AddFFT3D(const I_input:string; const O_output:string; const A
   begin
   result:=AddOper('FFT3D',[I_input],[],[],[O_output],['Tcomplex'],['type'],[@A_Tcomplex])
   end;
-function TGraphExt.AddFIFOQueue(const O_handle:string; const A_component_types:array of TF_DataType; const A_shapes:array of TF_Shape; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddFIFOQueue(const O_handle:string; const A_component_types:TF_TypeList; const A_shapes:TF_ShapeList; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
   begin
   result:=AddOper('FIFOQueue',[],[],[],[O_handle],['component_types','shapes','capacity','container','shared_name'],['list(type)','list(shape)','int','string','string'],[@A_component_types,@A_shapes,@A_capacity,@A_container,@A_shared_name])
   end;
-function TGraphExt.AddFIFOQueueV2(const O_handle:string; const A_component_types:array of TF_DataType; const A_shapes:array of TF_Shape; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddFIFOQueueV2(const O_handle:string; const A_component_types:TF_TypeList; const A_shapes:TF_ShapeList; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
   begin
   result:=AddOper('FIFOQueueV2',[],[],[],[O_handle],['component_types','shapes','capacity','container','shared_name'],['list(type)','list(shape)','int','string','string'],[@A_component_types,@A_shapes,@A_capacity,@A_container,@A_shared_name])
   end;
@@ -3701,13 +3668,13 @@ function TGraphExt.AddFill(const I_dims:string; const I_value:string; const O_ou
   begin
   result:=AddOper('Fill',[I_dims,I_value],[],[],[O_output],['T','index_type'],['type','type'],[@A_T,@A_index_type])
   end;
-function TGraphExt.AddFilterByLastComponentDataset(const I_input_dataset:string; const O_output:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddFilterByLastComponentDataset(const I_input_dataset:string; const O_output:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('FilterByLastComponentDataset',[I_input_dataset],[],[],[O_output],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddFilterDataset(const I_input_dataset:string; const I_other_arguments:string; const O_handle:string; const A_predicate:TF_Function; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddFilterDataset(const I_input_dataset:string; const IL_other_arguments:string; const O_handle:string; const A_predicate:TF_Function; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('FilterDataset',[I_input_dataset,I_other_arguments],[],[],[O_handle],['predicate','Targuments','output_types','output_shapes'],['func','list(type)','list(type)','list(shape)'],[@A_predicate,@A_Targuments,@A_output_types,@A_output_shapes])
+  result:=AddOper('FilterDataset',[I_input_dataset],[IL_other_arguments],[Length(A_Targuments)],[O_handle],['predicate','Targuments','output_types','output_shapes'],['func','list(type)','list(type)','list(shape)'],[@A_predicate,@A_Targuments,@A_output_types,@A_output_shapes])
   end;
 function TGraphExt.AddFingerprint(const I_data:string; const I_method:string; const O_fingerprint:string; const A_T:TF_DataType):string;
   begin
@@ -3729,13 +3696,13 @@ function TGraphExt.AddFixedLengthRecordReaderV2(const O_reader_handle:string; co
   begin
   result:=AddOper('FixedLengthRecordReaderV2',[],[],[],[O_reader_handle],['header_bytes','record_bytes','footer_bytes','hop_bytes','container','shared_name','encoding'],['int','int','int','int','string','string','string'],[@A_header_bytes,@A_record_bytes,@A_footer_bytes,@A_hop_bytes,@A_container,@A_shared_name,@A_encoding])
   end;
-function TGraphExt.AddFixedUnigramCandidateSampler(const I_true_classes:string; const O_sampled_candidates:string; const O_true_expected_count:string; const O_sampled_expected_count:string; const A_num_true:cint64; const A_num_sampled:cint64; const A_unique:boolean; const A_range_max:cint64; const A_vocab_file:string; const A_distortion:real; const A_num_reserved_ids:cint64; const A_num_shards:cint64; const A_shard:cint64; const A_unigrams:array of real; const A_seed:cint64; const A_seed2:cint64):string;
+function TGraphExt.AddFixedUnigramCandidateSampler(const I_true_classes:string; const O_sampled_candidates:string; const O_true_expected_count:string; const O_sampled_expected_count:string; const A_num_true:cint64; const A_num_sampled:cint64; const A_unique:boolean; const A_range_max:cint64; const A_vocab_file:string; const A_distortion:real; const A_num_reserved_ids:cint64; const A_num_shards:cint64; const A_shard:cint64; const A_unigrams:TF_FloatList; const A_seed:cint64; const A_seed2:cint64):string;
   begin
   result:=AddOper('FixedUnigramCandidateSampler',[I_true_classes],[],[],[O_sampled_candidates,O_true_expected_count,O_sampled_expected_count],['num_true','num_sampled','unique','range_max','vocab_file','distortion','num_reserved_ids','num_shards','shard','unigrams','seed','seed2'],['int','int','bool','int','string','float','int','int','int','list(float)','int','int'],[@A_num_true,@A_num_sampled,@A_unique,@A_range_max,@A_vocab_file,@A_distortion,@A_num_reserved_ids,@A_num_shards,@A_shard,@A_unigrams,@A_seed,@A_seed2])
   end;
-function TGraphExt.AddFlatMapDataset(const I_input_dataset:string; const I_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddFlatMapDataset(const I_input_dataset:string; const IL_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('FlatMapDataset',[I_input_dataset,I_other_arguments],[],[],[O_handle],['f','Targuments','output_types','output_shapes'],['func','list(type)','list(type)','list(shape)'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes])
+  result:=AddOper('FlatMapDataset',[I_input_dataset],[IL_other_arguments],[Length(A_Targuments)],[O_handle],['f','Targuments','output_types','output_shapes'],['func','list(type)','list(type)','list(shape)'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes])
   end;
 function TGraphExt.AddFloor(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
   begin
@@ -3753,11 +3720,11 @@ function TGraphExt.AddFlushSummaryWriter(const I_writer:string):string;
   begin
   result:=AddOper('FlushSummaryWriter',[I_writer],[],[],[],[],[],[])
   end;
-function TGraphExt.AddFor(const I_start:string; const I_limit:string; const I_delta:string; const I_input:string; const OL_output:string; const A_T:array of TF_DataType; const A_body:TF_Function):string;
+function TGraphExt.AddFor(const I_start:string; const I_limit:string; const I_delta:string; const IL_input:string; const OL_output:string; const A_T:TF_TypeList; const A_body:TF_Function):string;
   begin
-  result:=AddOper('For',[I_start,I_limit,I_delta,I_input],[],[],[OL_output],['T','body'],['list(type)','func'],[@A_T,@A_body])
+  result:=AddOper('For',[I_start,I_limit,I_delta],[IL_input],[Length(A_T)],[OL_output],['T','body'],['list(type)','func'],[@A_T,@A_body])
   end;
-function TGraphExt.AddFractionalAvgPool(const I_value:string; const O_output:string; const O_row_pooling_sequence:string; const O_col_pooling_sequence:string; const A_pooling_ratio:array of real; const A_pseudo_random:boolean; const A_overlapping:boolean; const A_deterministic:boolean; const A_seed:cint64; const A_seed2:cint64; const A_T:TF_DataType):string;
+function TGraphExt.AddFractionalAvgPool(const I_value:string; const O_output:string; const O_row_pooling_sequence:string; const O_col_pooling_sequence:string; const A_pooling_ratio:TF_FloatList; const A_pseudo_random:boolean; const A_overlapping:boolean; const A_deterministic:boolean; const A_seed:cint64; const A_seed2:cint64; const A_T:TF_DataType):string;
   begin
   result:=AddOper('FractionalAvgPool',[I_value],[],[],[O_output,O_row_pooling_sequence,O_col_pooling_sequence],['pooling_ratio','pseudo_random','overlapping','deterministic','seed','seed2','T'],['list(float)','bool','bool','bool','int','int','type'],[@A_pooling_ratio,@A_pseudo_random,@A_overlapping,@A_deterministic,@A_seed,@A_seed2,@A_T])
   end;
@@ -3765,7 +3732,7 @@ function TGraphExt.AddFractionalAvgPoolGrad(const I_orig_input_tensor_shape:stri
   begin
   result:=AddOper('FractionalAvgPoolGrad',[I_orig_input_tensor_shape,I_out_backprop,I_row_pooling_sequence,I_col_pooling_sequence],[],[],[O_output],['overlapping','T'],['bool','type'],[@A_overlapping,@A_T])
   end;
-function TGraphExt.AddFractionalMaxPool(const I_value:string; const O_output:string; const O_row_pooling_sequence:string; const O_col_pooling_sequence:string; const A_pooling_ratio:array of real; const A_pseudo_random:boolean; const A_overlapping:boolean; const A_deterministic:boolean; const A_seed:cint64; const A_seed2:cint64; const A_T:TF_DataType):string;
+function TGraphExt.AddFractionalMaxPool(const I_value:string; const O_output:string; const O_row_pooling_sequence:string; const O_col_pooling_sequence:string; const A_pooling_ratio:TF_FloatList; const A_pseudo_random:boolean; const A_overlapping:boolean; const A_deterministic:boolean; const A_seed:cint64; const A_seed2:cint64; const A_T:TF_DataType):string;
   begin
   result:=AddOper('FractionalMaxPool',[I_value],[],[],[O_output,O_row_pooling_sequence,O_col_pooling_sequence],['pooling_ratio','pseudo_random','overlapping','deterministic','seed','seed2','T'],['list(float)','bool','bool','bool','int','int','type'],[@A_pooling_ratio,@A_pseudo_random,@A_overlapping,@A_deterministic,@A_seed,@A_seed2,@A_T])
   end;
@@ -3805,11 +3772,11 @@ function TGraphExt.AddFusedBatchNormV3(const I_x:string; const I_scale:string; c
   begin
   result:=AddOper('FusedBatchNormV3',[I_x,I_scale,I_offset,I_mean,I_variance],[],[],[O_y,O_batch_mean,O_batch_variance,O_reserve_space_1,O_reserve_space_2,O_reserve_space_3],['T','U','epsilon','data_format','is_training'],['type','type','float','string','bool'],[@A_T,@A_U,@A_epsilon,@A_data_format,@A_is_training])
   end;
-function TGraphExt.AddFusedPadConv2D(const I_input:string; const I_paddings:string; const I_filter:string; const O_output:string; const A_T:TF_DataType; const A_mode:string; const A_strides:array of cint64; const A_padding:string):string;
+function TGraphExt.AddFusedPadConv2D(const I_input:string; const I_paddings:string; const I_filter:string; const O_output:string; const A_T:TF_DataType; const A_mode:string; const A_strides:TF_IntList; const A_padding:string):string;
   begin
   result:=AddOper('FusedPadConv2D',[I_input,I_paddings,I_filter],[],[],[O_output],['T','mode','strides','padding'],['type','string','list(int)','string'],[@A_T,@A_mode,@A_strides,@A_padding])
   end;
-function TGraphExt.AddFusedResizeAndPadConv2D(const I_input:string; const I_size:string; const I_paddings:string; const I_filter:string; const O_output:string; const A_T:TF_DataType; const A_resize_align_corners:boolean; const A_mode:string; const A_strides:array of cint64; const A_padding:string):string;
+function TGraphExt.AddFusedResizeAndPadConv2D(const I_input:string; const I_size:string; const I_paddings:string; const I_filter:string; const O_output:string; const A_T:TF_DataType; const A_resize_align_corners:boolean; const A_mode:string; const A_strides:TF_IntList; const A_padding:string):string;
   begin
   result:=AddOper('FusedResizeAndPadConv2D',[I_input,I_size,I_paddings,I_filter],[],[],[O_output],['T','resize_align_corners','mode','strides','padding'],['type','bool','string','list(int)','string'],[@A_T,@A_resize_align_corners,@A_mode,@A_strides,@A_padding])
   end;
@@ -3841,9 +3808,9 @@ function TGraphExt.AddGenerateVocabRemapping(const I_new_vocab_file:string; cons
   begin
   result:=AddOper('GenerateVocabRemapping',[I_new_vocab_file,I_old_vocab_file],[],[],[O_remapping,O_num_present],['new_vocab_offset','num_new_vocab','old_vocab_size'],['int','int','int'],[@A_new_vocab_offset,@A_num_new_vocab,@A_old_vocab_size])
   end;
-function TGraphExt.AddGeneratorDataset(const I_init_func_other_args:string; const I_next_func_other_args:string; const I_finalize_func_other_args:string; const O_handle:string; const A_init_func:TF_Function; const A_next_func:TF_Function; const A_finalize_func:TF_Function; const A_Tinit_func_args:array of TF_DataType; const A_Tnext_func_args:array of TF_DataType; const A_Tfinalize_func_args:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddGeneratorDataset(const IL_init_func_other_args:string; const IL_next_func_other_args:string; const IL_finalize_func_other_args:string; const O_handle:string; const A_init_func:TF_Function; const A_next_func:TF_Function; const A_finalize_func:TF_Function; const A_Tinit_func_args:TF_TypeList; const A_Tnext_func_args:TF_TypeList; const A_Tfinalize_func_args:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('GeneratorDataset',[I_init_func_other_args,I_next_func_other_args,I_finalize_func_other_args],[],[],[O_handle],['init_func','next_func','finalize_func','Tinit_func_args','Tnext_func_args','Tfinalize_func_args','output_types','output_shapes'],['func','func','func','list(type)','list(type)','list(type)','list(type)','list(shape)'],[@A_init_func,@A_next_func,@A_finalize_func,@A_Tinit_func_args,@A_Tnext_func_args,@A_Tfinalize_func_args,@A_output_types,@A_output_shapes])
+  result:=AddOper('GeneratorDataset',[],[IL_init_func_other_args,IL_next_func_other_args,IL_finalize_func_other_args],[Length(A_Tinit_func_args),Length(A_Tnext_func_args),Length(A_Tfinalize_func_args)],[O_handle],['init_func','next_func','finalize_func','Tinit_func_args','Tnext_func_args','Tfinalize_func_args','output_types','output_shapes'],['func','func','func','list(type)','list(type)','list(type)','list(type)','list(shape)'],[@A_init_func,@A_next_func,@A_finalize_func,@A_Tinit_func_args,@A_Tnext_func_args,@A_Tfinalize_func_args,@A_output_types,@A_output_shapes])
   end;
 function TGraphExt.AddGetSessionHandle(const I_value:string; const O_handle:string; const A_T:TF_DataType):string;
   begin
@@ -3865,13 +3832,13 @@ function TGraphExt.AddGreaterEqual(const I_x:string; const I_y:string; const O_z
   begin
   result:=AddOper('GreaterEqual',[I_x,I_y],[],[],[O_z],['T'],['type'],[@A_T])
   end;
-function TGraphExt.AddGroupByReducerDataset(const I_input_dataset:string; const I_key_func_other_arguments:string; const I_init_func_other_arguments:string; const I_reduce_func_other_arguments:string; const I_finalize_func_other_arguments:string; const O_handle:string; const A_key_func:TF_Function; const A_init_func:TF_Function; const A_reduce_func:TF_Function; const A_finalize_func:TF_Function; const A_Tkey_func_other_arguments:array of TF_DataType; const A_Tinit_func_other_arguments:array of TF_DataType; const A_Treduce_func_other_arguments:array of TF_DataType; const A_Tfinalize_func_other_arguments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddGroupByReducerDataset(const I_input_dataset:string; const IL_key_func_other_arguments:string; const IL_init_func_other_arguments:string; const IL_reduce_func_other_arguments:string; const IL_finalize_func_other_arguments:string; const O_handle:string; const A_key_func:TF_Function; const A_init_func:TF_Function; const A_reduce_func:TF_Function; const A_finalize_func:TF_Function; const A_Tkey_func_other_arguments:TF_TypeList; const A_Tinit_func_other_arguments:TF_TypeList; const A_Treduce_func_other_arguments:TF_TypeList; const A_Tfinalize_func_other_arguments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('GroupByReducerDataset',[I_input_dataset,I_key_func_other_arguments,I_init_func_other_arguments,I_reduce_func_other_arguments,I_finalize_func_other_arguments],[],[],[O_handle],['key_func','init_func','reduce_func','finalize_func','Tkey_func_other_arguments','Tinit_func_other_arguments','Treduce_func_other_arguments','Tfinalize_func_other_arguments','output_types','output_shapes'],['func','func','func','func','list(type)','list(type)','list(type)','list(type)','list(type)','list(shape)'],[@A_key_func,@A_init_func,@A_reduce_func,@A_finalize_func,@A_Tkey_func_other_arguments,@A_Tinit_func_other_arguments,@A_Treduce_func_other_arguments,@A_Tfinalize_func_other_arguments,@A_output_types,@A_output_shapes])
+  result:=AddOper('GroupByReducerDataset',[I_input_dataset],[IL_key_func_other_arguments,IL_init_func_other_arguments,IL_reduce_func_other_arguments,IL_finalize_func_other_arguments],[Length(A_Tkey_func_other_arguments),Length(A_Tinit_func_other_arguments),Length(A_Treduce_func_other_arguments),Length(A_Tfinalize_func_other_arguments)],[O_handle],['key_func','init_func','reduce_func','finalize_func','Tkey_func_other_arguments','Tinit_func_other_arguments','Treduce_func_other_arguments','Tfinalize_func_other_arguments','output_types','output_shapes'],['func','func','func','func','list(type)','list(type)','list(type)','list(type)','list(type)','list(shape)'],[@A_key_func,@A_init_func,@A_reduce_func,@A_finalize_func,@A_Tkey_func_other_arguments,@A_Tinit_func_other_arguments,@A_Treduce_func_other_arguments,@A_Tfinalize_func_other_arguments,@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddGroupByWindowDataset(const I_input_dataset:string; const I_key_func_other_arguments:string; const I_reduce_func_other_arguments:string; const I_window_size_func_other_arguments:string; const O_handle:string; const A_key_func:TF_Function; const A_reduce_func:TF_Function; const A_window_size_func:TF_Function; const A_Tkey_func_other_arguments:array of TF_DataType; const A_Treduce_func_other_arguments:array of TF_DataType; const A_Twindow_size_func_other_arguments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddGroupByWindowDataset(const I_input_dataset:string; const IL_key_func_other_arguments:string; const IL_reduce_func_other_arguments:string; const IL_window_size_func_other_arguments:string; const O_handle:string; const A_key_func:TF_Function; const A_reduce_func:TF_Function; const A_window_size_func:TF_Function; const A_Tkey_func_other_arguments:TF_TypeList; const A_Treduce_func_other_arguments:TF_TypeList; const A_Twindow_size_func_other_arguments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('GroupByWindowDataset',[I_input_dataset,I_key_func_other_arguments,I_reduce_func_other_arguments,I_window_size_func_other_arguments],[],[],[O_handle],['key_func','reduce_func','window_size_func','Tkey_func_other_arguments','Treduce_func_other_arguments','Twindow_size_func_other_arguments','output_types','output_shapes'],['func','func','func','list(type)','list(type)','list(type)','list(type)','list(shape)'],[@A_key_func,@A_reduce_func,@A_window_size_func,@A_Tkey_func_other_arguments,@A_Treduce_func_other_arguments,@A_Twindow_size_func_other_arguments,@A_output_types,@A_output_shapes])
+  result:=AddOper('GroupByWindowDataset',[I_input_dataset],[IL_key_func_other_arguments,IL_reduce_func_other_arguments,IL_window_size_func_other_arguments],[Length(A_Tkey_func_other_arguments),Length(A_Treduce_func_other_arguments),Length(A_Twindow_size_func_other_arguments)],[O_handle],['key_func','reduce_func','window_size_func','Tkey_func_other_arguments','Treduce_func_other_arguments','Twindow_size_func_other_arguments','output_types','output_shapes'],['func','func','func','list(type)','list(type)','list(type)','list(type)','list(shape)'],[@A_key_func,@A_reduce_func,@A_window_size_func,@A_Tkey_func_other_arguments,@A_Treduce_func_other_arguments,@A_Twindow_size_func_other_arguments,@A_output_types,@A_output_shapes])
   end;
 function TGraphExt.AddGuaranteeConst(const I_input:string; const O_output:string; const A_T:TF_DataType):string;
   begin
@@ -3929,9 +3896,9 @@ function TGraphExt.AddIdentity(const I_input:string; const O_output:string; cons
   begin
   result:=AddOper('Identity',[I_input],[],[],[O_output],['T'],['type'],[@A_T])
   end;
-function TGraphExt.AddIdentityN(const I_input:string; const OL_output:string; const A_T:array of TF_DataType):string;
+function TGraphExt.AddIdentityN(const IL_input:string; const OL_output:string; const A_T:TF_TypeList):string;
   begin
-  result:=AddOper('IdentityN',[I_input],[],[],[OL_output],['T'],['list(type)'],[@A_T])
+  result:=AddOper('IdentityN',[],[IL_input],[Length(A_T)],[OL_output],['T'],['list(type)'],[@A_T])
   end;
 function TGraphExt.AddIdentityReader(const O_reader_handle:string; const A_container:string; const A_shared_name:string):string;
   begin
@@ -3941,9 +3908,9 @@ function TGraphExt.AddIdentityReaderV2(const O_reader_handle:string; const A_con
   begin
   result:=AddOper('IdentityReaderV2',[],[],[],[O_reader_handle],['container','shared_name'],['string','string'],[@A_container,@A_shared_name])
   end;
-function TGraphExt.AddIf(const I_cond:string; const I_input:string; const OL_output:string; const A_Tcond:TF_DataType; const A_Tin:array of TF_DataType; const A_Tout:array of TF_DataType; const A_then_branch:TF_Function; const A_else_branch:TF_Function; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddIf(const I_cond:string; const IL_input:string; const OL_output:string; const A_Tcond:TF_DataType; const A_Tin:TF_TypeList; const A_Tout:TF_TypeList; const A_then_branch:TF_Function; const A_else_branch:TF_Function; const A_output_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('If',[I_cond,I_input],[],[],[OL_output],['Tcond','Tin','Tout','then_branch','else_branch','output_shapes'],['type','list(type)','list(type)','func','func','list(shape)'],[@A_Tcond,@A_Tin,@A_Tout,@A_then_branch,@A_else_branch,@A_output_shapes])
+  result:=AddOper('If',[I_cond],[IL_input],[Length(A_Tin)],[OL_output],['Tcond','Tin','Tout','then_branch','else_branch','output_shapes'],['type','list(type)','list(type)','func','func','list(shape)'],[@A_Tcond,@A_Tin,@A_Tout,@A_then_branch,@A_else_branch,@A_output_shapes])
   end;
 function TGraphExt.AddIgamma(const I_a:string; const I_x:string; const O_z:string; const A_T:TF_DataType):string;
   begin
@@ -3957,7 +3924,7 @@ function TGraphExt.AddIgammac(const I_a:string; const I_x:string; const O_z:stri
   begin
   result:=AddOper('Igammac',[I_a,I_x],[],[],[O_z],['T'],['type'],[@A_T])
   end;
-function TGraphExt.AddIgnoreErrorsDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddIgnoreErrorsDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('IgnoreErrorsDataset',[I_input_dataset],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -3993,11 +3960,11 @@ function TGraphExt.AddInfeedDequeue(const O_output:string; const A_dtype:TF_Data
   begin
   result:=AddOper('InfeedDequeue',[],[],[],[O_output],['dtype','shape'],['type','shape'],[@A_dtype,@A_shape])
   end;
-function TGraphExt.AddInfeedDequeueTuple(const OL_outputs:string; const A_dtypes:array of TF_DataType; const A_shapes:array of TF_Shape):string;
+function TGraphExt.AddInfeedDequeueTuple(const OL_outputs:string; const A_dtypes:TF_TypeList; const A_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('InfeedDequeueTuple',[],[],[],[OL_outputs],['dtypes','shapes'],['list(type)','list(shape)'],[@A_dtypes,@A_shapes])
   end;
-function TGraphExt.AddInfeedEnqueue(const I_input:string; const A_dtype:TF_DataType; const A_shape:TF_Shape; const A_layout:array of cint64; const A_device_ordinal:cint64):string;
+function TGraphExt.AddInfeedEnqueue(const I_input:string; const A_dtype:TF_DataType; const A_shape:TF_Shape; const A_layout:TF_IntList; const A_device_ordinal:cint64):string;
   begin
   result:=AddOper('InfeedEnqueue',[I_input],[],[],[],['dtype','shape','layout','device_ordinal'],['type','shape','list(int)','int'],[@A_dtype,@A_shape,@A_layout,@A_device_ordinal])
   end;
@@ -4005,9 +3972,9 @@ function TGraphExt.AddInfeedEnqueuePrelinearizedBuffer(const I_input:string; con
   begin
   result:=AddOper('InfeedEnqueuePrelinearizedBuffer',[I_input],[],[],[],['device_ordinal'],['int'],[@A_device_ordinal])
   end;
-function TGraphExt.AddInfeedEnqueueTuple(const I_inputs:string; const A_dtypes:array of TF_DataType; const A_shapes:array of TF_Shape; const A_layouts:array of cint64; const A_device_ordinal:cint64):string;
+function TGraphExt.AddInfeedEnqueueTuple(const IL_inputs:string; const A_dtypes:TF_TypeList; const A_shapes:TF_ShapeList; const A_layouts:TF_IntList; const A_device_ordinal:cint64):string;
   begin
-  result:=AddOper('InfeedEnqueueTuple',[I_inputs],[],[],[],['dtypes','shapes','layouts','device_ordinal'],['list(type)','list(shape)','list(int)','int'],[@A_dtypes,@A_shapes,@A_layouts,@A_device_ordinal])
+  result:=AddOper('InfeedEnqueueTuple',[],[IL_inputs],[Length(A_dtypes)],[],['dtypes','shapes','layouts','device_ordinal'],['list(type)','list(shape)','list(int)','int'],[@A_dtypes,@A_shapes,@A_layouts,@A_device_ordinal])
   end;
 function TGraphExt.AddInitializeTable(const I_table_handle:string; const I_keys:string; const I_values:string; const A_Tkey:TF_DataType; const A_Tval:TF_DataType):string;
   begin
@@ -4037,9 +4004,9 @@ function TGraphExt.AddInplaceUpdate(const I_x:string; const I_i:string; const I_
   begin
   result:=AddOper('InplaceUpdate',[I_x,I_i,I_v],[],[],[O_y],['T'],['type'],[@A_T])
   end;
-function TGraphExt.AddInterleaveDataset(const I_input_dataset:string; const I_other_arguments:string; const I_cycle_length:string; const I_block_length:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddInterleaveDataset(const I_input_dataset:string; const I_cycle_length:string; const I_block_length:string; const IL_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('InterleaveDataset',[I_input_dataset,I_other_arguments,I_cycle_length,I_block_length],[],[],[O_handle],['f','Targuments','output_types','output_shapes'],['func','list(type)','list(type)','list(shape)'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes])
+  result:=AddOper('InterleaveDataset',[I_input_dataset,I_cycle_length,I_block_length],[IL_other_arguments],[Length(A_Targuments)],[O_handle],['f','Targuments','output_types','output_shapes'],['func','list(type)','list(type)','list(shape)'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes])
   end;
 function TGraphExt.AddInv(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
   begin
@@ -4081,15 +4048,15 @@ function TGraphExt.AddIsVariableInitialized(const I_ref:string; const O_is_initi
   begin
   result:=AddOper('IsVariableInitialized',[I_ref],[],[],[O_is_initialized],['dtype'],['type'],[@A_dtype])
   end;
-function TGraphExt.AddIterator(const O_handle:string; const A_shared_name:string; const A_container:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddIterator(const O_handle:string; const A_shared_name:string; const A_container:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('Iterator',[],[],[],[O_handle],['shared_name','container','output_types','output_shapes'],['string','string','list(type)','list(shape)'],[@A_shared_name,@A_container,@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddIteratorFromStringHandle(const I_string_handle:string; const O_resource_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddIteratorFromStringHandle(const I_string_handle:string; const O_resource_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('IteratorFromStringHandle',[I_string_handle],[],[],[O_resource_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddIteratorFromStringHandleV2(const I_string_handle:string; const O_resource_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddIteratorFromStringHandleV2(const I_string_handle:string; const O_resource_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('IteratorFromStringHandleV2',[I_string_handle],[],[],[O_resource_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -4097,15 +4064,15 @@ function TGraphExt.AddIteratorGetDevice(const I_resource:string; const O_device:
   begin
   result:=AddOper('IteratorGetDevice',[I_resource],[],[],[O_device],[],[],[])
   end;
-function TGraphExt.AddIteratorGetNext(const I_iterator:string; const OL_components:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddIteratorGetNext(const I_iterator:string; const OL_components:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('IteratorGetNext',[I_iterator],[],[],[OL_components],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddIteratorGetNextAsOptional(const I_iterator:string; const O_optional:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddIteratorGetNextAsOptional(const I_iterator:string; const O_optional:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('IteratorGetNextAsOptional',[I_iterator],[],[],[O_optional],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddIteratorGetNextSync(const I_iterator:string; const OL_components:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddIteratorGetNextSync(const I_iterator:string; const OL_components:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('IteratorGetNextSync',[I_iterator],[],[],[OL_components],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -4113,7 +4080,7 @@ function TGraphExt.AddIteratorToStringHandle(const I_resource_handle:string; con
   begin
   result:=AddOper('IteratorToStringHandle',[I_resource_handle],[],[],[O_string_handle],[],[],[])
   end;
-function TGraphExt.AddIteratorV2(const O_handle:string; const A_shared_name:string; const A_container:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddIteratorV2(const O_handle:string; const A_shared_name:string; const A_container:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('IteratorV2',[],[],[],[O_handle],['shared_name','container','output_types','output_shapes'],['string','string','list(type)','list(shape)'],[@A_shared_name,@A_container,@A_output_types,@A_output_shapes])
   end;
@@ -4129,7 +4096,7 @@ function TGraphExt.AddL2Loss(const I_t:string; const O_output:string; const A_T:
   begin
   result:=AddOper('L2Loss',[I_t],[],[],[O_output],['T'],['type'],[@A_T])
   end;
-function TGraphExt.AddLMDBDataset(const I_filenames:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddLMDBDataset(const I_filenames:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('LMDBDataset',[I_filenames],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -4153,7 +4120,7 @@ function TGraphExt.AddLSTMBlockCellGrad(const I_x:string; const I_cs_prev:string
   begin
   result:=AddOper('LSTMBlockCellGrad',[I_x,I_cs_prev,I_h_prev,I_w,I_wci,I_wcf,I_wco,I_b,I_i,I_cs,I_f,I_o,I_ci,I_co,I_cs_grad,I_h_grad],[],[],[O_cs_prev_grad,O_dicfo,O_wci_grad,O_wcf_grad,O_wco_grad],['use_peephole','T'],['bool','type'],[@A_use_peephole,@A_T])
   end;
-function TGraphExt.AddLatencyStatsDataset(const I_input_dataset:string; const I_tag:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddLatencyStatsDataset(const I_input_dataset:string; const I_tag:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('LatencyStatsDataset',[I_input_dataset,I_tag],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -4357,43 +4324,43 @@ function TGraphExt.AddMakeIterator(const I_dataset:string; const I_iterator:stri
   begin
   result:=AddOper('MakeIterator',[I_dataset,I_iterator],[],[],[],[],[],[])
   end;
-function TGraphExt.AddMapAndBatchDataset(const I_input_dataset:string; const I_other_arguments:string; const I_batch_size:string; const I_num_parallel_calls:string; const I_drop_remainder:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_preserve_cardinality:boolean):string;
+function TGraphExt.AddMapAndBatchDataset(const I_input_dataset:string; const I_batch_size:string; const I_num_parallel_calls:string; const I_drop_remainder:string; const IL_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_preserve_cardinality:boolean):string;
   begin
-  result:=AddOper('MapAndBatchDataset',[I_input_dataset,I_other_arguments,I_batch_size,I_num_parallel_calls,I_drop_remainder],[],[],[O_handle],['f','Targuments','output_types','output_shapes','preserve_cardinality'],['func','list(type)','list(type)','list(shape)','bool'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes,@A_preserve_cardinality])
+  result:=AddOper('MapAndBatchDataset',[I_input_dataset,I_batch_size,I_num_parallel_calls,I_drop_remainder],[IL_other_arguments],[Length(A_Targuments)],[O_handle],['f','Targuments','output_types','output_shapes','preserve_cardinality'],['func','list(type)','list(type)','list(shape)','bool'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes,@A_preserve_cardinality])
   end;
-function TGraphExt.AddMapClear(const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddMapClear(const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
   begin
   result:=AddOper('MapClear',[],[],[],[],['capacity','memory_limit','dtypes','container','shared_name'],['int','int','list(type)','string','string'],[@A_capacity,@A_memory_limit,@A_dtypes,@A_container,@A_shared_name])
   end;
-function TGraphExt.AddMapDataset(const I_input_dataset:string; const I_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_use_inter_op_parallelism:boolean; const A_preserve_cardinality:boolean):string;
+function TGraphExt.AddMapDataset(const I_input_dataset:string; const IL_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_use_inter_op_parallelism:boolean; const A_preserve_cardinality:boolean):string;
   begin
-  result:=AddOper('MapDataset',[I_input_dataset,I_other_arguments],[],[],[O_handle],['f','Targuments','output_types','output_shapes','use_inter_op_parallelism','preserve_cardinality'],['func','list(type)','list(type)','list(shape)','bool','bool'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes,@A_use_inter_op_parallelism,@A_preserve_cardinality])
+  result:=AddOper('MapDataset',[I_input_dataset],[IL_other_arguments],[Length(A_Targuments)],[O_handle],['f','Targuments','output_types','output_shapes','use_inter_op_parallelism','preserve_cardinality'],['func','list(type)','list(type)','list(shape)','bool','bool'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes,@A_use_inter_op_parallelism,@A_preserve_cardinality])
   end;
-function TGraphExt.AddMapDefun(const I_arguments:string; const I_captured_inputs:string; const OL_output:string; const A_Targuments:array of TF_DataType; const A_Tcaptured:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_f:TF_Function; const A_max_intra_op_parallelism:cint64):string;
+function TGraphExt.AddMapDefun(const IL_arguments:string; const IL_captured_inputs:string; const OL_output:string; const A_Targuments:TF_TypeList; const A_Tcaptured:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_f:TF_Function; const A_max_intra_op_parallelism:cint64):string;
   begin
-  result:=AddOper('MapDefun',[I_arguments,I_captured_inputs],[],[],[OL_output],['Targuments','Tcaptured','output_types','output_shapes','f','max_intra_op_parallelism'],['list(type)','list(type)','list(type)','list(shape)','func','int'],[@A_Targuments,@A_Tcaptured,@A_output_types,@A_output_shapes,@A_f,@A_max_intra_op_parallelism])
+  result:=AddOper('MapDefun',[],[IL_arguments,IL_captured_inputs],[Length(A_Targuments),Length(A_Tcaptured)],[OL_output],['Targuments','Tcaptured','output_types','output_shapes','f','max_intra_op_parallelism'],['list(type)','list(type)','list(type)','list(shape)','func','int'],[@A_Targuments,@A_Tcaptured,@A_output_types,@A_output_shapes,@A_f,@A_max_intra_op_parallelism])
   end;
-function TGraphExt.AddMapIncompleteSize(const O_size:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddMapIncompleteSize(const O_size:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
   begin
   result:=AddOper('MapIncompleteSize',[],[],[],[O_size],['capacity','memory_limit','dtypes','container','shared_name'],['int','int','list(type)','string','string'],[@A_capacity,@A_memory_limit,@A_dtypes,@A_container,@A_shared_name])
   end;
-function TGraphExt.AddMapPeek(const I_key:string; const I_indices:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddMapPeek(const I_key:string; const I_indices:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
   begin
   result:=AddOper('MapPeek',[I_key,I_indices],[],[],[OL_values],['capacity','memory_limit','dtypes','container','shared_name'],['int','int','list(type)','string','string'],[@A_capacity,@A_memory_limit,@A_dtypes,@A_container,@A_shared_name])
   end;
-function TGraphExt.AddMapSize(const O_size:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddMapSize(const O_size:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
   begin
   result:=AddOper('MapSize',[],[],[],[O_size],['capacity','memory_limit','dtypes','container','shared_name'],['int','int','list(type)','string','string'],[@A_capacity,@A_memory_limit,@A_dtypes,@A_container,@A_shared_name])
   end;
-function TGraphExt.AddMapStage(const I_key:string; const I_indices:string; const I_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_fake_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddMapStage(const I_key:string; const I_indices:string; const IL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_fake_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
   begin
-  result:=AddOper('MapStage',[I_key,I_indices,I_values],[],[],[],['capacity','memory_limit','dtypes','fake_dtypes','container','shared_name'],['int','int','list(type)','list(type)','string','string'],[@A_capacity,@A_memory_limit,@A_dtypes,@A_fake_dtypes,@A_container,@A_shared_name])
+  result:=AddOper('MapStage',[I_key,I_indices],[IL_values],[Length(A_fake_dtypes)],[],['capacity','memory_limit','dtypes','fake_dtypes','container','shared_name'],['int','int','list(type)','list(type)','string','string'],[@A_capacity,@A_memory_limit,@A_dtypes,@A_fake_dtypes,@A_container,@A_shared_name])
   end;
-function TGraphExt.AddMapUnstage(const I_key:string; const I_indices:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddMapUnstage(const I_key:string; const I_indices:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
   begin
   result:=AddOper('MapUnstage',[I_key,I_indices],[],[],[OL_values],['capacity','memory_limit','dtypes','container','shared_name'],['int','int','list(type)','string','string'],[@A_capacity,@A_memory_limit,@A_dtypes,@A_container,@A_shared_name])
   end;
-function TGraphExt.AddMapUnstageNoKey(const I_indices:string; const O_key:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddMapUnstageNoKey(const I_indices:string; const O_key:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
   begin
   result:=AddOper('MapUnstageNoKey',[I_indices],[],[],[O_key,OL_values],['capacity','memory_limit','dtypes','container','shared_name'],['int','int','list(type)','string','string'],[@A_capacity,@A_memory_limit,@A_dtypes,@A_container,@A_shared_name])
   end;
@@ -4485,31 +4452,31 @@ function TGraphExt.AddMax(const I_input:string; const I_reduction_indices:string
   begin
   result:=AddOper('Max',[I_input,I_reduction_indices],[],[],[O_output],['keep_dims','T','Tidx'],['bool','type','type'],[@A_keep_dims,@A_T,@A_Tidx])
   end;
-function TGraphExt.AddMaxIntraOpParallelismDataset(const I_input_dataset:string; const I_max_intra_op_parallelism:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddMaxIntraOpParallelismDataset(const I_input_dataset:string; const I_max_intra_op_parallelism:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('MaxIntraOpParallelismDataset',[I_input_dataset,I_max_intra_op_parallelism],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddMaxPool(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string; const A_data_format:string):string;
+function TGraphExt.AddMaxPool(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string):string;
   begin
   result:=AddOper('MaxPool',[I_input],[],[],[O_output],['T','ksize','strides','padding','data_format'],['type','list(int)','list(int)','string','string'],[@A_T,@A_ksize,@A_strides,@A_padding,@A_data_format])
   end;
-function TGraphExt.AddMaxPool3D(const I_input:string; const O_output:string; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
+function TGraphExt.AddMaxPool3D(const I_input:string; const O_output:string; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
   begin
   result:=AddOper('MaxPool3D',[I_input],[],[],[O_output],['ksize','strides','padding','data_format','T'],['list(int)','list(int)','string','string','type'],[@A_ksize,@A_strides,@A_padding,@A_data_format,@A_T])
   end;
-function TGraphExt.AddMaxPool3DGrad(const I_orig_input:string; const I_orig_output:string; const I_grad:string; const O_output:string; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_T:TF_DataType; const A_TInput:TF_DataType):string;
+function TGraphExt.AddMaxPool3DGrad(const I_orig_input:string; const I_orig_output:string; const I_grad:string; const O_output:string; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_T:TF_DataType; const A_TInput:TF_DataType):string;
   begin
   result:=AddOper('MaxPool3DGrad',[I_orig_input,I_orig_output,I_grad],[],[],[O_output],['ksize','strides','padding','data_format','T','TInput'],['list(int)','list(int)','string','string','type','type'],[@A_ksize,@A_strides,@A_padding,@A_data_format,@A_T,@A_TInput])
   end;
-function TGraphExt.AddMaxPool3DGradGrad(const I_orig_input:string; const I_orig_output:string; const I_grad:string; const O_output:string; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
+function TGraphExt.AddMaxPool3DGradGrad(const I_orig_input:string; const I_orig_output:string; const I_grad:string; const O_output:string; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
   begin
   result:=AddOper('MaxPool3DGradGrad',[I_orig_input,I_orig_output,I_grad],[],[],[O_output],['ksize','strides','padding','data_format','T'],['list(int)','list(int)','string','string','type'],[@A_ksize,@A_strides,@A_padding,@A_data_format,@A_T])
   end;
-function TGraphExt.AddMaxPoolGrad(const I_orig_input:string; const I_orig_output:string; const I_grad:string; const O_output:string; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
+function TGraphExt.AddMaxPoolGrad(const I_orig_input:string; const I_orig_output:string; const I_grad:string; const O_output:string; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
   begin
   result:=AddOper('MaxPoolGrad',[I_orig_input,I_orig_output,I_grad],[],[],[O_output],['ksize','strides','padding','data_format','T'],['list(int)','list(int)','string','string','type'],[@A_ksize,@A_strides,@A_padding,@A_data_format,@A_T])
   end;
-function TGraphExt.AddMaxPoolGradGrad(const I_orig_input:string; const I_orig_output:string; const I_grad:string; const O_output:string; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
+function TGraphExt.AddMaxPoolGradGrad(const I_orig_input:string; const I_orig_output:string; const I_grad:string; const O_output:string; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string; const A_data_format:string; const A_T:TF_DataType):string;
   begin
   result:=AddOper('MaxPoolGradGrad',[I_orig_input,I_orig_output,I_grad],[],[],[O_output],['ksize','strides','padding','data_format','T'],['list(int)','list(int)','string','string','type'],[@A_ksize,@A_strides,@A_padding,@A_data_format,@A_T])
   end;
@@ -4517,7 +4484,7 @@ function TGraphExt.AddMaxPoolGradGradV2(const I_orig_input:string; const I_orig_
   begin
   result:=AddOper('MaxPoolGradGradV2',[I_orig_input,I_orig_output,I_grad,I_ksize,I_strides],[],[],[O_output],['padding','data_format','T'],['string','string','type'],[@A_padding,@A_data_format,@A_T])
   end;
-function TGraphExt.AddMaxPoolGradGradWithArgmax(const I_input:string; const I_grad:string; const I_argmax:string; const O_output:string; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string; const A_include_batch_in_index:boolean; const A_Targmax:TF_DataType; const A_T:TF_DataType):string;
+function TGraphExt.AddMaxPoolGradGradWithArgmax(const I_input:string; const I_grad:string; const I_argmax:string; const O_output:string; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string; const A_include_batch_in_index:boolean; const A_Targmax:TF_DataType; const A_T:TF_DataType):string;
   begin
   result:=AddOper('MaxPoolGradGradWithArgmax',[I_input,I_grad,I_argmax],[],[],[O_output],['ksize','strides','padding','include_batch_in_index','Targmax','T'],['list(int)','list(int)','string','bool','type','type'],[@A_ksize,@A_strides,@A_padding,@A_include_batch_in_index,@A_Targmax,@A_T])
   end;
@@ -4525,7 +4492,7 @@ function TGraphExt.AddMaxPoolGradV2(const I_orig_input:string; const I_orig_outp
   begin
   result:=AddOper('MaxPoolGradV2',[I_orig_input,I_orig_output,I_grad,I_ksize,I_strides],[],[],[O_output],['padding','data_format','T'],['string','string','type'],[@A_padding,@A_data_format,@A_T])
   end;
-function TGraphExt.AddMaxPoolGradWithArgmax(const I_input:string; const I_grad:string; const I_argmax:string; const O_output:string; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string; const A_include_batch_in_index:boolean; const A_Targmax:TF_DataType; const A_T:TF_DataType):string;
+function TGraphExt.AddMaxPoolGradWithArgmax(const I_input:string; const I_grad:string; const I_argmax:string; const O_output:string; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string; const A_include_batch_in_index:boolean; const A_Targmax:TF_DataType; const A_T:TF_DataType):string;
   begin
   result:=AddOper('MaxPoolGradWithArgmax',[I_input,I_grad,I_argmax],[],[],[O_output],['ksize','strides','padding','include_batch_in_index','Targmax','T'],['list(int)','list(int)','string','bool','type','type'],[@A_ksize,@A_strides,@A_padding,@A_include_batch_in_index,@A_Targmax,@A_T])
   end;
@@ -4533,7 +4500,7 @@ function TGraphExt.AddMaxPoolV2(const I_input:string; const I_ksize:string; cons
   begin
   result:=AddOper('MaxPoolV2',[I_input,I_ksize,I_strides],[],[],[O_output],['T','padding','data_format'],['type','string','string'],[@A_T,@A_padding,@A_data_format])
   end;
-function TGraphExt.AddMaxPoolWithArgmax(const I_input:string; const O_output:string; const O_argmax:string; const A_ksize:array of cint64; const A_strides:array of cint64; const A_Targmax:TF_DataType; const A_padding:string; const A_include_batch_in_index:boolean; const A_T:TF_DataType):string;
+function TGraphExt.AddMaxPoolWithArgmax(const I_input:string; const O_output:string; const O_argmax:string; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_Targmax:TF_DataType; const A_padding:string; const A_include_batch_in_index:boolean; const A_T:TF_DataType):string;
   begin
   result:=AddOper('MaxPoolWithArgmax',[I_input],[],[],[O_output,O_argmax],['ksize','strides','Targmax','padding','include_batch_in_index','T'],['list(int)','list(int)','type','string','bool','type'],[@A_ksize,@A_strides,@A_Targmax,@A_padding,@A_include_batch_in_index,@A_T])
   end;
@@ -4547,11 +4514,11 @@ function TGraphExt.AddMean(const I_input:string; const I_reduction_indices:strin
   end;
 function TGraphExt.AddMerge(const IL_inputs:string; const O_output:string; const O_value_index:string; const A_T:TF_DataType; const A_N:cint64):string;
   begin
-  result:=AddOper('Merge',[],[IL_inputs],[],[O_output,O_value_index],['T','N'],['type','int'],[@A_T,@A_N])
+  result:=AddOper('Merge',[],[IL_inputs],[A_N],[O_output,O_value_index],['T','N'],['type','int'],[@A_T,@A_N])
   end;
 function TGraphExt.AddMergeSummary(const IL_inputs:string; const O_summary:string; const A_N:cint64):string;
   begin
-  result:=AddOper('MergeSummary',[],[IL_inputs],[],[O_summary],['N'],['int'],[@A_N])
+  result:=AddOper('MergeSummary',[],[IL_inputs],[A_N],[O_summary],['N'],['int'],[@A_N])
   end;
 function TGraphExt.AddMergeV2Checkpoints(const I_checkpoint_prefixes:string; const I_destination_prefix:string; const A_delete_old_dirs:boolean):string;
   begin
@@ -4577,15 +4544,15 @@ function TGraphExt.AddMirrorPadGrad(const I_input:string; const I_paddings:strin
   begin
   result:=AddOper('MirrorPadGrad',[I_input,I_paddings],[],[],[O_output],['T','Tpaddings','mode'],['type','type','string'],[@A_T,@A_Tpaddings,@A_mode])
   end;
-function TGraphExt.AddMlirPassthroughOp(const I_inputs:string; const OL_outputs:string; const A_mlir_module:string; const A_Tinputs:array of TF_DataType; const A_Toutputs:array of TF_DataType):string;
+function TGraphExt.AddMlirPassthroughOp(const IL_inputs:string; const OL_outputs:string; const A_mlir_module:string; const A_Tinputs:TF_TypeList; const A_Toutputs:TF_TypeList):string;
   begin
-  result:=AddOper('MlirPassthroughOp',[I_inputs],[],[],[OL_outputs],['mlir_module','Tinputs','Toutputs'],['string','list(type)','list(type)'],[@A_mlir_module,@A_Tinputs,@A_Toutputs])
+  result:=AddOper('MlirPassthroughOp',[],[IL_inputs],[Length(A_Tinputs)],[OL_outputs],['mlir_module','Tinputs','Toutputs'],['string','list(type)','list(type)'],[@A_mlir_module,@A_Tinputs,@A_Toutputs])
   end;
 function TGraphExt.AddMod(const I_x:string; const I_y:string; const O_z:string; const A_T:TF_DataType):string;
   begin
   result:=AddOper('Mod',[I_x,I_y],[],[],[O_z],['T'],['type'],[@A_T])
   end;
-function TGraphExt.AddModelDataset(const I_input_dataset:string; const O_handle:string; const A_algorithm:cint64; const A_cpu_budget:cint64; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddModelDataset(const I_input_dataset:string; const O_handle:string; const A_algorithm:cint64; const A_cpu_budget:cint64; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('ModelDataset',[I_input_dataset],[],[],[O_handle],['algorithm','cpu_budget','output_types','output_shapes'],['int','int','list(type)','list(shape)'],[@A_algorithm,@A_cpu_budget,@A_output_types,@A_output_shapes])
   end;
@@ -4597,15 +4564,15 @@ function TGraphExt.AddMulNoNan(const I_x:string; const I_y:string; const O_z:str
   begin
   result:=AddOper('MulNoNan',[I_x,I_y],[],[],[O_z],['T'],['type'],[@A_T])
   end;
-function TGraphExt.AddMultiDeviceIterator(const O_handle:string; const A_devices:array of string; const A_shared_name:string; const A_container:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddMultiDeviceIterator(const O_handle:string; const A_devices:TF_StringList; const A_shared_name:string; const A_container:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('MultiDeviceIterator',[],[],[],[O_handle],['devices','shared_name','container','output_types','output_shapes'],['list(string)','string','string','list(type)','list(shape)'],[@A_devices,@A_shared_name,@A_container,@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddMultiDeviceIteratorFromStringHandle(const I_string_handle:string; const O_multi_device_iterator:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddMultiDeviceIteratorFromStringHandle(const I_string_handle:string; const O_multi_device_iterator:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('MultiDeviceIteratorFromStringHandle',[I_string_handle],[],[],[O_multi_device_iterator],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddMultiDeviceIteratorGetNextFromShard(const I_multi_device_iterator:string; const I_shard_num:string; const I_incarnation_id:string; const OL_components:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddMultiDeviceIteratorGetNextFromShard(const I_multi_device_iterator:string; const I_shard_num:string; const I_incarnation_id:string; const OL_components:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('MultiDeviceIteratorGetNextFromShard',[I_multi_device_iterator,I_shard_num,I_incarnation_id],[],[],[OL_components],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -4663,7 +4630,7 @@ function TGraphExt.AddNcclBroadcast(const I_input:string; const O_output:string;
   end;
 function TGraphExt.AddNcclReduce(const IL_input:string; const O_data:string; const A_reduction:string; const A_T:TF_DataType; const A_num_devices:cint64):string;
   begin
-  result:=AddOper('NcclReduce',[],[IL_input],[],[O_data],['reduction','T','num_devices'],['string','type','int'],[@A_reduction,@A_T,@A_num_devices])
+  result:=AddOper('NcclReduce',[],[IL_input],[A_num_devices],[O_data],['reduction','T','num_devices'],['string','type','int'],[@A_reduction,@A_T,@A_num_devices])
   end;
 function TGraphExt.AddNdtri(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
   begin
@@ -4677,7 +4644,7 @@ function TGraphExt.AddNeg(const I_x:string; const O_y:string; const A_T:TF_DataT
   begin
   result:=AddOper('Neg',[I_x],[],[],[O_y],['T'],['type'],[@A_T])
   end;
-function TGraphExt.AddNegTrain(const I_w_in:string; const I_w_out:string; const I_examples:string; const I_labels:string; const I_lr:string; const A_vocab_count:array of cint64; const A_num_negative_samples:cint64):string;
+function TGraphExt.AddNegTrain(const I_w_in:string; const I_w_out:string; const I_examples:string; const I_labels:string; const I_lr:string; const A_vocab_count:TF_IntList; const A_num_negative_samples:cint64):string;
   begin
   result:=AddOper('NegTrain',[I_w_in,I_w_out,I_examples,I_labels,I_lr],[],[],[],['vocab_count','num_negative_samples'],['list(int)','int'],[@A_vocab_count,@A_num_negative_samples])
   end;
@@ -4721,7 +4688,7 @@ function TGraphExt.AddNonMaxSuppressionWithOverlaps(const I_overlaps:string; con
   begin
   result:=AddOper('NonMaxSuppressionWithOverlaps',[I_overlaps,I_scores,I_max_output_size,I_overlap_threshold,I_score_threshold],[],[],[O_selected_indices],[],[],[])
   end;
-function TGraphExt.AddNonSerializableDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddNonSerializableDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('NonSerializableDataset',[I_input_dataset],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -4737,7 +4704,7 @@ function TGraphExt.AddOneHot(const I_indices:string; const I_depth:string; const
   begin
   result:=AddOper('OneHot',[I_indices,I_depth,I_on_value,I_off_value],[],[],[O_output],['axis','T','TI'],['int','type','type'],[@A_axis,@A_T,@A_TI])
   end;
-function TGraphExt.AddOneShotIterator(const O_handle:string; const A_dataset_factory:TF_Function; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddOneShotIterator(const O_handle:string; const A_dataset_factory:TF_Function; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_container:string; const A_shared_name:string):string;
   begin
   result:=AddOper('OneShotIterator',[],[],[],[O_handle],['dataset_factory','output_types','output_shapes','container','shared_name'],['func','list(type)','list(shape)','string','string'],[@A_dataset_factory,@A_output_types,@A_output_shapes,@A_container,@A_shared_name])
   end;
@@ -4745,15 +4712,15 @@ function TGraphExt.AddOnesLike(const I_x:string; const O_y:string; const A_T:TF_
   begin
   result:=AddOper('OnesLike',[I_x],[],[],[O_y],['T'],['type'],[@A_T])
   end;
-function TGraphExt.AddOptimizeDataset(const I_input_dataset:string; const I_optimizations:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_optimization_configs:array of string):string;
+function TGraphExt.AddOptimizeDataset(const I_input_dataset:string; const I_optimizations:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_optimization_configs:TF_StringList):string;
   begin
   result:=AddOper('OptimizeDataset',[I_input_dataset,I_optimizations],[],[],[O_handle],['output_types','output_shapes','optimization_configs'],['list(type)','list(shape)','list(string)'],[@A_output_types,@A_output_shapes,@A_optimization_configs])
   end;
-function TGraphExt.AddOptionalFromValue(const I_components:string; const O_optional:string; const A_Toutput_types:array of TF_DataType):string;
+function TGraphExt.AddOptionalFromValue(const IL_components:string; const O_optional:string; const A_Toutput_types:TF_TypeList):string;
   begin
-  result:=AddOper('OptionalFromValue',[I_components],[],[],[O_optional],['Toutput_types'],['list(type)'],[@A_Toutput_types])
+  result:=AddOper('OptionalFromValue',[],[IL_components],[Length(A_Toutput_types)],[O_optional],['Toutput_types'],['list(type)'],[@A_Toutput_types])
   end;
-function TGraphExt.AddOptionalGetValue(const I_optional:string; const OL_components:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddOptionalGetValue(const I_optional:string; const OL_components:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('OptionalGetValue',[I_optional],[],[],[OL_components],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -4765,31 +4732,31 @@ function TGraphExt.AddOptionalNone(const O_optional:string):string;
   begin
   result:=AddOper('OptionalNone',[],[],[],[O_optional],[],[],[])
   end;
-function TGraphExt.AddOrderedMapClear(const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddOrderedMapClear(const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
   begin
   result:=AddOper('OrderedMapClear',[],[],[],[],['capacity','memory_limit','dtypes','container','shared_name'],['int','int','list(type)','string','string'],[@A_capacity,@A_memory_limit,@A_dtypes,@A_container,@A_shared_name])
   end;
-function TGraphExt.AddOrderedMapIncompleteSize(const O_size:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddOrderedMapIncompleteSize(const O_size:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
   begin
   result:=AddOper('OrderedMapIncompleteSize',[],[],[],[O_size],['capacity','memory_limit','dtypes','container','shared_name'],['int','int','list(type)','string','string'],[@A_capacity,@A_memory_limit,@A_dtypes,@A_container,@A_shared_name])
   end;
-function TGraphExt.AddOrderedMapPeek(const I_key:string; const I_indices:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddOrderedMapPeek(const I_key:string; const I_indices:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
   begin
   result:=AddOper('OrderedMapPeek',[I_key,I_indices],[],[],[OL_values],['capacity','memory_limit','dtypes','container','shared_name'],['int','int','list(type)','string','string'],[@A_capacity,@A_memory_limit,@A_dtypes,@A_container,@A_shared_name])
   end;
-function TGraphExt.AddOrderedMapSize(const O_size:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddOrderedMapSize(const O_size:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
   begin
   result:=AddOper('OrderedMapSize',[],[],[],[O_size],['capacity','memory_limit','dtypes','container','shared_name'],['int','int','list(type)','string','string'],[@A_capacity,@A_memory_limit,@A_dtypes,@A_container,@A_shared_name])
   end;
-function TGraphExt.AddOrderedMapStage(const I_key:string; const I_indices:string; const I_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_fake_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddOrderedMapStage(const I_key:string; const I_indices:string; const IL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_fake_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
   begin
-  result:=AddOper('OrderedMapStage',[I_key,I_indices,I_values],[],[],[],['capacity','memory_limit','dtypes','fake_dtypes','container','shared_name'],['int','int','list(type)','list(type)','string','string'],[@A_capacity,@A_memory_limit,@A_dtypes,@A_fake_dtypes,@A_container,@A_shared_name])
+  result:=AddOper('OrderedMapStage',[I_key,I_indices],[IL_values],[Length(A_fake_dtypes)],[],['capacity','memory_limit','dtypes','fake_dtypes','container','shared_name'],['int','int','list(type)','list(type)','string','string'],[@A_capacity,@A_memory_limit,@A_dtypes,@A_fake_dtypes,@A_container,@A_shared_name])
   end;
-function TGraphExt.AddOrderedMapUnstage(const I_key:string; const I_indices:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddOrderedMapUnstage(const I_key:string; const I_indices:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
   begin
   result:=AddOper('OrderedMapUnstage',[I_key,I_indices],[],[],[OL_values],['capacity','memory_limit','dtypes','container','shared_name'],['int','int','list(type)','string','string'],[@A_capacity,@A_memory_limit,@A_dtypes,@A_container,@A_shared_name])
   end;
-function TGraphExt.AddOrderedMapUnstageNoKey(const I_indices:string; const O_key:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddOrderedMapUnstageNoKey(const I_indices:string; const O_key:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
   begin
   result:=AddOper('OrderedMapUnstageNoKey',[I_indices],[],[],[O_key,OL_values],['capacity','memory_limit','dtypes','container','shared_name'],['int','int','list(type)','string','string'],[@A_capacity,@A_memory_limit,@A_dtypes,@A_container,@A_shared_name])
   end;
@@ -4797,7 +4764,7 @@ function TGraphExt.AddOutfeedDequeue(const O_output:string; const A_dtype:TF_Dat
   begin
   result:=AddOper('OutfeedDequeue',[],[],[],[O_output],['dtype','shape','device_ordinal'],['type','shape','int'],[@A_dtype,@A_shape,@A_device_ordinal])
   end;
-function TGraphExt.AddOutfeedDequeueTuple(const OL_outputs:string; const A_dtypes:array of TF_DataType; const A_shapes:array of TF_Shape; const A_device_ordinal:cint64):string;
+function TGraphExt.AddOutfeedDequeueTuple(const OL_outputs:string; const A_dtypes:TF_TypeList; const A_shapes:TF_ShapeList; const A_device_ordinal:cint64):string;
   begin
   result:=AddOper('OutfeedDequeueTuple',[],[],[],[OL_outputs],['dtypes','shapes','device_ordinal'],['list(type)','list(shape)','int'],[@A_dtypes,@A_shapes,@A_device_ordinal])
   end;
@@ -4805,13 +4772,13 @@ function TGraphExt.AddOutfeedEnqueue(const I_input:string; const A_dtype:TF_Data
   begin
   result:=AddOper('OutfeedEnqueue',[I_input],[],[],[],['dtype'],['type'],[@A_dtype])
   end;
-function TGraphExt.AddOutfeedEnqueueTuple(const I_inputs:string; const A_dtypes:array of TF_DataType):string;
+function TGraphExt.AddOutfeedEnqueueTuple(const IL_inputs:string; const A_dtypes:TF_TypeList):string;
   begin
-  result:=AddOper('OutfeedEnqueueTuple',[I_inputs],[],[],[],['dtypes'],['list(type)'],[@A_dtypes])
+  result:=AddOper('OutfeedEnqueueTuple',[],[IL_inputs],[Length(A_dtypes)],[],['dtypes'],['list(type)'],[@A_dtypes])
   end;
 function TGraphExt.AddPack(const IL_values:string; const O_output:string; const A_N:cint64; const A_T:TF_DataType; const A_axis:cint64):string;
   begin
-  result:=AddOper('Pack',[],[IL_values],[],[O_output],['N','T','axis'],['int','type','int'],[@A_N,@A_T,@A_axis])
+  result:=AddOper('Pack',[],[IL_values],[A_N],[O_output],['N','T','axis'],['int','type','int'],[@A_N,@A_T,@A_axis])
   end;
 function TGraphExt.AddPad(const I_input:string; const I_paddings:string; const O_output:string; const A_T:TF_DataType; const A_Tpaddings:TF_DataType):string;
   begin
@@ -4821,85 +4788,85 @@ function TGraphExt.AddPadV2(const I_input:string; const I_paddings:string; const
   begin
   result:=AddOper('PadV2',[I_input,I_paddings,I_constant_values],[],[],[O_output],['T','Tpaddings'],['type','type'],[@A_T,@A_Tpaddings])
   end;
-function TGraphExt.AddPaddedBatchDataset(const I_input_dataset:string; const I_batch_size:string; const I_padding_values:string; const IL_padded_shapes:string; const O_handle:string; const A_Toutput_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_N:cint64):string;
+function TGraphExt.AddPaddedBatchDataset(const I_input_dataset:string; const I_batch_size:string; const IL_padded_shapes:string; const IL_padding_values:string; const O_handle:string; const A_Toutput_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_N:cint64):string;
   begin
-  result:=AddOper('PaddedBatchDataset',[I_input_dataset,I_batch_size,I_padding_values],[IL_padded_shapes],[],[O_handle],['Toutput_types','output_shapes','N'],['list(type)','list(shape)','int'],[@A_Toutput_types,@A_output_shapes,@A_N])
+  result:=AddOper('PaddedBatchDataset',[I_input_dataset,I_batch_size],[IL_padded_shapes,IL_padding_values],[A_N,Length(A_Toutput_types)],[O_handle],['Toutput_types','output_shapes','N'],['list(type)','list(shape)','int'],[@A_Toutput_types,@A_output_shapes,@A_N])
   end;
-function TGraphExt.AddPaddedBatchDatasetV2(const I_input_dataset:string; const I_batch_size:string; const I_padding_values:string; const I_drop_remainder:string; const IL_padded_shapes:string; const O_handle:string; const A_parallel_copy:boolean; const A_Toutput_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_N:cint64):string;
+function TGraphExt.AddPaddedBatchDatasetV2(const I_input_dataset:string; const I_batch_size:string; const I_drop_remainder:string; const IL_padded_shapes:string; const IL_padding_values:string; const O_handle:string; const A_parallel_copy:boolean; const A_Toutput_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_N:cint64):string;
   begin
-  result:=AddOper('PaddedBatchDatasetV2',[I_input_dataset,I_batch_size,I_padding_values,I_drop_remainder],[IL_padded_shapes],[],[O_handle],['parallel_copy','Toutput_types','output_shapes','N'],['bool','list(type)','list(shape)','int'],[@A_parallel_copy,@A_Toutput_types,@A_output_shapes,@A_N])
+  result:=AddOper('PaddedBatchDatasetV2',[I_input_dataset,I_batch_size,I_drop_remainder],[IL_padded_shapes,IL_padding_values],[A_N,Length(A_Toutput_types)],[O_handle],['parallel_copy','Toutput_types','output_shapes','N'],['bool','list(type)','list(shape)','int'],[@A_parallel_copy,@A_Toutput_types,@A_output_shapes,@A_N])
   end;
-function TGraphExt.AddPaddingFIFOQueue(const O_handle:string; const A_component_types:array of TF_DataType; const A_shapes:array of TF_Shape; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddPaddingFIFOQueue(const O_handle:string; const A_component_types:TF_TypeList; const A_shapes:TF_ShapeList; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
   begin
   result:=AddOper('PaddingFIFOQueue',[],[],[],[O_handle],['component_types','shapes','capacity','container','shared_name'],['list(type)','list(shape)','int','string','string'],[@A_component_types,@A_shapes,@A_capacity,@A_container,@A_shared_name])
   end;
-function TGraphExt.AddPaddingFIFOQueueV2(const O_handle:string; const A_component_types:array of TF_DataType; const A_shapes:array of TF_Shape; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddPaddingFIFOQueueV2(const O_handle:string; const A_component_types:TF_TypeList; const A_shapes:TF_ShapeList; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
   begin
   result:=AddOper('PaddingFIFOQueueV2',[],[],[],[O_handle],['component_types','shapes','capacity','container','shared_name'],['list(type)','list(shape)','int','string','string'],[@A_component_types,@A_shapes,@A_capacity,@A_container,@A_shared_name])
   end;
 function TGraphExt.AddParallelConcat(const IL_values:string; const O_output:string; const A_N:cint64; const A_T:TF_DataType; const A_shape:TF_Shape):string;
   begin
-  result:=AddOper('ParallelConcat',[],[IL_values],[],[O_output],['N','T','shape'],['int','type','shape'],[@A_N,@A_T,@A_shape])
+  result:=AddOper('ParallelConcat',[],[IL_values],[A_N],[O_output],['N','T','shape'],['int','type','shape'],[@A_N,@A_T,@A_shape])
   end;
 function TGraphExt.AddParallelDynamicStitch(const IL_indices:string; const IL_data:string; const O_merged:string; const A_N:cint64; const A_T:TF_DataType):string;
   begin
-  result:=AddOper('ParallelDynamicStitch',[],[IL_indices,IL_data],[],[O_merged],['N','T'],['int','type'],[@A_N,@A_T])
+  result:=AddOper('ParallelDynamicStitch',[],[IL_indices,IL_data],[A_N,A_N],[O_merged],['N','T'],['int','type'],[@A_N,@A_T])
   end;
-function TGraphExt.AddParallelInterleaveDataset(const I_input_dataset:string; const I_other_arguments:string; const I_cycle_length:string; const I_block_length:string; const I_sloppy:string; const I_buffer_output_elements:string; const I_prefetch_input_elements:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddParallelInterleaveDataset(const I_input_dataset:string; const I_cycle_length:string; const I_block_length:string; const I_sloppy:string; const I_buffer_output_elements:string; const I_prefetch_input_elements:string; const IL_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('ParallelInterleaveDataset',[I_input_dataset,I_other_arguments,I_cycle_length,I_block_length,I_sloppy,I_buffer_output_elements,I_prefetch_input_elements],[],[],[O_handle],['f','Targuments','output_types','output_shapes'],['func','list(type)','list(type)','list(shape)'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes])
+  result:=AddOper('ParallelInterleaveDataset',[I_input_dataset,I_cycle_length,I_block_length,I_sloppy,I_buffer_output_elements,I_prefetch_input_elements],[IL_other_arguments],[Length(A_Targuments)],[O_handle],['f','Targuments','output_types','output_shapes'],['func','list(type)','list(type)','list(shape)'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddParallelInterleaveDatasetV2(const I_input_dataset:string; const I_other_arguments:string; const I_cycle_length:string; const I_block_length:string; const I_num_parallel_calls:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_sloppy:boolean):string;
+function TGraphExt.AddParallelInterleaveDatasetV2(const I_input_dataset:string; const I_cycle_length:string; const I_block_length:string; const I_num_parallel_calls:string; const IL_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_sloppy:boolean):string;
   begin
-  result:=AddOper('ParallelInterleaveDatasetV2',[I_input_dataset,I_other_arguments,I_cycle_length,I_block_length,I_num_parallel_calls],[],[],[O_handle],['f','Targuments','output_types','output_shapes','sloppy'],['func','list(type)','list(type)','list(shape)','bool'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes,@A_sloppy])
+  result:=AddOper('ParallelInterleaveDatasetV2',[I_input_dataset,I_cycle_length,I_block_length,I_num_parallel_calls],[IL_other_arguments],[Length(A_Targuments)],[O_handle],['f','Targuments','output_types','output_shapes','sloppy'],['func','list(type)','list(type)','list(shape)','bool'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes,@A_sloppy])
   end;
-function TGraphExt.AddParallelInterleaveDatasetV3(const I_input_dataset:string; const I_other_arguments:string; const I_cycle_length:string; const I_block_length:string; const I_num_parallel_calls:string; const O_handle:string; const A_f:TF_Function; const A_deterministic:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddParallelInterleaveDatasetV3(const I_input_dataset:string; const I_cycle_length:string; const I_block_length:string; const I_num_parallel_calls:string; const IL_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_deterministic:string; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('ParallelInterleaveDatasetV3',[I_input_dataset,I_other_arguments,I_cycle_length,I_block_length,I_num_parallel_calls],[],[],[O_handle],['f','deterministic','Targuments','output_types','output_shapes'],['func','string','list(type)','list(type)','list(shape)'],[@A_f,@A_deterministic,@A_Targuments,@A_output_types,@A_output_shapes])
+  result:=AddOper('ParallelInterleaveDatasetV3',[I_input_dataset,I_cycle_length,I_block_length,I_num_parallel_calls],[IL_other_arguments],[Length(A_Targuments)],[O_handle],['f','deterministic','Targuments','output_types','output_shapes'],['func','string','list(type)','list(type)','list(shape)'],[@A_f,@A_deterministic,@A_Targuments,@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddParallelMapDataset(const I_input_dataset:string; const I_other_arguments:string; const I_num_parallel_calls:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_use_inter_op_parallelism:boolean; const A_sloppy:boolean; const A_preserve_cardinality:boolean):string;
+function TGraphExt.AddParallelMapDataset(const I_input_dataset:string; const I_num_parallel_calls:string; const IL_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_use_inter_op_parallelism:boolean; const A_sloppy:boolean; const A_preserve_cardinality:boolean):string;
   begin
-  result:=AddOper('ParallelMapDataset',[I_input_dataset,I_other_arguments,I_num_parallel_calls],[],[],[O_handle],['f','Targuments','output_types','output_shapes','use_inter_op_parallelism','sloppy','preserve_cardinality'],['func','list(type)','list(type)','list(shape)','bool','bool','bool'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes,@A_use_inter_op_parallelism,@A_sloppy,@A_preserve_cardinality])
+  result:=AddOper('ParallelMapDataset',[I_input_dataset,I_num_parallel_calls],[IL_other_arguments],[Length(A_Targuments)],[O_handle],['f','Targuments','output_types','output_shapes','use_inter_op_parallelism','sloppy','preserve_cardinality'],['func','list(type)','list(type)','list(shape)','bool','bool','bool'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes,@A_use_inter_op_parallelism,@A_sloppy,@A_preserve_cardinality])
   end;
 function TGraphExt.AddParameterizedTruncatedNormal(const I_shape:string; const I_means:string; const I_stdevs:string; const I_minvals:string; const I_maxvals:string; const O_output:string; const A_seed:cint64; const A_seed2:cint64; const A_dtype:TF_DataType; const A_T:TF_DataType):string;
   begin
   result:=AddOper('ParameterizedTruncatedNormal',[I_shape,I_means,I_stdevs,I_minvals,I_maxvals],[],[],[O_output],['seed','seed2','dtype','T'],['int','int','type','type'],[@A_seed,@A_seed2,@A_dtype,@A_T])
   end;
-function TGraphExt.AddParseExample(const I_serialized:string; const I_names:string; const I_dense_defaults:string; const IL_sparse_keys:string; const IL_dense_keys:string; const OL_sparse_indices:string; const OL_sparse_values:string; const OL_sparse_shapes:string; const OL_dense_values:string; const A_Nsparse:cint64; const A_Ndense:cint64; const A_sparse_types:array of TF_DataType; const A_Tdense:array of TF_DataType; const A_dense_shapes:array of TF_Shape):string;
+function TGraphExt.AddParseExample(const I_serialized:string; const I_names:string; const IL_sparse_keys:string; const IL_dense_keys:string; const IL_dense_defaults:string; const OL_sparse_indices:string; const OL_sparse_values:string; const OL_sparse_shapes:string; const OL_dense_values:string; const A_Nsparse:cint64; const A_Ndense:cint64; const A_sparse_types:TF_TypeList; const A_Tdense:TF_TypeList; const A_dense_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('ParseExample',[I_serialized,I_names,I_dense_defaults],[IL_sparse_keys,IL_dense_keys],[],[OL_sparse_indices,OL_sparse_values,OL_sparse_shapes,OL_dense_values],['Nsparse','Ndense','sparse_types','Tdense','dense_shapes'],['int','int','list(type)','list(type)','list(shape)'],[@A_Nsparse,@A_Ndense,@A_sparse_types,@A_Tdense,@A_dense_shapes])
+  result:=AddOper('ParseExample',[I_serialized,I_names],[IL_sparse_keys,IL_dense_keys,IL_dense_defaults],[A_Nsparse,A_Ndense,Length(A_Tdense)],[OL_sparse_indices,OL_sparse_values,OL_sparse_shapes,OL_dense_values],['Nsparse','Ndense','sparse_types','Tdense','dense_shapes'],['int','int','list(type)','list(type)','list(shape)'],[@A_Nsparse,@A_Ndense,@A_sparse_types,@A_Tdense,@A_dense_shapes])
   end;
-function TGraphExt.AddParseExampleDataset(const I_input_dataset:string; const I_num_parallel_calls:string; const I_dense_defaults:string; const O_handle:string; const A_sparse_keys:array of string; const A_dense_keys:array of string; const A_sparse_types:array of TF_DataType; const A_Tdense:array of TF_DataType; const A_dense_shapes:array of TF_Shape; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_sloppy:boolean; const A_ragged_keys:array of string; const A_ragged_value_types:array of TF_DataType; const A_ragged_split_types:array of TF_DataType):string;
+function TGraphExt.AddParseExampleDataset(const I_input_dataset:string; const I_num_parallel_calls:string; const IL_dense_defaults:string; const O_handle:string; const A_sparse_keys:TF_StringList; const A_dense_keys:TF_StringList; const A_sparse_types:TF_TypeList; const A_Tdense:TF_TypeList; const A_dense_shapes:TF_ShapeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_sloppy:boolean; const A_ragged_keys:TF_StringList; const A_ragged_value_types:TF_TypeList; const A_ragged_split_types:TF_TypeList):string;
   begin
-  result:=AddOper('ParseExampleDataset',[I_input_dataset,I_num_parallel_calls,I_dense_defaults],[],[],[O_handle],['sparse_keys','dense_keys','sparse_types','Tdense','dense_shapes','output_types','output_shapes','sloppy','ragged_keys','ragged_value_types','ragged_split_types'],['list(string)','list(string)','list(type)','list(type)','list(shape)','list(type)','list(shape)','bool','list(string)','list(type)','list(type)'],[@A_sparse_keys,@A_dense_keys,@A_sparse_types,@A_Tdense,@A_dense_shapes,@A_output_types,@A_output_shapes,@A_sloppy,@A_ragged_keys,@A_ragged_value_types,@A_ragged_split_types])
+  result:=AddOper('ParseExampleDataset',[I_input_dataset,I_num_parallel_calls],[IL_dense_defaults],[Length(A_Tdense)],[O_handle],['sparse_keys','dense_keys','sparse_types','Tdense','dense_shapes','output_types','output_shapes','sloppy','ragged_keys','ragged_value_types','ragged_split_types'],['list(string)','list(string)','list(type)','list(type)','list(shape)','list(type)','list(shape)','bool','list(string)','list(type)','list(type)'],[@A_sparse_keys,@A_dense_keys,@A_sparse_types,@A_Tdense,@A_dense_shapes,@A_output_types,@A_output_shapes,@A_sloppy,@A_ragged_keys,@A_ragged_value_types,@A_ragged_split_types])
   end;
-function TGraphExt.AddParseExampleV2(const I_serialized:string; const I_names:string; const I_sparse_keys:string; const I_dense_keys:string; const I_ragged_keys:string; const I_dense_defaults:string; const OL_sparse_indices:string; const OL_sparse_values:string; const OL_sparse_shapes:string; const OL_dense_values:string; const OL_ragged_values:string; const OL_ragged_row_splits:string; const A_Tdense:array of TF_DataType; const A_num_sparse:cint64; const A_sparse_types:array of TF_DataType; const A_ragged_value_types:array of TF_DataType; const A_ragged_split_types:array of TF_DataType; const A_dense_shapes:array of TF_Shape):string;
+function TGraphExt.AddParseExampleV2(const I_serialized:string; const I_names:string; const I_sparse_keys:string; const I_dense_keys:string; const I_ragged_keys:string; const IL_dense_defaults:string; const OL_sparse_indices:string; const OL_sparse_values:string; const OL_sparse_shapes:string; const OL_dense_values:string; const OL_ragged_values:string; const OL_ragged_row_splits:string; const A_Tdense:TF_TypeList; const A_num_sparse:cint64; const A_sparse_types:TF_TypeList; const A_ragged_value_types:TF_TypeList; const A_ragged_split_types:TF_TypeList; const A_dense_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('ParseExampleV2',[I_serialized,I_names,I_sparse_keys,I_dense_keys,I_ragged_keys,I_dense_defaults],[],[],[OL_sparse_indices,OL_sparse_values,OL_sparse_shapes,OL_dense_values,OL_ragged_values,OL_ragged_row_splits],['Tdense','num_sparse','sparse_types','ragged_value_types','ragged_split_types','dense_shapes'],['list(type)','int','list(type)','list(type)','list(type)','list(shape)'],[@A_Tdense,@A_num_sparse,@A_sparse_types,@A_ragged_value_types,@A_ragged_split_types,@A_dense_shapes])
+  result:=AddOper('ParseExampleV2',[I_serialized,I_names,I_sparse_keys,I_dense_keys,I_ragged_keys],[IL_dense_defaults],[Length(A_Tdense)],[OL_sparse_indices,OL_sparse_values,OL_sparse_shapes,OL_dense_values,OL_ragged_values,OL_ragged_row_splits],['Tdense','num_sparse','sparse_types','ragged_value_types','ragged_split_types','dense_shapes'],['list(type)','int','list(type)','list(type)','list(type)','list(shape)'],[@A_Tdense,@A_num_sparse,@A_sparse_types,@A_ragged_value_types,@A_ragged_split_types,@A_dense_shapes])
   end;
-function TGraphExt.AddParseSequenceExample(const I_serialized:string; const I_debug_name:string; const I_context_dense_defaults:string; const OL_context_sparse_indices:string; const OL_context_sparse_values:string; const OL_context_sparse_shapes:string; const OL_context_dense_values:string; const OL_feature_list_sparse_indices:string; const OL_feature_list_sparse_values:string; const OL_feature_list_sparse_shapes:string; const OL_feature_list_dense_values:string; const OL_feature_list_dense_lengths:string; const A_feature_list_dense_missing_assumed_empty:array of string; const A_context_sparse_keys:array of string; const A_context_dense_keys:array of string; const A_feature_list_sparse_keys:array of string; const A_feature_list_dense_keys:array of string; const A_Ncontext_sparse:cint64; const A_Ncontext_dense:cint64; const A_Nfeature_list_sparse:cint64; const A_Nfeature_list_dense:cint64; const A_context_sparse_types:array of TF_DataType; const A_Tcontext_dense:array of TF_DataType; const A_feature_list_dense_types:array of TF_DataType; const A_context_dense_shapes:array of TF_Shape; const A_feature_list_sparse_types:array of TF_DataType; const A_feature_list_dense_shapes:array of TF_Shape):string;
+function TGraphExt.AddParseSequenceExample(const I_serialized:string; const I_debug_name:string; const IL_context_dense_defaults:string; const OL_context_sparse_indices:string; const OL_context_sparse_values:string; const OL_context_sparse_shapes:string; const OL_context_dense_values:string; const OL_feature_list_sparse_indices:string; const OL_feature_list_sparse_values:string; const OL_feature_list_sparse_shapes:string; const OL_feature_list_dense_values:string; const OL_feature_list_dense_lengths:string; const A_feature_list_dense_missing_assumed_empty:TF_StringList; const A_context_sparse_keys:TF_StringList; const A_context_dense_keys:TF_StringList; const A_feature_list_sparse_keys:TF_StringList; const A_feature_list_dense_keys:TF_StringList; const A_Ncontext_sparse:cint64; const A_Ncontext_dense:cint64; const A_Nfeature_list_sparse:cint64; const A_Nfeature_list_dense:cint64; const A_context_sparse_types:TF_TypeList; const A_Tcontext_dense:TF_TypeList; const A_feature_list_dense_types:TF_TypeList; const A_context_dense_shapes:TF_ShapeList; const A_feature_list_sparse_types:TF_TypeList; const A_feature_list_dense_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('ParseSequenceExample',[I_serialized,I_debug_name,I_context_dense_defaults],[],[],[OL_context_sparse_indices,OL_context_sparse_values,OL_context_sparse_shapes,OL_context_dense_values,OL_feature_list_sparse_indices,OL_feature_list_sparse_values,OL_feature_list_sparse_shapes,OL_feature_list_dense_values,OL_feature_list_dense_lengths],['feature_list_dense_missing_assumed_empty','context_sparse_keys','context_dense_keys','feature_list_sparse_keys','feature_list_dense_keys','Ncontext_sparse','Ncontext_dense','Nfeature_list_sparse','Nfeature_list_dense','context_sparse_types','Tcontext_dense','feature_list_dense_types','context_dense_shapes','feature_list_sparse_types','feature_list_dense_shapes'],['list(string)','list(string)','list(string)','list(string)','list(string)','int','int','int','int','list(type)','list(type)','list(type)','list(shape)','list(type)','list(shape)'],[@A_feature_list_dense_missing_assumed_empty,@A_context_sparse_keys,@A_context_dense_keys,@A_feature_list_sparse_keys,@A_feature_list_dense_keys,@A_Ncontext_sparse,@A_Ncontext_dense,@A_Nfeature_list_sparse,@A_Nfeature_list_dense,@A_context_sparse_types,@A_Tcontext_dense,@A_feature_list_dense_types,@A_context_dense_shapes,@A_feature_list_sparse_types,@A_feature_list_dense_shapes])
+  result:=AddOper('ParseSequenceExample',[I_serialized,I_debug_name],[IL_context_dense_defaults],[Length(A_Tcontext_dense)],[OL_context_sparse_indices,OL_context_sparse_values,OL_context_sparse_shapes,OL_context_dense_values,OL_feature_list_sparse_indices,OL_feature_list_sparse_values,OL_feature_list_sparse_shapes,OL_feature_list_dense_values,OL_feature_list_dense_lengths],['feature_list_dense_missing_assumed_empty','context_sparse_keys','context_dense_keys','feature_list_sparse_keys','feature_list_dense_keys','Ncontext_sparse','Ncontext_dense','Nfeature_list_sparse','Nfeature_list_dense','context_sparse_types','Tcontext_dense','feature_list_dense_types','context_dense_shapes','feature_list_sparse_types','feature_list_dense_shapes'],['list(string)','list(string)','list(string)','list(string)','list(string)','int','int','int','int','list(type)','list(type)','list(type)','list(shape)','list(type)','list(shape)'],[@A_feature_list_dense_missing_assumed_empty,@A_context_sparse_keys,@A_context_dense_keys,@A_feature_list_sparse_keys,@A_feature_list_dense_keys,@A_Ncontext_sparse,@A_Ncontext_dense,@A_Nfeature_list_sparse,@A_Nfeature_list_dense,@A_context_sparse_types,@A_Tcontext_dense,@A_feature_list_dense_types,@A_context_dense_shapes,@A_feature_list_sparse_types,@A_feature_list_dense_shapes])
   end;
-function TGraphExt.AddParseSequenceExampleV2(const I_serialized:string; const I_debug_name:string; const I_context_sparse_keys:string; const I_context_dense_keys:string; const I_context_ragged_keys:string; const I_feature_list_sparse_keys:string; const I_feature_list_dense_keys:string; const I_feature_list_ragged_keys:string; const I_feature_list_dense_missing_assumed_empty:string; const I_context_dense_defaults:string; const OL_context_sparse_indices:string; const OL_context_sparse_values:string; const OL_context_sparse_shapes:string; const OL_context_dense_values:string; const OL_context_ragged_values:string; const OL_context_ragged_row_splits:string; const OL_feature_list_sparse_indices:string; const OL_feature_list_sparse_values:string; const OL_feature_list_sparse_shapes:string; const OL_feature_list_dense_values:string; const OL_feature_list_dense_lengths:string; const OL_feature_list_ragged_values:string; const OL_feature_list_ragged_outer_splits:string; const OL_feature_list_ragged_inner_splits:string; const A_Ncontext_sparse:cint64; const A_Tcontext_dense:array of TF_DataType; const A_context_sparse_types:array of TF_DataType; const A_context_ragged_value_types:array of TF_DataType; const A_context_ragged_split_types:array of TF_DataType; const A_context_dense_shapes:array of TF_Shape; const A_Nfeature_list_sparse:cint64; const A_Nfeature_list_dense:cint64; const A_feature_list_dense_types:array of TF_DataType; const A_feature_list_sparse_types:array of TF_DataType; const A_feature_list_ragged_value_types:array of TF_DataType; const A_feature_list_ragged_split_types:array of TF_DataType; const A_feature_list_dense_shapes:array of TF_Shape):string;
+function TGraphExt.AddParseSequenceExampleV2(const I_serialized:string; const I_debug_name:string; const I_context_sparse_keys:string; const I_context_dense_keys:string; const I_context_ragged_keys:string; const I_feature_list_sparse_keys:string; const I_feature_list_dense_keys:string; const I_feature_list_ragged_keys:string; const I_feature_list_dense_missing_assumed_empty:string; const IL_context_dense_defaults:string; const OL_context_sparse_indices:string; const OL_context_sparse_values:string; const OL_context_sparse_shapes:string; const OL_context_dense_values:string; const OL_context_ragged_values:string; const OL_context_ragged_row_splits:string; const OL_feature_list_sparse_indices:string; const OL_feature_list_sparse_values:string; const OL_feature_list_sparse_shapes:string; const OL_feature_list_dense_values:string; const OL_feature_list_dense_lengths:string; const OL_feature_list_ragged_values:string; const OL_feature_list_ragged_outer_splits:string; const OL_feature_list_ragged_inner_splits:string; const A_Ncontext_sparse:cint64; const A_Tcontext_dense:TF_TypeList; const A_context_sparse_types:TF_TypeList; const A_context_ragged_value_types:TF_TypeList; const A_context_ragged_split_types:TF_TypeList; const A_context_dense_shapes:TF_ShapeList; const A_Nfeature_list_sparse:cint64; const A_Nfeature_list_dense:cint64; const A_feature_list_dense_types:TF_TypeList; const A_feature_list_sparse_types:TF_TypeList; const A_feature_list_ragged_value_types:TF_TypeList; const A_feature_list_ragged_split_types:TF_TypeList; const A_feature_list_dense_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('ParseSequenceExampleV2',[I_serialized,I_debug_name,I_context_sparse_keys,I_context_dense_keys,I_context_ragged_keys,I_feature_list_sparse_keys,I_feature_list_dense_keys,I_feature_list_ragged_keys,I_feature_list_dense_missing_assumed_empty,I_context_dense_defaults],[],[],[OL_context_sparse_indices,OL_context_sparse_values,OL_context_sparse_shapes,OL_context_dense_values,OL_context_ragged_values,OL_context_ragged_row_splits,OL_feature_list_sparse_indices,OL_feature_list_sparse_values,OL_feature_list_sparse_shapes,OL_feature_list_dense_values,OL_feature_list_dense_lengths,OL_feature_list_ragged_values,OL_feature_list_ragged_outer_splits,OL_feature_list_ragged_inner_splits],['Ncontext_sparse','Tcontext_dense','context_sparse_types','context_ragged_value_types','context_ragged_split_types','context_dense_shapes','Nfeature_list_sparse','Nfeature_list_dense','feature_list_dense_types','feature_list_sparse_types','feature_list_ragged_value_types','feature_list_ragged_split_types','feature_list_dense_shapes'],['int','list(type)','list(type)','list(type)','list(type)','list(shape)','int','int','list(type)','list(type)','list(type)','list(type)','list(shape)'],[@A_Ncontext_sparse,@A_Tcontext_dense,@A_context_sparse_types,@A_context_ragged_value_types,@A_context_ragged_split_types,@A_context_dense_shapes,@A_Nfeature_list_sparse,@A_Nfeature_list_dense,@A_feature_list_dense_types,@A_feature_list_sparse_types,@A_feature_list_ragged_value_types,@A_feature_list_ragged_split_types,@A_feature_list_dense_shapes])
+  result:=AddOper('ParseSequenceExampleV2',[I_serialized,I_debug_name,I_context_sparse_keys,I_context_dense_keys,I_context_ragged_keys,I_feature_list_sparse_keys,I_feature_list_dense_keys,I_feature_list_ragged_keys,I_feature_list_dense_missing_assumed_empty],[IL_context_dense_defaults],[Length(A_Tcontext_dense)],[OL_context_sparse_indices,OL_context_sparse_values,OL_context_sparse_shapes,OL_context_dense_values,OL_context_ragged_values,OL_context_ragged_row_splits,OL_feature_list_sparse_indices,OL_feature_list_sparse_values,OL_feature_list_sparse_shapes,OL_feature_list_dense_values,OL_feature_list_dense_lengths,OL_feature_list_ragged_values,OL_feature_list_ragged_outer_splits,OL_feature_list_ragged_inner_splits],['Ncontext_sparse','Tcontext_dense','context_sparse_types','context_ragged_value_types','context_ragged_split_types','context_dense_shapes','Nfeature_list_sparse','Nfeature_list_dense','feature_list_dense_types','feature_list_sparse_types','feature_list_ragged_value_types','feature_list_ragged_split_types','feature_list_dense_shapes'],['int','list(type)','list(type)','list(type)','list(type)','list(shape)','int','int','list(type)','list(type)','list(type)','list(type)','list(shape)'],[@A_Ncontext_sparse,@A_Tcontext_dense,@A_context_sparse_types,@A_context_ragged_value_types,@A_context_ragged_split_types,@A_context_dense_shapes,@A_Nfeature_list_sparse,@A_Nfeature_list_dense,@A_feature_list_dense_types,@A_feature_list_sparse_types,@A_feature_list_ragged_value_types,@A_feature_list_ragged_split_types,@A_feature_list_dense_shapes])
   end;
-function TGraphExt.AddParseSingleExample(const I_serialized:string; const I_dense_defaults:string; const OL_sparse_indices:string; const OL_sparse_values:string; const OL_sparse_shapes:string; const OL_dense_values:string; const A_num_sparse:cint64; const A_sparse_keys:array of string; const A_dense_keys:array of string; const A_sparse_types:array of TF_DataType; const A_Tdense:array of TF_DataType; const A_dense_shapes:array of TF_Shape):string;
+function TGraphExt.AddParseSingleExample(const I_serialized:string; const IL_dense_defaults:string; const OL_sparse_indices:string; const OL_sparse_values:string; const OL_sparse_shapes:string; const OL_dense_values:string; const A_num_sparse:cint64; const A_sparse_keys:TF_StringList; const A_dense_keys:TF_StringList; const A_sparse_types:TF_TypeList; const A_Tdense:TF_TypeList; const A_dense_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('ParseSingleExample',[I_serialized,I_dense_defaults],[],[],[OL_sparse_indices,OL_sparse_values,OL_sparse_shapes,OL_dense_values],['num_sparse','sparse_keys','dense_keys','sparse_types','Tdense','dense_shapes'],['int','list(string)','list(string)','list(type)','list(type)','list(shape)'],[@A_num_sparse,@A_sparse_keys,@A_dense_keys,@A_sparse_types,@A_Tdense,@A_dense_shapes])
+  result:=AddOper('ParseSingleExample',[I_serialized],[IL_dense_defaults],[Length(A_Tdense)],[OL_sparse_indices,OL_sparse_values,OL_sparse_shapes,OL_dense_values],['num_sparse','sparse_keys','dense_keys','sparse_types','Tdense','dense_shapes'],['int','list(string)','list(string)','list(type)','list(type)','list(shape)'],[@A_num_sparse,@A_sparse_keys,@A_dense_keys,@A_sparse_types,@A_Tdense,@A_dense_shapes])
   end;
-function TGraphExt.AddParseSingleSequenceExample(const I_serialized:string; const I_feature_list_dense_missing_assumed_empty:string; const I_context_dense_defaults:string; const I_debug_name:string; const IL_context_sparse_keys:string; const IL_context_dense_keys:string; const IL_feature_list_sparse_keys:string; const IL_feature_list_dense_keys:string; const OL_context_sparse_indices:string; const OL_context_sparse_values:string; const OL_context_sparse_shapes:string; const OL_context_dense_values:string; const OL_feature_list_sparse_indices:string; const OL_feature_list_sparse_values:string; const OL_feature_list_sparse_shapes:string; const OL_feature_list_dense_values:string; const A_Ncontext_sparse:cint64; const A_Ncontext_dense:cint64; const A_Nfeature_list_sparse:cint64; const A_Nfeature_list_dense:cint64; const A_context_sparse_types:array of TF_DataType; const A_Tcontext_dense:array of TF_DataType; const A_feature_list_dense_types:array of TF_DataType; const A_context_dense_shapes:array of TF_Shape; const A_feature_list_sparse_types:array of TF_DataType; const A_feature_list_dense_shapes:array of TF_Shape):string;
+function TGraphExt.AddParseSingleSequenceExample(const I_serialized:string; const I_feature_list_dense_missing_assumed_empty:string; const I_debug_name:string; const IL_context_sparse_keys:string; const IL_context_dense_keys:string; const IL_feature_list_sparse_keys:string; const IL_feature_list_dense_keys:string; const IL_context_dense_defaults:string; const OL_context_sparse_indices:string; const OL_context_sparse_values:string; const OL_context_sparse_shapes:string; const OL_context_dense_values:string; const OL_feature_list_sparse_indices:string; const OL_feature_list_sparse_values:string; const OL_feature_list_sparse_shapes:string; const OL_feature_list_dense_values:string; const A_Ncontext_sparse:cint64; const A_Ncontext_dense:cint64; const A_Nfeature_list_sparse:cint64; const A_Nfeature_list_dense:cint64; const A_context_sparse_types:TF_TypeList; const A_Tcontext_dense:TF_TypeList; const A_feature_list_dense_types:TF_TypeList; const A_context_dense_shapes:TF_ShapeList; const A_feature_list_sparse_types:TF_TypeList; const A_feature_list_dense_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('ParseSingleSequenceExample',[I_serialized,I_feature_list_dense_missing_assumed_empty,I_context_dense_defaults,I_debug_name],[IL_context_sparse_keys,IL_context_dense_keys,IL_feature_list_sparse_keys,IL_feature_list_dense_keys],[],[OL_context_sparse_indices,OL_context_sparse_values,OL_context_sparse_shapes,OL_context_dense_values,OL_feature_list_sparse_indices,OL_feature_list_sparse_values,OL_feature_list_sparse_shapes,OL_feature_list_dense_values],['Ncontext_sparse','Ncontext_dense','Nfeature_list_sparse','Nfeature_list_dense','context_sparse_types','Tcontext_dense','feature_list_dense_types','context_dense_shapes','feature_list_sparse_types','feature_list_dense_shapes'],['int','int','int','int','list(type)','list(type)','list(type)','list(shape)','list(type)','list(shape)'],[@A_Ncontext_sparse,@A_Ncontext_dense,@A_Nfeature_list_sparse,@A_Nfeature_list_dense,@A_context_sparse_types,@A_Tcontext_dense,@A_feature_list_dense_types,@A_context_dense_shapes,@A_feature_list_sparse_types,@A_feature_list_dense_shapes])
+  result:=AddOper('ParseSingleSequenceExample',[I_serialized,I_feature_list_dense_missing_assumed_empty,I_debug_name],[IL_context_sparse_keys,IL_context_dense_keys,IL_feature_list_sparse_keys,IL_feature_list_dense_keys,IL_context_dense_defaults],[A_Ncontext_sparse,A_Ncontext_dense,A_Nfeature_list_sparse,A_Nfeature_list_dense,Length(A_Tcontext_dense)],[OL_context_sparse_indices,OL_context_sparse_values,OL_context_sparse_shapes,OL_context_dense_values,OL_feature_list_sparse_indices,OL_feature_list_sparse_values,OL_feature_list_sparse_shapes,OL_feature_list_dense_values],['Ncontext_sparse','Ncontext_dense','Nfeature_list_sparse','Nfeature_list_dense','context_sparse_types','Tcontext_dense','feature_list_dense_types','context_dense_shapes','feature_list_sparse_types','feature_list_dense_shapes'],['int','int','int','int','list(type)','list(type)','list(type)','list(shape)','list(type)','list(shape)'],[@A_Ncontext_sparse,@A_Ncontext_dense,@A_Nfeature_list_sparse,@A_Nfeature_list_dense,@A_context_sparse_types,@A_Tcontext_dense,@A_feature_list_dense_types,@A_context_dense_shapes,@A_feature_list_sparse_types,@A_feature_list_dense_shapes])
   end;
 function TGraphExt.AddParseTensor(const I_serialized:string; const O_output:string; const A_out_type:TF_DataType):string;
   begin
   result:=AddOper('ParseTensor',[I_serialized],[],[],[O_output],['out_type'],['type'],[@A_out_type])
   end;
-function TGraphExt.AddPartitionedCall(const I_args:string; const OL_output:string; const A_Tin:array of TF_DataType; const A_Tout:array of TF_DataType; const A_f:TF_Function; const A_config:string; const A_config_proto:string; const A_executor_type:string):string;
+function TGraphExt.AddPartitionedCall(const IL_args:string; const OL_output:string; const A_Tin:TF_TypeList; const A_Tout:TF_TypeList; const A_f:TF_Function; const A_config:string; const A_config_proto:string; const A_executor_type:string):string;
   begin
-  result:=AddOper('PartitionedCall',[I_args],[],[],[OL_output],['Tin','Tout','f','config','config_proto','executor_type'],['list(type)','list(type)','func','string','string','string'],[@A_Tin,@A_Tout,@A_f,@A_config,@A_config_proto,@A_executor_type])
+  result:=AddOper('PartitionedCall',[],[IL_args],[Length(A_Tin)],[OL_output],['Tin','Tout','f','config','config_proto','executor_type'],['list(type)','list(type)','func','string','string','string'],[@A_Tin,@A_Tout,@A_f,@A_config,@A_config_proto,@A_executor_type])
   end;
 function TGraphExt.AddPlaceholder(const O_output:string; const A_dtype:TF_DataType; const A_shape:TF_Shape):string;
   begin
@@ -4925,39 +4892,39 @@ function TGraphExt.AddPow(const I_x:string; const I_y:string; const O_z:string; 
   begin
   result:=AddOper('Pow',[I_x,I_y],[],[],[O_z],['T'],['type'],[@A_T])
   end;
-function TGraphExt.AddPrefetchDataset(const I_input_dataset:string; const I_buffer_size:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_slack_period:cint64; const A_legacy_autotune:boolean):string;
+function TGraphExt.AddPrefetchDataset(const I_input_dataset:string; const I_buffer_size:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_slack_period:cint64; const A_legacy_autotune:boolean):string;
   begin
   result:=AddOper('PrefetchDataset',[I_input_dataset,I_buffer_size],[],[],[O_handle],['output_types','output_shapes','slack_period','legacy_autotune'],['list(type)','list(shape)','int','bool'],[@A_output_types,@A_output_shapes,@A_slack_period,@A_legacy_autotune])
   end;
-function TGraphExt.AddPrelinearize(const I_input:string; const O_output:string; const A_dtype:TF_DataType; const A_shape:TF_Shape; const A_layout:array of cint64):string;
+function TGraphExt.AddPrelinearize(const I_input:string; const O_output:string; const A_dtype:TF_DataType; const A_shape:TF_Shape; const A_layout:TF_IntList):string;
   begin
   result:=AddOper('Prelinearize',[I_input],[],[],[O_output],['dtype','shape','layout'],['type','shape','list(int)'],[@A_dtype,@A_shape,@A_layout])
   end;
-function TGraphExt.AddPrelinearizeTuple(const I_inputs:string; const O_output:string; const A_dtypes:array of TF_DataType; const A_shapes:array of TF_Shape; const A_layouts:array of cint64):string;
+function TGraphExt.AddPrelinearizeTuple(const IL_inputs:string; const O_output:string; const A_dtypes:TF_TypeList; const A_shapes:TF_ShapeList; const A_layouts:TF_IntList):string;
   begin
-  result:=AddOper('PrelinearizeTuple',[I_inputs],[],[],[O_output],['dtypes','shapes','layouts'],['list(type)','list(shape)','list(int)'],[@A_dtypes,@A_shapes,@A_layouts])
+  result:=AddOper('PrelinearizeTuple',[],[IL_inputs],[Length(A_dtypes)],[O_output],['dtypes','shapes','layouts'],['list(type)','list(shape)','list(int)'],[@A_dtypes,@A_shapes,@A_layouts])
   end;
 function TGraphExt.AddPreventGradient(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_message:string):string;
   begin
   result:=AddOper('PreventGradient',[I_input],[],[],[O_output],['T','message'],['type','string'],[@A_T,@A_message])
   end;
-function TGraphExt.AddPrint(const I_input:string; const I_data:string; const O_output:string; const A_T:TF_DataType; const A_U:array of TF_DataType; const A_message:string; const A_first_n:cint64; const A_summarize:cint64):string;
+function TGraphExt.AddPrint(const I_input:string; const IL_data:string; const O_output:string; const A_T:TF_DataType; const A_U:TF_TypeList; const A_message:string; const A_first_n:cint64; const A_summarize:cint64):string;
   begin
-  result:=AddOper('Print',[I_input,I_data],[],[],[O_output],['T','U','message','first_n','summarize'],['type','list(type)','string','int','int'],[@A_T,@A_U,@A_message,@A_first_n,@A_summarize])
+  result:=AddOper('Print',[I_input],[IL_data],[Length(A_U)],[O_output],['T','U','message','first_n','summarize'],['type','list(type)','string','int','int'],[@A_T,@A_U,@A_message,@A_first_n,@A_summarize])
   end;
 function TGraphExt.AddPrintV2(const I_input:string; const A_output_stream:string; const A_end:string):string;
   begin
   result:=AddOper('PrintV2',[I_input],[],[],[],['output_stream','end'],['string','string'],[@A_output_stream,@A_end])
   end;
-function TGraphExt.AddPriorityQueue(const O_handle:string; const A_component_types:array of TF_DataType; const A_shapes:array of TF_Shape; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddPriorityQueue(const O_handle:string; const A_component_types:TF_TypeList; const A_shapes:TF_ShapeList; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
   begin
   result:=AddOper('PriorityQueue',[],[],[],[O_handle],['component_types','shapes','capacity','container','shared_name'],['list(type)','list(shape)','int','string','string'],[@A_component_types,@A_shapes,@A_capacity,@A_container,@A_shared_name])
   end;
-function TGraphExt.AddPriorityQueueV2(const O_handle:string; const A_component_types:array of TF_DataType; const A_shapes:array of TF_Shape; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddPriorityQueueV2(const O_handle:string; const A_component_types:TF_TypeList; const A_shapes:TF_ShapeList; const A_capacity:cint64; const A_container:string; const A_shared_name:string):string;
   begin
   result:=AddOper('PriorityQueueV2',[],[],[],[O_handle],['component_types','shapes','capacity','container','shared_name'],['list(type)','list(shape)','int','string','string'],[@A_component_types,@A_shapes,@A_capacity,@A_container,@A_shared_name])
   end;
-function TGraphExt.AddPrivateThreadPoolDataset(const I_input_dataset:string; const I_num_threads:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddPrivateThreadPoolDataset(const I_input_dataset:string; const I_num_threads:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('PrivateThreadPoolDataset',[I_input_dataset,I_num_threads],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -4965,13 +4932,13 @@ function TGraphExt.AddProd(const I_input:string; const I_reduction_indices:strin
   begin
   result:=AddOper('Prod',[I_input,I_reduction_indices],[],[],[O_output],['keep_dims','T','Tidx'],['bool','type','type'],[@A_keep_dims,@A_T,@A_Tidx])
   end;
-function TGraphExt.AddPyFunc(const I_input:string; const OL_output:string; const A_token:string; const A_Tin:array of TF_DataType; const A_Tout:array of TF_DataType):string;
+function TGraphExt.AddPyFunc(const IL_input:string; const OL_output:string; const A_token:string; const A_Tin:TF_TypeList; const A_Tout:TF_TypeList):string;
   begin
-  result:=AddOper('PyFunc',[I_input],[],[],[OL_output],['token','Tin','Tout'],['string','list(type)','list(type)'],[@A_token,@A_Tin,@A_Tout])
+  result:=AddOper('PyFunc',[],[IL_input],[Length(A_Tin)],[OL_output],['token','Tin','Tout'],['string','list(type)','list(type)'],[@A_token,@A_Tin,@A_Tout])
   end;
-function TGraphExt.AddPyFuncStateless(const I_input:string; const OL_output:string; const A_token:string; const A_Tin:array of TF_DataType; const A_Tout:array of TF_DataType):string;
+function TGraphExt.AddPyFuncStateless(const IL_input:string; const OL_output:string; const A_token:string; const A_Tin:TF_TypeList; const A_Tout:TF_TypeList):string;
   begin
-  result:=AddOper('PyFuncStateless',[I_input],[],[],[OL_output],['token','Tin','Tout'],['string','list(type)','list(type)'],[@A_token,@A_Tin,@A_Tout])
+  result:=AddOper('PyFuncStateless',[],[IL_input],[Length(A_Tin)],[OL_output],['token','Tin','Tout'],['string','list(type)','list(type)'],[@A_token,@A_Tin,@A_Tout])
   end;
 function TGraphExt.AddQr(const I_input:string; const O_q:string; const O_r:string; const A_full_matrices:boolean; const A_T:TF_DataType):string;
   begin
@@ -5001,7 +4968,7 @@ function TGraphExt.AddQuantizedAdd(const I_x:string; const I_y:string; const I_m
   begin
   result:=AddOper('QuantizedAdd',[I_x,I_y,I_min_x,I_max_x,I_min_y,I_max_y],[],[],[O_z,O_min_z,O_max_z],['T1','T2','Toutput'],['type','type','type'],[@A_T1,@A_T2,@A_Toutput])
   end;
-function TGraphExt.AddQuantizedAvgPool(const I_input:string; const I_min_input:string; const I_max_input:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_T:TF_DataType; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string):string;
+function TGraphExt.AddQuantizedAvgPool(const I_input:string; const I_min_input:string; const I_max_input:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_T:TF_DataType; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string):string;
   begin
   result:=AddOper('QuantizedAvgPool',[I_input,I_min_input,I_max_input],[],[],[O_output,O_min_output,O_max_output],['T','ksize','strides','padding'],['type','list(int)','list(int)','string'],[@A_T,@A_ksize,@A_strides,@A_padding])
   end;
@@ -5015,69 +4982,69 @@ function TGraphExt.AddQuantizedBiasAdd(const I_input:string; const I_bias:string
   end;
 function TGraphExt.AddQuantizedConcat(const I_concat_dim:string; const IL_values:string; const IL_input_mins:string; const IL_input_maxes:string; const O_output:string; const O_output_min:string; const O_output_max:string; const A_N:cint64; const A_T:TF_DataType):string;
   begin
-  result:=AddOper('QuantizedConcat',[I_concat_dim],[IL_values,IL_input_mins,IL_input_maxes],[],[O_output,O_output_min,O_output_max],['N','T'],['int','type'],[@A_N,@A_T])
+  result:=AddOper('QuantizedConcat',[I_concat_dim],[IL_values,IL_input_mins,IL_input_maxes],[A_N,A_N,A_N],[O_output,O_output_min,O_output_max],['N','T'],['int','type'],[@A_N,@A_T])
   end;
-function TGraphExt.AddQuantizedConv2D(const I_input:string; const I_filter:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64):string;
+function TGraphExt.AddQuantizedConv2D(const I_input:string; const I_filter:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList):string;
   begin
   result:=AddOper('QuantizedConv2D',[I_input,I_filter,I_min_input,I_max_input,I_min_filter,I_max_filter],[],[],[O_output,O_min_output,O_max_output],['Tinput','Tfilter','out_type','strides','padding','dilations'],['type','type','type','list(int)','string','list(int)'],[@A_Tinput,@A_Tfilter,@A_out_type,@A_strides,@A_padding,@A_dilations])
   end;
-function TGraphExt.AddQuantizedConv2DAndRelu(const I_input:string; const I_filter:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64; const A_padding_list:array of cint64):string;
+function TGraphExt.AddQuantizedConv2DAndRelu(const I_input:string; const I_filter:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList; const A_padding_list:TF_IntList):string;
   begin
   result:=AddOper('QuantizedConv2DAndRelu',[I_input,I_filter,I_min_input,I_max_input,I_min_filter,I_max_filter],[],[],[O_output,O_min_output,O_max_output],['Tinput','Tfilter','out_type','strides','padding','dilations','padding_list'],['type','type','type','list(int)','string','list(int)','list(int)'],[@A_Tinput,@A_Tfilter,@A_out_type,@A_strides,@A_padding,@A_dilations,@A_padding_list])
   end;
-function TGraphExt.AddQuantizedConv2DAndReluAndRequantize(const I_input:string; const I_filter:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64; const A_padding_list:array of cint64):string;
+function TGraphExt.AddQuantizedConv2DAndReluAndRequantize(const I_input:string; const I_filter:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList; const A_padding_list:TF_IntList):string;
   begin
   result:=AddOper('QuantizedConv2DAndReluAndRequantize',[I_input,I_filter,I_min_input,I_max_input,I_min_filter,I_max_filter,I_min_freezed_output,I_max_freezed_output],[],[],[O_output,O_min_output,O_max_output],['Tinput','Tfilter','out_type','strides','padding','dilations','padding_list'],['type','type','type','list(int)','string','list(int)','list(int)'],[@A_Tinput,@A_Tfilter,@A_out_type,@A_strides,@A_padding,@A_dilations,@A_padding_list])
   end;
-function TGraphExt.AddQuantizedConv2DAndRequantize(const I_input:string; const I_filter:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64; const A_padding_list:array of cint64):string;
+function TGraphExt.AddQuantizedConv2DAndRequantize(const I_input:string; const I_filter:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList; const A_padding_list:TF_IntList):string;
   begin
   result:=AddOper('QuantizedConv2DAndRequantize',[I_input,I_filter,I_min_input,I_max_input,I_min_filter,I_max_filter,I_min_freezed_output,I_max_freezed_output],[],[],[O_output,O_min_output,O_max_output],['Tinput','Tfilter','out_type','strides','padding','dilations','padding_list'],['type','type','type','list(int)','string','list(int)','list(int)'],[@A_Tinput,@A_Tfilter,@A_out_type,@A_strides,@A_padding,@A_dilations,@A_padding_list])
   end;
-function TGraphExt.AddQuantizedConv2DPerChannel(const I_input:string; const I_filter:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64):string;
+function TGraphExt.AddQuantizedConv2DPerChannel(const I_input:string; const I_filter:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList):string;
   begin
   result:=AddOper('QuantizedConv2DPerChannel',[I_input,I_filter,I_min_input,I_max_input,I_min_filter,I_max_filter],[],[],[O_output,O_min_output,O_max_output],['Tinput','Tfilter','out_type','strides','padding','dilations'],['type','type','type','list(int)','string','list(int)'],[@A_Tinput,@A_Tfilter,@A_out_type,@A_strides,@A_padding,@A_dilations])
   end;
-function TGraphExt.AddQuantizedConv2DWithBias(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64; const A_padding_list:array of cint64):string;
+function TGraphExt.AddQuantizedConv2DWithBias(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList; const A_padding_list:TF_IntList):string;
   begin
   result:=AddOper('QuantizedConv2DWithBias',[I_input,I_filter,I_bias,I_min_input,I_max_input,I_min_filter,I_max_filter],[],[],[O_output,O_min_output,O_max_output],['Tinput','Tfilter','out_type','strides','padding','dilations','padding_list'],['type','type','type','list(int)','string','list(int)','list(int)'],[@A_Tinput,@A_Tfilter,@A_out_type,@A_strides,@A_padding,@A_dilations,@A_padding_list])
   end;
-function TGraphExt.AddQuantizedConv2DWithBiasAndRelu(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64; const A_padding_list:array of cint64):string;
+function TGraphExt.AddQuantizedConv2DWithBiasAndRelu(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList; const A_padding_list:TF_IntList):string;
   begin
   result:=AddOper('QuantizedConv2DWithBiasAndRelu',[I_input,I_filter,I_bias,I_min_input,I_max_input,I_min_filter,I_max_filter],[],[],[O_output,O_min_output,O_max_output],['Tinput','Tfilter','out_type','strides','padding','dilations','padding_list'],['type','type','type','list(int)','string','list(int)','list(int)'],[@A_Tinput,@A_Tfilter,@A_out_type,@A_strides,@A_padding,@A_dilations,@A_padding_list])
   end;
-function TGraphExt.AddQuantizedConv2DWithBiasAndReluAndRequantize(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_Tbias:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64; const A_padding_list:array of cint64):string;
+function TGraphExt.AddQuantizedConv2DWithBiasAndReluAndRequantize(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_Tbias:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList; const A_padding_list:TF_IntList):string;
   begin
   result:=AddOper('QuantizedConv2DWithBiasAndReluAndRequantize',[I_input,I_filter,I_bias,I_min_input,I_max_input,I_min_filter,I_max_filter,I_min_freezed_output,I_max_freezed_output],[],[],[O_output,O_min_output,O_max_output],['Tinput','Tfilter','Tbias','out_type','strides','padding','dilations','padding_list'],['type','type','type','type','list(int)','string','list(int)','list(int)'],[@A_Tinput,@A_Tfilter,@A_Tbias,@A_out_type,@A_strides,@A_padding,@A_dilations,@A_padding_list])
   end;
-function TGraphExt.AddQuantizedConv2DWithBiasAndRequantize(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_Tbias:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64; const A_padding_list:array of cint64):string;
+function TGraphExt.AddQuantizedConv2DWithBiasAndRequantize(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_Tbias:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList; const A_padding_list:TF_IntList):string;
   begin
   result:=AddOper('QuantizedConv2DWithBiasAndRequantize',[I_input,I_filter,I_bias,I_min_input,I_max_input,I_min_filter,I_max_filter,I_min_freezed_output,I_max_freezed_output],[],[],[O_output,O_min_output,O_max_output],['Tinput','Tfilter','Tbias','out_type','strides','padding','dilations','padding_list'],['type','type','type','type','list(int)','string','list(int)','list(int)'],[@A_Tinput,@A_Tfilter,@A_Tbias,@A_out_type,@A_strides,@A_padding,@A_dilations,@A_padding_list])
   end;
-function TGraphExt.AddQuantizedConv2DWithBiasSignedSumAndReluAndRequantize(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const I_summand:string; const I_min_summand:string; const I_max_summand:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_Tbias:TF_DataType; const A_Tsummand:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64; const A_padding_list:array of cint64):string;
+function TGraphExt.AddQuantizedConv2DWithBiasSignedSumAndReluAndRequantize(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const I_summand:string; const I_min_summand:string; const I_max_summand:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_Tbias:TF_DataType; const A_Tsummand:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList; const A_padding_list:TF_IntList):string;
   begin
   result:=AddOper('QuantizedConv2DWithBiasSignedSumAndReluAndRequantize',[I_input,I_filter,I_bias,I_min_input,I_max_input,I_min_filter,I_max_filter,I_min_freezed_output,I_max_freezed_output,I_summand,I_min_summand,I_max_summand],[],[],[O_output,O_min_output,O_max_output],['Tinput','Tfilter','Tbias','Tsummand','out_type','strides','padding','dilations','padding_list'],['type','type','type','type','type','list(int)','string','list(int)','list(int)'],[@A_Tinput,@A_Tfilter,@A_Tbias,@A_Tsummand,@A_out_type,@A_strides,@A_padding,@A_dilations,@A_padding_list])
   end;
-function TGraphExt.AddQuantizedConv2DWithBiasSumAndRelu(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_summand:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64; const A_padding_list:array of cint64):string;
+function TGraphExt.AddQuantizedConv2DWithBiasSumAndRelu(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_summand:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList; const A_padding_list:TF_IntList):string;
   begin
   result:=AddOper('QuantizedConv2DWithBiasSumAndRelu',[I_input,I_filter,I_bias,I_min_input,I_max_input,I_min_filter,I_max_filter,I_summand],[],[],[O_output,O_min_output,O_max_output],['Tinput','Tfilter','out_type','strides','padding','dilations','padding_list'],['type','type','type','list(int)','string','list(int)','list(int)'],[@A_Tinput,@A_Tfilter,@A_out_type,@A_strides,@A_padding,@A_dilations,@A_padding_list])
   end;
-function TGraphExt.AddQuantizedConv2DWithBiasSumAndReluAndRequantize(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const I_summand:string; const I_min_summand:string; const I_max_summand:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_Tbias:TF_DataType; const A_Tsummand:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64; const A_padding_list:array of cint64):string;
+function TGraphExt.AddQuantizedConv2DWithBiasSumAndReluAndRequantize(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const I_summand:string; const I_min_summand:string; const I_max_summand:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_Tbias:TF_DataType; const A_Tsummand:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList; const A_padding_list:TF_IntList):string;
   begin
   result:=AddOper('QuantizedConv2DWithBiasSumAndReluAndRequantize',[I_input,I_filter,I_bias,I_min_input,I_max_input,I_min_filter,I_max_filter,I_min_freezed_output,I_max_freezed_output,I_summand,I_min_summand,I_max_summand],[],[],[O_output,O_min_output,O_max_output],['Tinput','Tfilter','Tbias','Tsummand','out_type','strides','padding','dilations','padding_list'],['type','type','type','type','type','list(int)','string','list(int)','list(int)'],[@A_Tinput,@A_Tfilter,@A_Tbias,@A_Tsummand,@A_out_type,@A_strides,@A_padding,@A_dilations,@A_padding_list])
   end;
-function TGraphExt.AddQuantizedDepthwiseConv2D(const I_input:string; const I_filter:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64):string;
+function TGraphExt.AddQuantizedDepthwiseConv2D(const I_input:string; const I_filter:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList):string;
   begin
   result:=AddOper('QuantizedDepthwiseConv2D',[I_input,I_filter,I_min_input,I_max_input,I_min_filter,I_max_filter],[],[],[O_output,O_min_output,O_max_output],['Tinput','Tfilter','out_type','strides','padding','dilations'],['type','type','type','list(int)','string','list(int)'],[@A_Tinput,@A_Tfilter,@A_out_type,@A_strides,@A_padding,@A_dilations])
   end;
-function TGraphExt.AddQuantizedDepthwiseConv2DWithBias(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64):string;
+function TGraphExt.AddQuantizedDepthwiseConv2DWithBias(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList):string;
   begin
   result:=AddOper('QuantizedDepthwiseConv2DWithBias',[I_input,I_filter,I_bias,I_min_input,I_max_input,I_min_filter,I_max_filter],[],[],[O_output,O_min_output,O_max_output],['Tinput','Tfilter','out_type','strides','padding','dilations'],['type','type','type','list(int)','string','list(int)'],[@A_Tinput,@A_Tfilter,@A_out_type,@A_strides,@A_padding,@A_dilations])
   end;
-function TGraphExt.AddQuantizedDepthwiseConv2DWithBiasAndRelu(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64; const A_padding_list:array of cint64):string;
+function TGraphExt.AddQuantizedDepthwiseConv2DWithBiasAndRelu(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList; const A_padding_list:TF_IntList):string;
   begin
   result:=AddOper('QuantizedDepthwiseConv2DWithBiasAndRelu',[I_input,I_filter,I_bias,I_min_input,I_max_input,I_min_filter,I_max_filter],[],[],[O_output,O_min_output,O_max_output],['Tinput','Tfilter','out_type','strides','padding','dilations','padding_list'],['type','type','type','list(int)','string','list(int)','list(int)'],[@A_Tinput,@A_Tfilter,@A_out_type,@A_strides,@A_padding,@A_dilations,@A_padding_list])
   end;
-function TGraphExt.AddQuantizedDepthwiseConv2DWithBiasAndReluAndRequantize(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_Tbias:TF_DataType; const A_out_type:TF_DataType; const A_strides:array of cint64; const A_padding:string; const A_dilations:array of cint64; const A_padding_list:array of cint64):string;
+function TGraphExt.AddQuantizedDepthwiseConv2DWithBiasAndReluAndRequantize(const I_input:string; const I_filter:string; const I_bias:string; const I_min_input:string; const I_max_input:string; const I_min_filter:string; const I_max_filter:string; const I_min_freezed_output:string; const I_max_freezed_output:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_Tinput:TF_DataType; const A_Tfilter:TF_DataType; const A_Tbias:TF_DataType; const A_out_type:TF_DataType; const A_strides:TF_IntList; const A_padding:string; const A_dilations:TF_IntList; const A_padding_list:TF_IntList):string;
   begin
   result:=AddOper('QuantizedDepthwiseConv2DWithBiasAndReluAndRequantize',[I_input,I_filter,I_bias,I_min_input,I_max_input,I_min_filter,I_max_filter,I_min_freezed_output,I_max_freezed_output],[],[],[O_output,O_min_output,O_max_output],['Tinput','Tfilter','Tbias','out_type','strides','padding','dilations','padding_list'],['type','type','type','type','list(int)','string','list(int)','list(int)'],[@A_Tinput,@A_Tfilter,@A_Tbias,@A_out_type,@A_strides,@A_padding,@A_dilations,@A_padding_list])
   end;
@@ -5105,7 +5072,7 @@ function TGraphExt.AddQuantizedMatMulWithBiasAndRequantize(const I_a:string; con
   begin
   result:=AddOper('QuantizedMatMulWithBiasAndRequantize',[I_a,I_b,I_bias,I_min_a,I_max_a,I_min_b,I_max_b,I_min_freezed_output,I_max_freezed_output],[],[],[O_out,O_min_out,O_max_out],['T1','T2','Tbias','Toutput','transpose_a','transpose_b','input_quant_mode'],['type','type','type','type','bool','bool','string'],[@A_T1,@A_T2,@A_Tbias,@A_Toutput,@A_transpose_a,@A_transpose_b,@A_input_quant_mode])
   end;
-function TGraphExt.AddQuantizedMaxPool(const I_input:string; const I_min_input:string; const I_max_input:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_T:TF_DataType; const A_ksize:array of cint64; const A_strides:array of cint64; const A_padding:string):string;
+function TGraphExt.AddQuantizedMaxPool(const I_input:string; const I_min_input:string; const I_max_input:string; const O_output:string; const O_min_output:string; const O_max_output:string; const A_T:TF_DataType; const A_ksize:TF_IntList; const A_strides:TF_IntList; const A_padding:string):string;
   begin
   result:=AddOper('QuantizedMaxPool',[I_input,I_min_input,I_max_input],[],[],[O_output,O_min_output,O_max_output],['T','ksize','strides','padding'],['type','list(int)','list(int)','string'],[@A_T,@A_ksize,@A_strides,@A_padding])
   end;
@@ -5141,45 +5108,45 @@ function TGraphExt.AddQueueCloseV2(const I_handle:string; const A_cancel_pending
   begin
   result:=AddOper('QueueCloseV2',[I_handle],[],[],[],['cancel_pending_enqueues'],['bool'],[@A_cancel_pending_enqueues])
   end;
-function TGraphExt.AddQueueDequeue(const I_handle:string; const OL_components:string; const A_component_types:array of TF_DataType; const A_timeout_ms:cint64):string;
+function TGraphExt.AddQueueDequeue(const I_handle:string; const OL_components:string; const A_component_types:TF_TypeList; const A_timeout_ms:cint64):string;
   begin
   result:=AddOper('QueueDequeue',[I_handle],[],[],[OL_components],['component_types','timeout_ms'],['list(type)','int'],[@A_component_types,@A_timeout_ms])
   end;
-function TGraphExt.AddQueueDequeueMany(const I_handle:string; const I_n:string; const OL_components:string; const A_component_types:array of TF_DataType; const A_timeout_ms:cint64):string;
+function TGraphExt.AddQueueDequeueMany(const I_handle:string; const I_n:string; const OL_components:string; const A_component_types:TF_TypeList; const A_timeout_ms:cint64):string;
   begin
   result:=AddOper('QueueDequeueMany',[I_handle,I_n],[],[],[OL_components],['component_types','timeout_ms'],['list(type)','int'],[@A_component_types,@A_timeout_ms])
   end;
-function TGraphExt.AddQueueDequeueManyV2(const I_handle:string; const I_n:string; const OL_components:string; const A_component_types:array of TF_DataType; const A_timeout_ms:cint64):string;
+function TGraphExt.AddQueueDequeueManyV2(const I_handle:string; const I_n:string; const OL_components:string; const A_component_types:TF_TypeList; const A_timeout_ms:cint64):string;
   begin
   result:=AddOper('QueueDequeueManyV2',[I_handle,I_n],[],[],[OL_components],['component_types','timeout_ms'],['list(type)','int'],[@A_component_types,@A_timeout_ms])
   end;
-function TGraphExt.AddQueueDequeueUpTo(const I_handle:string; const I_n:string; const OL_components:string; const A_component_types:array of TF_DataType; const A_timeout_ms:cint64):string;
+function TGraphExt.AddQueueDequeueUpTo(const I_handle:string; const I_n:string; const OL_components:string; const A_component_types:TF_TypeList; const A_timeout_ms:cint64):string;
   begin
   result:=AddOper('QueueDequeueUpTo',[I_handle,I_n],[],[],[OL_components],['component_types','timeout_ms'],['list(type)','int'],[@A_component_types,@A_timeout_ms])
   end;
-function TGraphExt.AddQueueDequeueUpToV2(const I_handle:string; const I_n:string; const OL_components:string; const A_component_types:array of TF_DataType; const A_timeout_ms:cint64):string;
+function TGraphExt.AddQueueDequeueUpToV2(const I_handle:string; const I_n:string; const OL_components:string; const A_component_types:TF_TypeList; const A_timeout_ms:cint64):string;
   begin
   result:=AddOper('QueueDequeueUpToV2',[I_handle,I_n],[],[],[OL_components],['component_types','timeout_ms'],['list(type)','int'],[@A_component_types,@A_timeout_ms])
   end;
-function TGraphExt.AddQueueDequeueV2(const I_handle:string; const OL_components:string; const A_component_types:array of TF_DataType; const A_timeout_ms:cint64):string;
+function TGraphExt.AddQueueDequeueV2(const I_handle:string; const OL_components:string; const A_component_types:TF_TypeList; const A_timeout_ms:cint64):string;
   begin
   result:=AddOper('QueueDequeueV2',[I_handle],[],[],[OL_components],['component_types','timeout_ms'],['list(type)','int'],[@A_component_types,@A_timeout_ms])
   end;
-function TGraphExt.AddQueueEnqueue(const I_handle:string; const I_components:string; const A_Tcomponents:array of TF_DataType; const A_timeout_ms:cint64):string;
+function TGraphExt.AddQueueEnqueue(const I_handle:string; const IL_components:string; const A_Tcomponents:TF_TypeList; const A_timeout_ms:cint64):string;
   begin
-  result:=AddOper('QueueEnqueue',[I_handle,I_components],[],[],[],['Tcomponents','timeout_ms'],['list(type)','int'],[@A_Tcomponents,@A_timeout_ms])
+  result:=AddOper('QueueEnqueue',[I_handle],[IL_components],[Length(A_Tcomponents)],[],['Tcomponents','timeout_ms'],['list(type)','int'],[@A_Tcomponents,@A_timeout_ms])
   end;
-function TGraphExt.AddQueueEnqueueMany(const I_handle:string; const I_components:string; const A_Tcomponents:array of TF_DataType; const A_timeout_ms:cint64):string;
+function TGraphExt.AddQueueEnqueueMany(const I_handle:string; const IL_components:string; const A_Tcomponents:TF_TypeList; const A_timeout_ms:cint64):string;
   begin
-  result:=AddOper('QueueEnqueueMany',[I_handle,I_components],[],[],[],['Tcomponents','timeout_ms'],['list(type)','int'],[@A_Tcomponents,@A_timeout_ms])
+  result:=AddOper('QueueEnqueueMany',[I_handle],[IL_components],[Length(A_Tcomponents)],[],['Tcomponents','timeout_ms'],['list(type)','int'],[@A_Tcomponents,@A_timeout_ms])
   end;
-function TGraphExt.AddQueueEnqueueManyV2(const I_handle:string; const I_components:string; const A_Tcomponents:array of TF_DataType; const A_timeout_ms:cint64):string;
+function TGraphExt.AddQueueEnqueueManyV2(const I_handle:string; const IL_components:string; const A_Tcomponents:TF_TypeList; const A_timeout_ms:cint64):string;
   begin
-  result:=AddOper('QueueEnqueueManyV2',[I_handle,I_components],[],[],[],['Tcomponents','timeout_ms'],['list(type)','int'],[@A_Tcomponents,@A_timeout_ms])
+  result:=AddOper('QueueEnqueueManyV2',[I_handle],[IL_components],[Length(A_Tcomponents)],[],['Tcomponents','timeout_ms'],['list(type)','int'],[@A_Tcomponents,@A_timeout_ms])
   end;
-function TGraphExt.AddQueueEnqueueV2(const I_handle:string; const I_components:string; const A_Tcomponents:array of TF_DataType; const A_timeout_ms:cint64):string;
+function TGraphExt.AddQueueEnqueueV2(const I_handle:string; const IL_components:string; const A_Tcomponents:TF_TypeList; const A_timeout_ms:cint64):string;
   begin
-  result:=AddOper('QueueEnqueueV2',[I_handle,I_components],[],[],[],['Tcomponents','timeout_ms'],['list(type)','int'],[@A_Tcomponents,@A_timeout_ms])
+  result:=AddOper('QueueEnqueueV2',[I_handle],[IL_components],[Length(A_Tcomponents)],[],['Tcomponents','timeout_ms'],['list(type)','int'],[@A_Tcomponents,@A_timeout_ms])
   end;
 function TGraphExt.AddQueueIsClosed(const I_handle:string; const O_is_closed:string):string;
   begin
@@ -5215,7 +5182,7 @@ function TGraphExt.AddRGBToHSV(const I_images:string; const O_output:string; con
   end;
 function TGraphExt.AddRaggedGather(const I_params_dense_values:string; const I_indices:string; const IL_params_nested_splits:string; const O_output_dense_values:string; const OL_output_nested_splits:string; const A_Tvalues:TF_DataType; const A_Tindices:TF_DataType; const A_Tsplits:TF_DataType; const A_PARAMS_RAGGED_RANK:cint64; const A_OUTPUT_RAGGED_RANK:cint64):string;
   begin
-  result:=AddOper('RaggedGather',[I_params_dense_values,I_indices],[IL_params_nested_splits],[],[O_output_dense_values,OL_output_nested_splits],['Tvalues','Tindices','Tsplits','PARAMS_RAGGED_RANK','OUTPUT_RAGGED_RANK'],['type','type','type','int','int'],[@A_Tvalues,@A_Tindices,@A_Tsplits,@A_PARAMS_RAGGED_RANK,@A_OUTPUT_RAGGED_RANK])
+  result:=AddOper('RaggedGather',[I_params_dense_values,I_indices],[IL_params_nested_splits],[A_PARAMS_RAGGED_RANK],[O_output_dense_values,OL_output_nested_splits],['Tvalues','Tindices','Tsplits','PARAMS_RAGGED_RANK','OUTPUT_RAGGED_RANK'],['type','type','type','int','int'],[@A_Tvalues,@A_Tindices,@A_Tsplits,@A_PARAMS_RAGGED_RANK,@A_OUTPUT_RAGGED_RANK])
   end;
 function TGraphExt.AddRaggedRange(const I_starts:string; const I_limits:string; const I_deltas:string; const O_rt_nested_splits:string; const O_rt_dense_values:string; const A_T:TF_DataType; const A_Tsplits:TF_DataType):string;
   begin
@@ -5227,21 +5194,21 @@ function TGraphExt.AddRaggedTensorFromVariant(const I_encoded_ragged:string; con
   end;
 function TGraphExt.AddRaggedTensorToSparse(const I_rt_dense_values:string; const IL_rt_nested_splits:string; const O_sparse_indices:string; const O_sparse_values:string; const O_sparse_dense_shape:string; const A_RAGGED_RANK:cint64; const A_T:TF_DataType; const A_Tsplits:TF_DataType):string;
   begin
-  result:=AddOper('RaggedTensorToSparse',[I_rt_dense_values],[IL_rt_nested_splits],[],[O_sparse_indices,O_sparse_values,O_sparse_dense_shape],['RAGGED_RANK','T','Tsplits'],['int','type','type'],[@A_RAGGED_RANK,@A_T,@A_Tsplits])
+  result:=AddOper('RaggedTensorToSparse',[I_rt_dense_values],[IL_rt_nested_splits],[A_RAGGED_RANK],[O_sparse_indices,O_sparse_values,O_sparse_dense_shape],['RAGGED_RANK','T','Tsplits'],['int','type','type'],[@A_RAGGED_RANK,@A_T,@A_Tsplits])
   end;
-function TGraphExt.AddRaggedTensorToTensor(const I_shape:string; const I_values:string; const I_default_value:string; const IL_row_partition_tensors:string; const O_result:string; const A_T:TF_DataType; const A_Tindex:TF_DataType; const A_Tshape:TF_DataType; const A_num_row_partition_tensors:cint64; const A_row_partition_types:array of string):string;
+function TGraphExt.AddRaggedTensorToTensor(const I_shape:string; const I_values:string; const I_default_value:string; const IL_row_partition_tensors:string; const O_result:string; const A_T:TF_DataType; const A_Tindex:TF_DataType; const A_Tshape:TF_DataType; const A_num_row_partition_tensors:cint64; const A_row_partition_types:TF_StringList):string;
   begin
-  result:=AddOper('RaggedTensorToTensor',[I_shape,I_values,I_default_value],[IL_row_partition_tensors],[],[O_result],['T','Tindex','Tshape','num_row_partition_tensors','row_partition_types'],['type','type','type','int','list(string)'],[@A_T,@A_Tindex,@A_Tshape,@A_num_row_partition_tensors,@A_row_partition_types])
+  result:=AddOper('RaggedTensorToTensor',[I_shape,I_values,I_default_value],[IL_row_partition_tensors],[A_num_row_partition_tensors],[O_result],['T','Tindex','Tshape','num_row_partition_tensors','row_partition_types'],['type','type','type','int','list(string)'],[@A_T,@A_Tindex,@A_Tshape,@A_num_row_partition_tensors,@A_row_partition_types])
   end;
 function TGraphExt.AddRaggedTensorToVariant(const I_rt_dense_values:string; const IL_rt_nested_splits:string; const O_encoded_ragged:string; const A_RAGGED_RANK:cint64; const A_Tvalues:TF_DataType; const A_Tsplits:TF_DataType; const A_batched_input:boolean):string;
   begin
-  result:=AddOper('RaggedTensorToVariant',[I_rt_dense_values],[IL_rt_nested_splits],[],[O_encoded_ragged],['RAGGED_RANK','Tvalues','Tsplits','batched_input'],['int','type','type','bool'],[@A_RAGGED_RANK,@A_Tvalues,@A_Tsplits,@A_batched_input])
+  result:=AddOper('RaggedTensorToVariant',[I_rt_dense_values],[IL_rt_nested_splits],[A_RAGGED_RANK],[O_encoded_ragged],['RAGGED_RANK','Tvalues','Tsplits','batched_input'],['int','type','type','bool'],[@A_RAGGED_RANK,@A_Tvalues,@A_Tsplits,@A_batched_input])
   end;
 function TGraphExt.AddRandomCrop(const I_image:string; const I_size:string; const O_output:string; const A_T:TF_DataType; const A_seed:cint64; const A_seed2:cint64):string;
   begin
   result:=AddOper('RandomCrop',[I_image,I_size],[],[],[O_output],['T','seed','seed2'],['type','int','int'],[@A_T,@A_seed,@A_seed2])
   end;
-function TGraphExt.AddRandomDataset(const I_seed:string; const I_seed2:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddRandomDataset(const I_seed:string; const I_seed2:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('RandomDataset',[I_seed,I_seed2],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -5265,11 +5232,11 @@ function TGraphExt.AddRandomShuffle(const I_value:string; const O_output:string;
   begin
   result:=AddOper('RandomShuffle',[I_value],[],[],[O_output],['seed','seed2','T'],['int','int','type'],[@A_seed,@A_seed2,@A_T])
   end;
-function TGraphExt.AddRandomShuffleQueue(const O_handle:string; const A_component_types:array of TF_DataType; const A_shapes:array of TF_Shape; const A_capacity:cint64; const A_min_after_dequeue:cint64; const A_seed:cint64; const A_seed2:cint64; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddRandomShuffleQueue(const O_handle:string; const A_component_types:TF_TypeList; const A_shapes:TF_ShapeList; const A_capacity:cint64; const A_min_after_dequeue:cint64; const A_seed:cint64; const A_seed2:cint64; const A_container:string; const A_shared_name:string):string;
   begin
   result:=AddOper('RandomShuffleQueue',[],[],[],[O_handle],['component_types','shapes','capacity','min_after_dequeue','seed','seed2','container','shared_name'],['list(type)','list(shape)','int','int','int','int','string','string'],[@A_component_types,@A_shapes,@A_capacity,@A_min_after_dequeue,@A_seed,@A_seed2,@A_container,@A_shared_name])
   end;
-function TGraphExt.AddRandomShuffleQueueV2(const O_handle:string; const A_component_types:array of TF_DataType; const A_shapes:array of TF_Shape; const A_capacity:cint64; const A_min_after_dequeue:cint64; const A_seed:cint64; const A_seed2:cint64; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddRandomShuffleQueueV2(const O_handle:string; const A_component_types:TF_TypeList; const A_shapes:TF_ShapeList; const A_capacity:cint64; const A_min_after_dequeue:cint64; const A_seed:cint64; const A_seed2:cint64; const A_container:string; const A_shared_name:string):string;
   begin
   result:=AddOper('RandomShuffleQueueV2',[],[],[],[O_handle],['component_types','shapes','capacity','min_after_dequeue','seed','seed2','container','shared_name'],['list(type)','list(shape)','int','int','int','int','string','string'],[@A_component_types,@A_shapes,@A_capacity,@A_min_after_dequeue,@A_seed,@A_seed2,@A_container,@A_shared_name])
   end;
@@ -5289,7 +5256,7 @@ function TGraphExt.AddRange(const I_start:string; const I_limit:string; const I_
   begin
   result:=AddOper('Range',[I_start,I_limit,I_delta],[],[],[O_output],['Tidx'],['type'],[@A_Tidx])
   end;
-function TGraphExt.AddRangeDataset(const I_start:string; const I_stop:string; const I_step:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddRangeDataset(const I_start:string; const I_stop:string; const I_step:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('RangeDataset',[I_start,I_stop,I_step],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -5369,7 +5336,7 @@ function TGraphExt.AddRealDiv(const I_x:string; const I_y:string; const O_z:stri
   begin
   result:=AddOper('RealDiv',[I_x,I_y],[],[],[O_z],['T'],['type'],[@A_T])
   end;
-function TGraphExt.AddRebatchDataset(const I_input_dataset:string; const I_num_replicas:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_use_fallback:boolean):string;
+function TGraphExt.AddRebatchDataset(const I_input_dataset:string; const I_num_replicas:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_use_fallback:boolean):string;
   begin
   result:=AddOper('RebatchDataset',[I_input_dataset,I_num_replicas],[],[],[O_handle],['output_types','output_shapes','use_fallback'],['list(type)','list(shape)','bool'],[@A_output_types,@A_output_shapes,@A_use_fallback])
   end;
@@ -5393,9 +5360,9 @@ function TGraphExt.AddRecvTPUEmbeddingActivations(const OL_outputs:string; const
   begin
   result:=AddOper('RecvTPUEmbeddingActivations',[],[],[],[OL_outputs],['num_outputs','config'],['int','string'],[@A_num_outputs,@A_config])
   end;
-function TGraphExt.AddReduceDataset(const I_input_dataset:string; const I_initial_state:string; const I_other_arguments:string; const OL_components:string; const A_f:TF_Function; const A_Tstate:array of TF_DataType; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_use_inter_op_parallelism:boolean):string;
+function TGraphExt.AddReduceDataset(const I_input_dataset:string; const IL_initial_state:string; const IL_other_arguments:string; const OL_components:string; const A_f:TF_Function; const A_Tstate:TF_TypeList; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_use_inter_op_parallelism:boolean):string;
   begin
-  result:=AddOper('ReduceDataset',[I_input_dataset,I_initial_state,I_other_arguments],[],[],[OL_components],['f','Tstate','Targuments','output_types','output_shapes','use_inter_op_parallelism'],['func','list(type)','list(type)','list(type)','list(shape)','bool'],[@A_f,@A_Tstate,@A_Targuments,@A_output_types,@A_output_shapes,@A_use_inter_op_parallelism])
+  result:=AddOper('ReduceDataset',[I_input_dataset],[IL_initial_state,IL_other_arguments],[Length(A_Tstate),Length(A_Targuments)],[OL_components],['f','Tstate','Targuments','output_types','output_shapes','use_inter_op_parallelism'],['func','list(type)','list(type)','list(type)','list(shape)','bool'],[@A_f,@A_Tstate,@A_Targuments,@A_output_types,@A_output_shapes,@A_use_inter_op_parallelism])
   end;
 function TGraphExt.AddReduceJoin(const I_inputs:string; const I_reduction_indices:string; const O_output:string; const A_keep_dims:boolean; const A_separator:string):string;
   begin
@@ -5415,7 +5382,7 @@ function TGraphExt.AddRefIdentity(const I_input:string; const O_output:string; c
   end;
 function TGraphExt.AddRefMerge(const IL_inputs:string; const O_output:string; const O_value_index:string; const A_T:TF_DataType; const A_N:cint64):string;
   begin
-  result:=AddOper('RefMerge',[],[IL_inputs],[],[O_output,O_value_index],['T','N'],['type','int'],[@A_T,@A_N])
+  result:=AddOper('RefMerge',[],[IL_inputs],[A_N],[O_output,O_value_index],['T','N'],['type','int'],[@A_T,@A_N])
   end;
 function TGraphExt.AddRefNextIteration(const I_data:string; const O_output:string; const A_T:TF_DataType):string;
   begin
@@ -5423,7 +5390,7 @@ function TGraphExt.AddRefNextIteration(const I_data:string; const O_output:strin
   end;
 function TGraphExt.AddRefSelect(const I_index:string; const IL_inputs:string; const O_output:string; const A_T:TF_DataType; const A_N:cint64):string;
   begin
-  result:=AddOper('RefSelect',[I_index],[IL_inputs],[],[O_output],['T','N'],['type','int'],[@A_T,@A_N])
+  result:=AddOper('RefSelect',[I_index],[IL_inputs],[A_N],[O_output],['T','N'],['type','int'],[@A_T,@A_N])
   end;
 function TGraphExt.AddRefSwitch(const I_data:string; const I_pred:string; const O_output_false:string; const O_output_true:string; const A_T:TF_DataType):string;
   begin
@@ -5453,15 +5420,15 @@ function TGraphExt.AddReluGrad(const I_gradients:string; const I_features:string
   begin
   result:=AddOper('ReluGrad',[I_gradients,I_features],[],[],[O_backprops],['T'],['type'],[@A_T])
   end;
-function TGraphExt.AddRemoteCall(const I_target:string; const I_args:string; const OL_output:string; const A_Tin:array of TF_DataType; const A_Tout:array of TF_DataType; const A_f:TF_Function):string;
+function TGraphExt.AddRemoteCall(const I_target:string; const IL_args:string; const OL_output:string; const A_Tin:TF_TypeList; const A_Tout:TF_TypeList; const A_f:TF_Function):string;
   begin
-  result:=AddOper('RemoteCall',[I_target,I_args],[],[],[OL_output],['Tin','Tout','f'],['list(type)','list(type)','func'],[@A_Tin,@A_Tout,@A_f])
+  result:=AddOper('RemoteCall',[I_target],[IL_args],[Length(A_Tin)],[OL_output],['Tin','Tout','f'],['list(type)','list(type)','func'],[@A_Tin,@A_Tout,@A_f])
   end;
-function TGraphExt.AddRemoteFusedGraphExecute(const I_inputs:string; const OL_outputs:string; const A_Tinputs:array of TF_DataType; const A_Toutputs:array of TF_DataType; const A_serialized_remote_fused_graph_execute_info:string):string;
+function TGraphExt.AddRemoteFusedGraphExecute(const IL_inputs:string; const OL_outputs:string; const A_Tinputs:TF_TypeList; const A_Toutputs:TF_TypeList; const A_serialized_remote_fused_graph_execute_info:string):string;
   begin
-  result:=AddOper('RemoteFusedGraphExecute',[I_inputs],[],[],[OL_outputs],['Tinputs','Toutputs','serialized_remote_fused_graph_execute_info'],['list(type)','list(type)','string'],[@A_Tinputs,@A_Toutputs,@A_serialized_remote_fused_graph_execute_info])
+  result:=AddOper('RemoteFusedGraphExecute',[],[IL_inputs],[Length(A_Tinputs)],[OL_outputs],['Tinputs','Toutputs','serialized_remote_fused_graph_execute_info'],['list(type)','list(type)','string'],[@A_Tinputs,@A_Toutputs,@A_serialized_remote_fused_graph_execute_info])
   end;
-function TGraphExt.AddRepeatDataset(const I_input_dataset:string; const I_count:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddRepeatDataset(const I_input_dataset:string; const I_count:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('RepeatDataset',[I_input_dataset,I_count],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -5717,7 +5684,7 @@ function TGraphExt.AddRestoreSlice(const I_file_pattern:string; const I_tensor_n
   begin
   result:=AddOper('RestoreSlice',[I_file_pattern,I_tensor_name,I_shape_and_slice],[],[],[O_tensor],['dt','preferred_shard'],['type','int'],[@A_dt,@A_preferred_shard])
   end;
-function TGraphExt.AddRestoreV2(const I_prefix:string; const I_tensor_names:string; const I_shape_and_slices:string; const OL_tensors:string; const A_dtypes:array of TF_DataType):string;
+function TGraphExt.AddRestoreV2(const I_prefix:string; const I_tensor_names:string; const I_shape_and_slices:string; const OL_tensors:string; const A_dtypes:TF_TypeList):string;
   begin
   result:=AddOper('RestoreV2',[I_prefix,I_tensor_names,I_shape_and_slices],[],[],[OL_tensors],['dtypes'],['list(type)'],[@A_dtypes])
   end;
@@ -5833,29 +5800,29 @@ function TGraphExt.AddRsqrtGrad(const I_y:string; const I_dy:string; const O_z:s
   begin
   result:=AddOper('RsqrtGrad',[I_y,I_dy],[],[],[O_z],['T'],['type'],[@A_T])
   end;
-function TGraphExt.AddSampleDistortedBoundingBox(const I_image_size:string; const I_bounding_boxes:string; const O_begin:string; const O_size:string; const O_bboxes:string; const A_T:TF_DataType; const A_seed:cint64; const A_seed2:cint64; const A_min_object_covered:real; const A_aspect_ratio_range:array of real; const A_area_range:array of real; const A_max_attempts:cint64; const A_use_image_if_no_bounding_boxes:boolean):string;
+function TGraphExt.AddSampleDistortedBoundingBox(const I_image_size:string; const I_bounding_boxes:string; const O_begin:string; const O_size:string; const O_bboxes:string; const A_T:TF_DataType; const A_seed:cint64; const A_seed2:cint64; const A_min_object_covered:real; const A_aspect_ratio_range:TF_FloatList; const A_area_range:TF_FloatList; const A_max_attempts:cint64; const A_use_image_if_no_bounding_boxes:boolean):string;
   begin
   result:=AddOper('SampleDistortedBoundingBox',[I_image_size,I_bounding_boxes],[],[],[O_begin,O_size,O_bboxes],['T','seed','seed2','min_object_covered','aspect_ratio_range','area_range','max_attempts','use_image_if_no_bounding_boxes'],['type','int','int','float','list(float)','list(float)','int','bool'],[@A_T,@A_seed,@A_seed2,@A_min_object_covered,@A_aspect_ratio_range,@A_area_range,@A_max_attempts,@A_use_image_if_no_bounding_boxes])
   end;
-function TGraphExt.AddSampleDistortedBoundingBoxV2(const I_image_size:string; const I_bounding_boxes:string; const I_min_object_covered:string; const O_begin:string; const O_size:string; const O_bboxes:string; const A_T:TF_DataType; const A_seed:cint64; const A_seed2:cint64; const A_aspect_ratio_range:array of real; const A_area_range:array of real; const A_max_attempts:cint64; const A_use_image_if_no_bounding_boxes:boolean):string;
+function TGraphExt.AddSampleDistortedBoundingBoxV2(const I_image_size:string; const I_bounding_boxes:string; const I_min_object_covered:string; const O_begin:string; const O_size:string; const O_bboxes:string; const A_T:TF_DataType; const A_seed:cint64; const A_seed2:cint64; const A_aspect_ratio_range:TF_FloatList; const A_area_range:TF_FloatList; const A_max_attempts:cint64; const A_use_image_if_no_bounding_boxes:boolean):string;
   begin
   result:=AddOper('SampleDistortedBoundingBoxV2',[I_image_size,I_bounding_boxes,I_min_object_covered],[],[],[O_begin,O_size,O_bboxes],['T','seed','seed2','aspect_ratio_range','area_range','max_attempts','use_image_if_no_bounding_boxes'],['type','int','int','list(float)','list(float)','int','bool'],[@A_T,@A_seed,@A_seed2,@A_aspect_ratio_range,@A_area_range,@A_max_attempts,@A_use_image_if_no_bounding_boxes])
   end;
-function TGraphExt.AddSamplingDataset(const I_input_dataset:string; const I_rate:string; const I_seed:string; const I_seed2:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddSamplingDataset(const I_input_dataset:string; const I_rate:string; const I_seed:string; const I_seed2:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('SamplingDataset',[I_input_dataset,I_rate,I_seed,I_seed2],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddSave(const I_filename:string; const I_tensor_names:string; const I_data:string; const A_T:array of TF_DataType):string;
+function TGraphExt.AddSave(const I_filename:string; const I_tensor_names:string; const IL_data:string; const A_T:TF_TypeList):string;
   begin
-  result:=AddOper('Save',[I_filename,I_tensor_names,I_data],[],[],[],['T'],['list(type)'],[@A_T])
+  result:=AddOper('Save',[I_filename,I_tensor_names],[IL_data],[Length(A_T)],[],['T'],['list(type)'],[@A_T])
   end;
-function TGraphExt.AddSaveSlices(const I_filename:string; const I_tensor_names:string; const I_shapes_and_slices:string; const I_data:string; const A_T:array of TF_DataType):string;
+function TGraphExt.AddSaveSlices(const I_filename:string; const I_tensor_names:string; const I_shapes_and_slices:string; const IL_data:string; const A_T:TF_TypeList):string;
   begin
-  result:=AddOper('SaveSlices',[I_filename,I_tensor_names,I_shapes_and_slices,I_data],[],[],[],['T'],['list(type)'],[@A_T])
+  result:=AddOper('SaveSlices',[I_filename,I_tensor_names,I_shapes_and_slices],[IL_data],[Length(A_T)],[],['T'],['list(type)'],[@A_T])
   end;
-function TGraphExt.AddSaveV2(const I_prefix:string; const I_tensor_names:string; const I_shape_and_slices:string; const I_tensors:string; const A_dtypes:array of TF_DataType):string;
+function TGraphExt.AddSaveV2(const I_prefix:string; const I_tensor_names:string; const I_shape_and_slices:string; const IL_tensors:string; const A_dtypes:TF_TypeList):string;
   begin
-  result:=AddOper('SaveV2',[I_prefix,I_tensor_names,I_shape_and_slices,I_tensors],[],[],[],['dtypes'],['list(type)'],[@A_dtypes])
+  result:=AddOper('SaveV2',[I_prefix,I_tensor_names,I_shape_and_slices],[IL_tensors],[Length(A_dtypes)],[],['dtypes'],['list(type)'],[@A_dtypes])
   end;
 function TGraphExt.AddScalarSummary(const I_tags:string; const I_values:string; const O_summary:string; const A_T:TF_DataType):string;
   begin
@@ -5869,9 +5836,9 @@ function TGraphExt.AddScaleAndTranslateGrad(const I_grads:string; const I_origin
   begin
   result:=AddOper('ScaleAndTranslateGrad',[I_grads,I_original_image,I_scale,I_translation],[],[],[O_output],['T','kernel_type','antialias'],['type','string','bool'],[@A_T,@A_kernel_type,@A_antialias])
   end;
-function TGraphExt.AddScanDataset(const I_input_dataset:string; const I_initial_state:string; const I_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Tstate:array of TF_DataType; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_preserve_cardinality:boolean; const A_use_default_device:boolean):string;
+function TGraphExt.AddScanDataset(const I_input_dataset:string; const IL_initial_state:string; const IL_other_arguments:string; const O_handle:string; const A_f:TF_Function; const A_Tstate:TF_TypeList; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_preserve_cardinality:boolean; const A_use_default_device:boolean):string;
   begin
-  result:=AddOper('ScanDataset',[I_input_dataset,I_initial_state,I_other_arguments],[],[],[O_handle],['f','Tstate','Targuments','output_types','output_shapes','preserve_cardinality','use_default_device'],['func','list(type)','list(type)','list(type)','list(shape)','bool','bool'],[@A_f,@A_Tstate,@A_Targuments,@A_output_types,@A_output_shapes,@A_preserve_cardinality,@A_use_default_device])
+  result:=AddOper('ScanDataset',[I_input_dataset],[IL_initial_state,IL_other_arguments],[Length(A_Tstate),Length(A_Targuments)],[O_handle],['f','Tstate','Targuments','output_types','output_shapes','preserve_cardinality','use_default_device'],['func','list(type)','list(type)','list(type)','list(shape)','bool','bool'],[@A_f,@A_Tstate,@A_Targuments,@A_output_types,@A_output_shapes,@A_preserve_cardinality,@A_use_default_device])
   end;
 function TGraphExt.AddScatterAdd(const I_ref:string; const I_indices:string; const I_updates:string; const O_output_ref:string; const A_T:TF_DataType; const A_Tindices:TF_DataType; const A_use_locking:boolean):string;
   begin
@@ -5927,15 +5894,15 @@ function TGraphExt.AddSdcaFprint(const I_input:string; const O_output:string):st
   end;
 function TGraphExt.AddSdcaOptimizer(const I_example_weights:string; const I_example_labels:string; const I_example_state_data:string; const IL_sparse_example_indices:string; const IL_sparse_feature_indices:string; const IL_sparse_feature_values:string; const IL_dense_features:string; const IL_sparse_indices:string; const IL_sparse_weights:string; const IL_dense_weights:string; const O_out_example_state_data:string; const OL_out_delta_sparse_weights:string; const OL_out_delta_dense_weights:string; const A_loss_type:string; const A_adaptative:boolean; const A_num_sparse_features:cint64; const A_num_sparse_features_with_values:cint64; const A_num_dense_features:cint64; const A_l1:real; const A_l2:real; const A_num_loss_partitions:cint64; const A_num_inner_iterations:cint64):string;
   begin
-  result:=AddOper('SdcaOptimizer',[I_example_weights,I_example_labels,I_example_state_data],[IL_sparse_example_indices,IL_sparse_feature_indices,IL_sparse_feature_values,IL_dense_features,IL_sparse_indices,IL_sparse_weights,IL_dense_weights],[],[O_out_example_state_data,OL_out_delta_sparse_weights,OL_out_delta_dense_weights],['loss_type','adaptative','num_sparse_features','num_sparse_features_with_values','num_dense_features','l1','l2','num_loss_partitions','num_inner_iterations'],['string','bool','int','int','int','float','float','int','int'],[@A_loss_type,@A_adaptative,@A_num_sparse_features,@A_num_sparse_features_with_values,@A_num_dense_features,@A_l1,@A_l2,@A_num_loss_partitions,@A_num_inner_iterations])
+  result:=AddOper('SdcaOptimizer',[I_example_weights,I_example_labels,I_example_state_data],[IL_sparse_example_indices,IL_sparse_feature_indices,IL_sparse_feature_values,IL_dense_features,IL_sparse_indices,IL_sparse_weights,IL_dense_weights],[A_num_sparse_features,A_num_sparse_features,A_num_sparse_features_with_values,A_num_dense_features,A_num_sparse_features,A_num_sparse_features,A_num_dense_features],[O_out_example_state_data,OL_out_delta_sparse_weights,OL_out_delta_dense_weights],['loss_type','adaptative','num_sparse_features','num_sparse_features_with_values','num_dense_features','l1','l2','num_loss_partitions','num_inner_iterations'],['string','bool','int','int','int','float','float','int','int'],[@A_loss_type,@A_adaptative,@A_num_sparse_features,@A_num_sparse_features_with_values,@A_num_dense_features,@A_l1,@A_l2,@A_num_loss_partitions,@A_num_inner_iterations])
   end;
 function TGraphExt.AddSdcaOptimizerV2(const I_example_weights:string; const I_example_labels:string; const I_example_state_data:string; const IL_sparse_example_indices:string; const IL_sparse_feature_indices:string; const IL_sparse_feature_values:string; const IL_dense_features:string; const IL_sparse_indices:string; const IL_sparse_weights:string; const IL_dense_weights:string; const O_out_example_state_data:string; const OL_out_delta_sparse_weights:string; const OL_out_delta_dense_weights:string; const A_loss_type:string; const A_adaptive:boolean; const A_num_sparse_features:cint64; const A_num_sparse_features_with_values:cint64; const A_num_dense_features:cint64; const A_l1:real; const A_l2:real; const A_num_loss_partitions:cint64; const A_num_inner_iterations:cint64):string;
   begin
-  result:=AddOper('SdcaOptimizerV2',[I_example_weights,I_example_labels,I_example_state_data],[IL_sparse_example_indices,IL_sparse_feature_indices,IL_sparse_feature_values,IL_dense_features,IL_sparse_indices,IL_sparse_weights,IL_dense_weights],[],[O_out_example_state_data,OL_out_delta_sparse_weights,OL_out_delta_dense_weights],['loss_type','adaptive','num_sparse_features','num_sparse_features_with_values','num_dense_features','l1','l2','num_loss_partitions','num_inner_iterations'],['string','bool','int','int','int','float','float','int','int'],[@A_loss_type,@A_adaptive,@A_num_sparse_features,@A_num_sparse_features_with_values,@A_num_dense_features,@A_l1,@A_l2,@A_num_loss_partitions,@A_num_inner_iterations])
+  result:=AddOper('SdcaOptimizerV2',[I_example_weights,I_example_labels,I_example_state_data],[IL_sparse_example_indices,IL_sparse_feature_indices,IL_sparse_feature_values,IL_dense_features,IL_sparse_indices,IL_sparse_weights,IL_dense_weights],[A_num_sparse_features,A_num_sparse_features,A_num_sparse_features_with_values,A_num_dense_features,A_num_sparse_features,A_num_sparse_features,A_num_dense_features],[O_out_example_state_data,OL_out_delta_sparse_weights,OL_out_delta_dense_weights],['loss_type','adaptive','num_sparse_features','num_sparse_features_with_values','num_dense_features','l1','l2','num_loss_partitions','num_inner_iterations'],['string','bool','int','int','int','float','float','int','int'],[@A_loss_type,@A_adaptive,@A_num_sparse_features,@A_num_sparse_features_with_values,@A_num_dense_features,@A_l1,@A_l2,@A_num_loss_partitions,@A_num_inner_iterations])
   end;
 function TGraphExt.AddSdcaShrinkL1(const IL_weights:string; const A_num_features:cint64; const A_l1:real; const A_l2:real):string;
   begin
-  result:=AddOper('SdcaShrinkL1',[],[IL_weights],[],[],['num_features','l1','l2'],['int','float','float'],[@A_num_features,@A_l1,@A_l2])
+  result:=AddOper('SdcaShrinkL1',[],[IL_weights],[A_num_features],[],['num_features','l1','l2'],['int','float','float'],[@A_num_features,@A_l1,@A_l2])
   end;
 function TGraphExt.AddSegmentMax(const I_data:string; const I_segment_ids:string; const O_output:string; const A_T:TF_DataType; const A_Tindices:TF_DataType):string;
   begin
@@ -5987,7 +5954,7 @@ function TGraphExt.AddSend(const I_tensor:string; const A_T:TF_DataType; const A
   end;
 function TGraphExt.AddSendTPUEmbeddingGradients(const IL_inputs:string; const IL_learning_rates:string; const A_N:cint64; const A_NN:cint64; const A_config:string):string;
   begin
-  result:=AddOper('SendTPUEmbeddingGradients',[],[IL_inputs,IL_learning_rates],[],[],['N','NN','config'],['int','int','string'],[@A_N,@A_NN,@A_config])
+  result:=AddOper('SendTPUEmbeddingGradients',[],[IL_inputs,IL_learning_rates],[A_N,A_NN],[],['N','NN','config'],['int','int','string'],[@A_N,@A_NN,@A_config])
   end;
 function TGraphExt.AddSerializeIterator(const I_resource_handle:string; const O_serialized:string; const A_external_state_policy:cint64):string;
   begin
@@ -6009,7 +5976,7 @@ function TGraphExt.AddSetSize(const I_set_indices:string; const I_set_values:str
   begin
   result:=AddOper('SetSize',[I_set_indices,I_set_values,I_set_shape],[],[],[O_size],['validate_indices','T'],['bool','type'],[@A_validate_indices,@A_T])
   end;
-function TGraphExt.AddSetStatsAggregatorDataset(const I_input_dataset:string; const I_stats_aggregator:string; const I_tag:string; const I_counter_prefix:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddSetStatsAggregatorDataset(const I_input_dataset:string; const I_stats_aggregator:string; const I_tag:string; const I_counter_prefix:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('SetStatsAggregatorDataset',[I_input_dataset,I_stats_aggregator,I_tag,I_counter_prefix],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -6019,9 +5986,9 @@ function TGraphExt.AddShape(const I_input:string; const O_output:string; const A
   end;
 function TGraphExt.AddShapeN(const IL_input:string; const OL_output:string; const A_N:cint64; const A_T:TF_DataType; const A_out_type:TF_DataType):string;
   begin
-  result:=AddOper('ShapeN',[],[IL_input],[],[OL_output],['N','T','out_type'],['int','type','type'],[@A_N,@A_T,@A_out_type])
+  result:=AddOper('ShapeN',[],[IL_input],[A_N],[OL_output],['N','T','out_type'],['int','type','type'],[@A_N,@A_T,@A_out_type])
   end;
-function TGraphExt.AddShardDataset(const I_input_dataset:string; const I_num_shards:string; const I_index:string; const O_handle:string; const A_require_non_empty:boolean; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddShardDataset(const I_input_dataset:string; const I_num_shards:string; const I_index:string; const O_handle:string; const A_require_non_empty:boolean; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('ShardDataset',[I_input_dataset,I_num_shards,I_index],[],[],[O_handle],['require_non_empty','output_types','output_shapes'],['bool','list(type)','list(shape)'],[@A_require_non_empty,@A_output_types,@A_output_shapes])
   end;
@@ -6033,15 +6000,15 @@ function TGraphExt.AddShardedFilespec(const I_basename:string; const I_num_shard
   begin
   result:=AddOper('ShardedFilespec',[I_basename,I_num_shards],[],[],[O_filename],[],[],[])
   end;
-function TGraphExt.AddShuffleAndRepeatDataset(const I_input_dataset:string; const I_buffer_size:string; const I_seed:string; const I_seed2:string; const I_count:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddShuffleAndRepeatDataset(const I_input_dataset:string; const I_buffer_size:string; const I_seed:string; const I_seed2:string; const I_count:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('ShuffleAndRepeatDataset',[I_input_dataset,I_buffer_size,I_seed,I_seed2,I_count],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddShuffleDataset(const I_input_dataset:string; const I_buffer_size:string; const I_seed:string; const I_seed2:string; const O_handle:string; const A_reshuffle_each_iteration:boolean; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddShuffleDataset(const I_input_dataset:string; const I_buffer_size:string; const I_seed:string; const I_seed2:string; const O_handle:string; const A_reshuffle_each_iteration:boolean; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('ShuffleDataset',[I_input_dataset,I_buffer_size,I_seed,I_seed2],[],[],[O_handle],['reshuffle_each_iteration','output_types','output_shapes'],['bool','list(type)','list(shape)'],[@A_reshuffle_each_iteration,@A_output_types,@A_output_shapes])
   end;
-function TGraphExt.AddShuffleDatasetV2(const I_input_dataset:string; const I_buffer_size:string; const I_seed_generator:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddShuffleDatasetV2(const I_input_dataset:string; const I_buffer_size:string; const I_seed_generator:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('ShuffleDatasetV2',[I_input_dataset,I_buffer_size,I_seed_generator],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -6073,7 +6040,7 @@ function TGraphExt.AddSize(const I_input:string; const O_output:string; const A_
   begin
   result:=AddOper('Size',[I_input],[],[],[O_output],['T','out_type'],['type','type'],[@A_T,@A_out_type])
   end;
-function TGraphExt.AddSkipDataset(const I_input_dataset:string; const I_count:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddSkipDataset(const I_input_dataset:string; const I_count:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('SkipDataset',[I_input_dataset,I_count],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -6081,7 +6048,7 @@ function TGraphExt.AddSkipgram(const O_vocab_word:string; const O_vocab_freq:str
   begin
   result:=AddOper('Skipgram',[],[],[],[O_vocab_word,O_vocab_freq,O_words_per_epoch,O_current_epoch,O_total_words_processed,O_examples,O_labels],['filename','batch_size','window_size','min_count','subsample'],['string','int','int','int','float'],[@A_filename,@A_batch_size,@A_window_size,@A_min_count,@A_subsample])
   end;
-function TGraphExt.AddSleepDataset(const I_input_dataset:string; const I_sleep_microseconds:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddSleepDataset(const I_input_dataset:string; const I_sleep_microseconds:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('SleepDataset',[I_input_dataset,I_sleep_microseconds],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -6089,7 +6056,7 @@ function TGraphExt.AddSlice(const I_input:string; const I_begin:string; const I_
   begin
   result:=AddOper('Slice',[I_input,I_begin,I_size],[],[],[O_output],['T','Index'],['type','type'],[@A_T,@A_Index])
   end;
-function TGraphExt.AddSlidingWindowDataset(const I_input_dataset:string; const I_window_size:string; const I_window_shift:string; const I_window_stride:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddSlidingWindowDataset(const I_input_dataset:string; const I_window_size:string; const I_window_shift:string; const I_window_stride:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('SlidingWindowDataset',[I_input_dataset,I_window_size,I_window_shift,I_window_stride],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -6097,7 +6064,7 @@ function TGraphExt.AddSnapshot(const I_input:string; const O_output:string; cons
   begin
   result:=AddOper('Snapshot',[I_input],[],[],[O_output],['T'],['type'],[@A_T])
   end;
-function TGraphExt.AddSnapshotDataset(const I_input_dataset:string; const I_path:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_compression:string; const A_reader_path_prefix:string; const A_writer_path_prefix:string; const A_shard_size_bytes:cint64; const A_pending_snapshot_expiry_seconds:cint64; const A_num_reader_threads:cint64; const A_reader_buffer_size:cint64; const A_num_writer_threads:cint64; const A_writer_buffer_size:cint64; const A_shuffle_on_read:boolean; const A_seed:cint64; const A_seed2:cint64; const A_mode:string; const A_snapshot_name:string):string;
+function TGraphExt.AddSnapshotDataset(const I_input_dataset:string; const I_path:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_compression:string; const A_reader_path_prefix:string; const A_writer_path_prefix:string; const A_shard_size_bytes:cint64; const A_pending_snapshot_expiry_seconds:cint64; const A_num_reader_threads:cint64; const A_reader_buffer_size:cint64; const A_num_writer_threads:cint64; const A_writer_buffer_size:cint64; const A_shuffle_on_read:boolean; const A_seed:cint64; const A_seed2:cint64; const A_mode:string; const A_snapshot_name:string):string;
   begin
   result:=AddOper('SnapshotDataset',[I_input_dataset,I_path],[],[],[O_handle],['output_types','output_shapes','compression','reader_path_prefix','writer_path_prefix','shard_size_bytes','pending_snapshot_expiry_seconds','num_reader_threads','reader_buffer_size','num_writer_threads','writer_buffer_size','shuffle_on_read','seed','seed2','mode','snapshot_name'],['list(type)','list(shape)','string','string','string','int','int','int','int','int','int','bool','int','int','string','string'],[@A_output_types,@A_output_shapes,@A_compression,@A_reader_path_prefix,@A_writer_path_prefix,@A_shard_size_bytes,@A_pending_snapshot_expiry_seconds,@A_num_reader_threads,@A_reader_buffer_size,@A_num_writer_threads,@A_writer_buffer_size,@A_shuffle_on_read,@A_seed,@A_seed2,@A_mode,@A_snapshot_name])
   end;
@@ -6203,15 +6170,15 @@ function TGraphExt.AddSparseApplyRMSProp(const I_var:string; const I_ms:string; 
   end;
 function TGraphExt.AddSparseConcat(const IL_indices:string; const IL_values:string; const IL_shapes:string; const O_output_indices:string; const O_output_values:string; const O_output_shape:string; const A_concat_dim:cint64; const A_N:cint64; const A_T:TF_DataType):string;
   begin
-  result:=AddOper('SparseConcat',[],[IL_indices,IL_values,IL_shapes],[],[O_output_indices,O_output_values,O_output_shape],['concat_dim','N','T'],['int','int','type'],[@A_concat_dim,@A_N,@A_T])
+  result:=AddOper('SparseConcat',[],[IL_indices,IL_values,IL_shapes],[A_N,A_N,A_N],[O_output_indices,O_output_values,O_output_shape],['concat_dim','N','T'],['int','int','type'],[@A_concat_dim,@A_N,@A_T])
   end;
 function TGraphExt.AddSparseConditionalAccumulator(const O_handle:string; const A_dtype:TF_DataType; const A_shape:TF_Shape; const A_container:string; const A_shared_name:string; const A_reduction_type:string):string;
   begin
   result:=AddOper('SparseConditionalAccumulator',[],[],[],[O_handle],['dtype','shape','container','shared_name','reduction_type'],['type','shape','string','string','string'],[@A_dtype,@A_shape,@A_container,@A_shared_name,@A_reduction_type])
   end;
-function TGraphExt.AddSparseCross(const I_values:string; const I_dense_inputs:string; const IL_indices:string; const IL_shapes:string; const O_output_indices:string; const O_output_values:string; const O_output_shape:string; const A_N:cint64; const A_hashed_output:boolean; const A_num_buckets:cint64; const A_hash_key:cint64; const A_sparse_types:array of TF_DataType; const A_dense_types:array of TF_DataType; const A_out_type:TF_DataType; const A_internal_type:TF_DataType):string;
+function TGraphExt.AddSparseCross(const IL_indices:string; const IL_values:string; const IL_shapes:string; const IL_dense_inputs:string; const O_output_indices:string; const O_output_values:string; const O_output_shape:string; const A_N:cint64; const A_hashed_output:boolean; const A_num_buckets:cint64; const A_hash_key:cint64; const A_sparse_types:TF_TypeList; const A_dense_types:TF_TypeList; const A_out_type:TF_DataType; const A_internal_type:TF_DataType):string;
   begin
-  result:=AddOper('SparseCross',[I_values,I_dense_inputs],[IL_indices,IL_shapes],[],[O_output_indices,O_output_values,O_output_shape],['N','hashed_output','num_buckets','hash_key','sparse_types','dense_types','out_type','internal_type'],['int','bool','int','int','list(type)','list(type)','type','type'],[@A_N,@A_hashed_output,@A_num_buckets,@A_hash_key,@A_sparse_types,@A_dense_types,@A_out_type,@A_internal_type])
+  result:=AddOper('SparseCross',[],[IL_indices,IL_values,IL_shapes,IL_dense_inputs],[A_N,Length(A_sparse_types),A_N,Length(A_dense_types)],[O_output_indices,O_output_values,O_output_shape],['N','hashed_output','num_buckets','hash_key','sparse_types','dense_types','out_type','internal_type'],['int','bool','int','int','list(type)','list(type)','type','type'],[@A_N,@A_hashed_output,@A_num_buckets,@A_hash_key,@A_sparse_types,@A_dense_types,@A_out_type,@A_internal_type])
   end;
 function TGraphExt.AddSparseDenseCwiseAdd(const I_sp_indices:string; const I_sp_values:string; const I_sp_shape:string; const I_dense:string; const O_output:string; const A_T:TF_DataType):string;
   begin
@@ -6401,7 +6368,7 @@ function TGraphExt.AddSplitV(const I_value:string; const I_size_splits:string; c
   begin
   result:=AddOper('SplitV',[I_value,I_size_splits,I_split_dim],[],[],[OL_output],['num_split','T','Tlen'],['int','type','type'],[@A_num_split,@A_T,@A_Tlen])
   end;
-function TGraphExt.AddSqlDataset(const I_driver_name:string; const I_data_source_name:string; const I_query:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddSqlDataset(const I_driver_name:string; const I_data_source_name:string; const I_query:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('SqlDataset',[I_driver_name,I_data_source_name,I_query],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -6421,7 +6388,7 @@ function TGraphExt.AddSquaredDifference(const I_x:string; const I_y:string; cons
   begin
   result:=AddOper('SquaredDifference',[I_x,I_y],[],[],[O_z],['T'],['type'],[@A_T])
   end;
-function TGraphExt.AddSqueeze(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_squeeze_dims:array of cint64):string;
+function TGraphExt.AddSqueeze(const I_input:string; const O_output:string; const A_T:TF_DataType; const A_squeeze_dims:TF_IntList):string;
   begin
   result:=AddOper('Squeeze',[I_input],[],[],[O_output],['T','squeeze_dims'],['type','list(int)'],[@A_T,@A_squeeze_dims])
   end;
@@ -6457,25 +6424,25 @@ function TGraphExt.AddStackV2(const I_max_size:string; const O_handle:string; co
   begin
   result:=AddOper('StackV2',[I_max_size],[],[],[O_handle],['elem_type','stack_name'],['type','string'],[@A_elem_type,@A_stack_name])
   end;
-function TGraphExt.AddStage(const I_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddStage(const IL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
   begin
-  result:=AddOper('Stage',[I_values],[],[],[],['capacity','memory_limit','dtypes','container','shared_name'],['int','int','list(type)','string','string'],[@A_capacity,@A_memory_limit,@A_dtypes,@A_container,@A_shared_name])
+  result:=AddOper('Stage',[],[IL_values],[Length(A_dtypes)],[],['capacity','memory_limit','dtypes','container','shared_name'],['int','int','list(type)','string','string'],[@A_capacity,@A_memory_limit,@A_dtypes,@A_container,@A_shared_name])
   end;
-function TGraphExt.AddStageClear(const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddStageClear(const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
   begin
   result:=AddOper('StageClear',[],[],[],[],['capacity','memory_limit','dtypes','container','shared_name'],['int','int','list(type)','string','string'],[@A_capacity,@A_memory_limit,@A_dtypes,@A_container,@A_shared_name])
   end;
-function TGraphExt.AddStagePeek(const I_index:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddStagePeek(const I_index:string; const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
   begin
   result:=AddOper('StagePeek',[I_index],[],[],[OL_values],['capacity','memory_limit','dtypes','container','shared_name'],['int','int','list(type)','string','string'],[@A_capacity,@A_memory_limit,@A_dtypes,@A_container,@A_shared_name])
   end;
-function TGraphExt.AddStageSize(const O_size:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddStageSize(const O_size:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
   begin
   result:=AddOper('StageSize',[],[],[],[O_size],['capacity','memory_limit','dtypes','container','shared_name'],['int','int','list(type)','string','string'],[@A_capacity,@A_memory_limit,@A_dtypes,@A_container,@A_shared_name])
   end;
-function TGraphExt.AddStatefulPartitionedCall(const I_args:string; const OL_output:string; const A_Tin:array of TF_DataType; const A_Tout:array of TF_DataType; const A_f:TF_Function; const A_config:string; const A_config_proto:string; const A_executor_type:string):string;
+function TGraphExt.AddStatefulPartitionedCall(const IL_args:string; const OL_output:string; const A_Tin:TF_TypeList; const A_Tout:TF_TypeList; const A_f:TF_Function; const A_config:string; const A_config_proto:string; const A_executor_type:string):string;
   begin
-  result:=AddOper('StatefulPartitionedCall',[I_args],[],[],[OL_output],['Tin','Tout','f','config','config_proto','executor_type'],['list(type)','list(type)','func','string','string','string'],[@A_Tin,@A_Tout,@A_f,@A_config,@A_config_proto,@A_executor_type])
+  result:=AddOper('StatefulPartitionedCall',[],[IL_args],[Length(A_Tin)],[OL_output],['Tin','Tout','f','config','config_proto','executor_type'],['list(type)','list(type)','func','string','string','string'],[@A_Tin,@A_Tout,@A_f,@A_config,@A_config_proto,@A_executor_type])
   end;
 function TGraphExt.AddStatefulRandomBinomial(const I_resource:string; const I_algorithm:string; const I_shape:string; const I_counts:string; const I_probs:string; const O_output:string; const A_S:TF_DataType; const A_T:TF_DataType; const A_dtype:TF_DataType):string;
   begin
@@ -6505,9 +6472,9 @@ function TGraphExt.AddStatefulUniformInt(const I_resource:string; const I_algori
   begin
   result:=AddOper('StatefulUniformInt',[I_resource,I_algorithm,I_shape,I_minval,I_maxval],[],[],[O_output],['dtype','shape_dtype'],['type','type'],[@A_dtype,@A_shape_dtype])
   end;
-function TGraphExt.AddStatelessIf(const I_cond:string; const I_input:string; const OL_output:string; const A_Tcond:TF_DataType; const A_Tin:array of TF_DataType; const A_Tout:array of TF_DataType; const A_then_branch:TF_Function; const A_else_branch:TF_Function; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddStatelessIf(const I_cond:string; const IL_input:string; const OL_output:string; const A_Tcond:TF_DataType; const A_Tin:TF_TypeList; const A_Tout:TF_TypeList; const A_then_branch:TF_Function; const A_else_branch:TF_Function; const A_output_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('StatelessIf',[I_cond,I_input],[],[],[OL_output],['Tcond','Tin','Tout','then_branch','else_branch','output_shapes'],['type','list(type)','list(type)','func','func','list(shape)'],[@A_Tcond,@A_Tin,@A_Tout,@A_then_branch,@A_else_branch,@A_output_shapes])
+  result:=AddOper('StatelessIf',[I_cond],[IL_input],[Length(A_Tin)],[OL_output],['Tcond','Tin','Tout','then_branch','else_branch','output_shapes'],['type','list(type)','list(type)','func','func','list(shape)'],[@A_Tcond,@A_Tin,@A_Tout,@A_then_branch,@A_else_branch,@A_output_shapes])
   end;
 function TGraphExt.AddStatelessMultinomial(const I_logits:string; const I_num_samples:string; const I_seed:string; const O_output:string; const A_T:TF_DataType; const A_Tseed:TF_DataType; const A_output_dtype:TF_DataType):string;
   begin
@@ -6541,9 +6508,9 @@ function TGraphExt.AddStatelessTruncatedNormal(const I_shape:string; const I_see
   begin
   result:=AddOper('StatelessTruncatedNormal',[I_shape,I_seed],[],[],[O_output],['dtype','T','Tseed'],['type','type','type'],[@A_dtype,@A_T,@A_Tseed])
   end;
-function TGraphExt.AddStatelessWhile(const I_input:string; const OL_output:string; const A_T:array of TF_DataType; const A_cond:TF_Function; const A_body:TF_Function; const A_output_shapes:array of TF_Shape; const A_parallel_iterations:cint64):string;
+function TGraphExt.AddStatelessWhile(const IL_input:string; const OL_output:string; const A_T:TF_TypeList; const A_cond:TF_Function; const A_body:TF_Function; const A_output_shapes:TF_ShapeList; const A_parallel_iterations:cint64):string;
   begin
-  result:=AddOper('StatelessWhile',[I_input],[],[],[OL_output],['T','cond','body','output_shapes','parallel_iterations'],['list(type)','func','func','list(shape)','int'],[@A_T,@A_cond,@A_body,@A_output_shapes,@A_parallel_iterations])
+  result:=AddOper('StatelessWhile',[],[IL_input],[Length(A_T)],[OL_output],['T','cond','body','output_shapes','parallel_iterations'],['list(type)','func','func','list(shape)','int'],[@A_T,@A_cond,@A_body,@A_output_shapes,@A_parallel_iterations])
   end;
 function TGraphExt.AddStaticRegexFullMatch(const I_input:string; const O_output:string; const A_pattern:string):string;
   begin
@@ -6585,13 +6552,13 @@ function TGraphExt.AddStridedSliceGrad(const I_shape:string; const I_begin:strin
   begin
   result:=AddOper('StridedSliceGrad',[I_shape,I_begin,I_end,I_strides,I_dy],[],[],[O_output],['T','Index','begin_mask','end_mask','ellipsis_mask','new_axis_mask','shrink_axis_mask'],['type','type','int','int','int','int','int'],[@A_T,@A_Index,@A_begin_mask,@A_end_mask,@A_ellipsis_mask,@A_new_axis_mask,@A_shrink_axis_mask])
   end;
-function TGraphExt.AddStringFormat(const I_inputs:string; const O_output:string; const A_T:array of TF_DataType; const A_template:string; const A_placeholder:string; const A_summarize:cint64):string;
+function TGraphExt.AddStringFormat(const IL_inputs:string; const O_output:string; const A_T:TF_TypeList; const A_template:string; const A_placeholder:string; const A_summarize:cint64):string;
   begin
-  result:=AddOper('StringFormat',[I_inputs],[],[],[O_output],['T','template','placeholder','summarize'],['list(type)','string','string','int'],[@A_T,@A_template,@A_placeholder,@A_summarize])
+  result:=AddOper('StringFormat',[],[IL_inputs],[Length(A_T)],[O_output],['T','template','placeholder','summarize'],['list(type)','string','string','int'],[@A_T,@A_template,@A_placeholder,@A_summarize])
   end;
 function TGraphExt.AddStringJoin(const IL_inputs:string; const O_output:string; const A_N:cint64; const A_separator:string):string;
   begin
-  result:=AddOper('StringJoin',[],[IL_inputs],[],[O_output],['N','separator'],['int','string'],[@A_N,@A_separator])
+  result:=AddOper('StringJoin',[],[IL_inputs],[A_N],[O_output],['N','separator'],['int','string'],[@A_N,@A_separator])
   end;
 function TGraphExt.AddStringLength(const I_input:string; const O_output:string; const A_unit:string):string;
   begin
@@ -6601,7 +6568,7 @@ function TGraphExt.AddStringLower(const I_input:string; const O_output:string; c
   begin
   result:=AddOper('StringLower',[I_input],[],[],[O_output],['encoding'],['string'],[@A_encoding])
   end;
-function TGraphExt.AddStringNGrams(const I_data:string; const I_data_splits:string; const O_ngrams:string; const O_ngrams_splits:string; const A_separator:string; const A_ngram_widths:array of cint64; const A_left_pad:string; const A_right_pad:string; const A_pad_width:cint64; const A_preserve_short_sequences:boolean; const A_Tsplits:TF_DataType):string;
+function TGraphExt.AddStringNGrams(const I_data:string; const I_data_splits:string; const O_ngrams:string; const O_ngrams_splits:string; const A_separator:string; const A_ngram_widths:TF_IntList; const A_left_pad:string; const A_right_pad:string; const A_pad_width:cint64; const A_preserve_short_sequences:boolean; const A_Tsplits:TF_DataType):string;
   begin
   result:=AddOper('StringNGrams',[I_data,I_data_splits],[],[],[O_ngrams,O_ngrams_splits],['separator','ngram_widths','left_pad','right_pad','pad_width','preserve_short_sequences','Tsplits'],['string','list(int)','string','string','int','bool','type'],[@A_separator,@A_ngram_widths,@A_left_pad,@A_right_pad,@A_pad_width,@A_preserve_short_sequences,@A_Tsplits])
   end;
@@ -6625,7 +6592,7 @@ function TGraphExt.AddStringToHashBucketFast(const I_input:string; const O_outpu
   begin
   result:=AddOper('StringToHashBucketFast',[I_input],[],[],[O_output],['num_buckets'],['int'],[@A_num_buckets])
   end;
-function TGraphExt.AddStringToHashBucketStrong(const I_input:string; const O_output:string; const A_num_buckets:cint64; const A_key:array of cint64):string;
+function TGraphExt.AddStringToHashBucketStrong(const I_input:string; const O_output:string; const A_num_buckets:cint64; const A_key:TF_IntList):string;
   begin
   result:=AddOper('StringToHashBucketStrong',[I_input],[],[],[O_output],['num_buckets','key'],['int','list(int)'],[@A_num_buckets,@A_key])
   end;
@@ -6661,9 +6628,9 @@ function TGraphExt.AddSwitch(const I_data:string; const I_pred:string; const O_o
   begin
   result:=AddOper('Switch',[I_data,I_pred],[],[],[O_output_false,O_output_true],['T'],['type'],[@A_T])
   end;
-function TGraphExt.AddSymbolicGradient(const I_input:string; const OL_output:string; const A_Tin:array of TF_DataType; const A_Tout:array of TF_DataType; const A_f:TF_Function):string;
+function TGraphExt.AddSymbolicGradient(const IL_input:string; const OL_output:string; const A_Tin:TF_TypeList; const A_Tout:TF_TypeList; const A_f:TF_Function):string;
   begin
-  result:=AddOper('SymbolicGradient',[I_input],[],[],[OL_output],['Tin','Tout','f'],['list(type)','list(type)','func'],[@A_Tin,@A_Tout,@A_f])
+  result:=AddOper('SymbolicGradient',[],[IL_input],[Length(A_Tin)],[OL_output],['Tin','Tout','f'],['list(type)','list(type)','func'],[@A_Tin,@A_Tout,@A_f])
   end;
 function TGraphExt.AddTFRecordDataset(const I_filenames:string; const I_compression_type:string; const I_buffer_size:string; const O_handle:string):string;
   begin
@@ -6689,23 +6656,23 @@ function TGraphExt.AddTPUOrdinalSelector(const O_device_ordinals:string):string;
   begin
   result:=AddOper('TPUOrdinalSelector',[],[],[],[O_device_ordinals],[],[],[])
   end;
-function TGraphExt.AddTPUPartitionedCall(const I_args:string; const I_device_ordinal:string; const OL_output:string; const A_Tin:array of TF_DataType; const A_Tout:array of TF_DataType; const A_f:TF_Function; const A_autotuner_thresh:cint64):string;
+function TGraphExt.AddTPUPartitionedCall(const I_device_ordinal:string; const IL_args:string; const OL_output:string; const A_Tin:TF_TypeList; const A_Tout:TF_TypeList; const A_f:TF_Function; const A_autotuner_thresh:cint64):string;
   begin
-  result:=AddOper('TPUPartitionedCall',[I_args,I_device_ordinal],[],[],[OL_output],['Tin','Tout','f','autotuner_thresh'],['list(type)','list(type)','func','int'],[@A_Tin,@A_Tout,@A_f,@A_autotuner_thresh])
+  result:=AddOper('TPUPartitionedCall',[I_device_ordinal],[IL_args],[Length(A_Tin)],[OL_output],['Tin','Tout','f','autotuner_thresh'],['list(type)','list(type)','func','int'],[@A_Tin,@A_Tout,@A_f,@A_autotuner_thresh])
   end;
-function TGraphExt.AddTPUReplicateMetadata(const A_num_replicas:cint64; const A_num_cores_per_replica:cint64; const A_topology:string; const A_use_tpu:boolean; const A_device_assignment:array of cint64; const A_computation_shape:array of cint64; const A_host_compute_core:array of string; const A_padding_map:array of string; const A_step_marker_location:string; const A_allow_soft_placement:boolean):string;
+function TGraphExt.AddTPUReplicateMetadata(const A_num_replicas:cint64; const A_num_cores_per_replica:cint64; const A_topology:string; const A_use_tpu:boolean; const A_device_assignment:TF_IntList; const A_computation_shape:TF_IntList; const A_host_compute_core:TF_StringList; const A_padding_map:TF_StringList; const A_step_marker_location:string; const A_allow_soft_placement:boolean):string;
   begin
   result:=AddOper('TPUReplicateMetadata',[],[],[],[],['num_replicas','num_cores_per_replica','topology','use_tpu','device_assignment','computation_shape','host_compute_core','padding_map','step_marker_location','allow_soft_placement'],['int','int','string','bool','list(int)','list(int)','list(string)','list(string)','string','bool'],[@A_num_replicas,@A_num_cores_per_replica,@A_topology,@A_use_tpu,@A_device_assignment,@A_computation_shape,@A_host_compute_core,@A_padding_map,@A_step_marker_location,@A_allow_soft_placement])
   end;
 function TGraphExt.AddTPUReplicatedInput(const IL_inputs:string; const O_output:string; const A_N:cint64; const A_T:TF_DataType; const A_is_mirrored_variable:boolean; const A_index:cint64):string;
   begin
-  result:=AddOper('TPUReplicatedInput',[],[IL_inputs],[],[O_output],['N','T','is_mirrored_variable','index'],['int','type','bool','int'],[@A_N,@A_T,@A_is_mirrored_variable,@A_index])
+  result:=AddOper('TPUReplicatedInput',[],[IL_inputs],[A_N],[O_output],['N','T','is_mirrored_variable','index'],['int','type','bool','int'],[@A_N,@A_T,@A_is_mirrored_variable,@A_index])
   end;
 function TGraphExt.AddTPUReplicatedOutput(const I_input:string; const OL_outputs:string; const A_num_replicas:cint64; const A_T:TF_DataType):string;
   begin
   result:=AddOper('TPUReplicatedOutput',[I_input],[],[],[OL_outputs],['num_replicas','T'],['int','type'],[@A_num_replicas,@A_T])
   end;
-function TGraphExt.AddTakeDataset(const I_input_dataset:string; const I_count:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddTakeDataset(const I_input_dataset:string; const I_count:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('TakeDataset',[I_input_dataset,I_count],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -6713,9 +6680,9 @@ function TGraphExt.AddTakeManySparseFromTensorsMap(const I_sparse_handles:string
   begin
   result:=AddOper('TakeManySparseFromTensorsMap',[I_sparse_handles],[],[],[O_sparse_indices,O_sparse_values,O_sparse_shape],['dtype','container','shared_name'],['type','string','string'],[@A_dtype,@A_container,@A_shared_name])
   end;
-function TGraphExt.AddTakeWhileDataset(const I_input_dataset:string; const I_other_arguments:string; const O_handle:string; const A_predicate:TF_Function; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddTakeWhileDataset(const I_input_dataset:string; const IL_other_arguments:string; const O_handle:string; const A_predicate:TF_Function; const A_Targuments:TF_TypeList; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('TakeWhileDataset',[I_input_dataset,I_other_arguments],[],[],[O_handle],['predicate','Targuments','output_types','output_shapes'],['func','list(type)','list(type)','list(shape)'],[@A_predicate,@A_Targuments,@A_output_types,@A_output_shapes])
+  result:=AddOper('TakeWhileDataset',[I_input_dataset],[IL_other_arguments],[Length(A_Targuments)],[O_handle],['predicate','Targuments','output_types','output_shapes'],['func','list(type)','list(type)','list(shape)'],[@A_predicate,@A_Targuments,@A_output_types,@A_output_shapes])
   end;
 function TGraphExt.AddTan(const I_x:string; const O_y:string; const A_T:TF_DataType):string;
   begin
@@ -6865,9 +6832,9 @@ function TGraphExt.AddTensorArrayWriteV3(const I_handle:string; const I_index:st
   begin
   result:=AddOper('TensorArrayWriteV3',[I_handle,I_index,I_value,I_flow_in],[],[],[O_flow_out],['T'],['type'],[@A_T])
   end;
-function TGraphExt.AddTensorDataset(const I_components:string; const O_handle:string; const A_Toutput_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddTensorDataset(const IL_components:string; const O_handle:string; const A_Toutput_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('TensorDataset',[I_components],[],[],[O_handle],['Toutput_types','output_shapes'],['list(type)','list(shape)'],[@A_Toutput_types,@A_output_shapes])
+  result:=AddOper('TensorDataset',[],[IL_components],[Length(A_Toutput_types)],[O_handle],['Toutput_types','output_shapes'],['list(type)','list(shape)'],[@A_Toutput_types,@A_output_shapes])
   end;
 function TGraphExt.AddTensorForestCreateTreeVariable(const I_tree_handle:string; const I_tree_config:string):string;
   begin
@@ -6985,15 +6952,15 @@ function TGraphExt.AddTensorScatterUpdate(const I_tensor:string; const I_indices
   begin
   result:=AddOper('TensorScatterUpdate',[I_tensor,I_indices,I_updates],[],[],[O_output],['T','Tindices'],['type','type'],[@A_T,@A_Tindices])
   end;
-function TGraphExt.AddTensorSliceDataset(const I_components:string; const O_handle:string; const A_Toutput_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddTensorSliceDataset(const IL_components:string; const O_handle:string; const A_Toutput_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
-  result:=AddOper('TensorSliceDataset',[I_components],[],[],[O_handle],['Toutput_types','output_shapes'],['list(type)','list(shape)'],[@A_Toutput_types,@A_output_shapes])
+  result:=AddOper('TensorSliceDataset',[],[IL_components],[Length(A_Toutput_types)],[O_handle],['Toutput_types','output_shapes'],['list(type)','list(shape)'],[@A_Toutput_types,@A_output_shapes])
   end;
 function TGraphExt.AddTensorStridedSliceUpdate(const I_input:string; const I_begin:string; const I_end:string; const I_strides:string; const I_value:string; const O_output:string; const A_T:TF_DataType; const A_Index:TF_DataType; const A_begin_mask:cint64; const A_end_mask:cint64; const A_ellipsis_mask:cint64; const A_new_axis_mask:cint64; const A_shrink_axis_mask:cint64):string;
   begin
   result:=AddOper('TensorStridedSliceUpdate',[I_input,I_begin,I_end,I_strides,I_value],[],[],[O_output],['T','Index','begin_mask','end_mask','ellipsis_mask','new_axis_mask','shrink_axis_mask'],['type','type','int','int','int','int','int'],[@A_T,@A_Index,@A_begin_mask,@A_end_mask,@A_ellipsis_mask,@A_new_axis_mask,@A_shrink_axis_mask])
   end;
-function TGraphExt.AddTensorSummary(const I_tensor:string; const O_summary:string; const A_T:TF_DataType; const A_description:string; const A_labels:array of string; const A_display_name:string):string;
+function TGraphExt.AddTensorSummary(const I_tensor:string; const O_summary:string; const A_T:TF_DataType; const A_description:string; const A_labels:TF_StringList; const A_display_name:string):string;
   begin
   result:=AddOper('TensorSummary',[I_tensor],[],[],[O_summary],['T','description','labels','display_name'],['type','string','list(string)','string'],[@A_T,@A_description,@A_labels,@A_display_name])
   end;
@@ -7013,7 +6980,7 @@ function TGraphExt.AddTextLineReaderV2(const O_reader_handle:string; const A_ski
   begin
   result:=AddOper('TextLineReaderV2',[],[],[],[O_reader_handle],['skip_header_lines','container','shared_name'],['int','string','string'],[@A_skip_header_lines,@A_container,@A_shared_name])
   end;
-function TGraphExt.AddThreadPoolDataset(const I_input_dataset:string; const I_thread_pool:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddThreadPoolDataset(const I_input_dataset:string; const I_thread_pool:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('ThreadPoolDataset',[I_input_dataset,I_thread_pool],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -7081,7 +7048,7 @@ function TGraphExt.AddUnbatch(const I_batched_tensor:string; const I_batch_index
   begin
   result:=AddOper('Unbatch',[I_batched_tensor,I_batch_index,I_id],[],[],[O_unbatched_tensor],['timeout_micros','container','shared_name','T'],['int','string','string','type'],[@A_timeout_micros,@A_container,@A_shared_name,@A_T])
   end;
-function TGraphExt.AddUnbatchDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddUnbatchDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('UnbatchDataset',[I_input_dataset],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -7117,7 +7084,7 @@ function TGraphExt.AddUnique(const I_x:string; const O_y:string; const O_idx:str
   begin
   result:=AddOper('Unique',[I_x],[],[],[O_y,O_idx],['T','out_idx'],['type','type'],[@A_T,@A_out_idx])
   end;
-function TGraphExt.AddUniqueDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddUniqueDataset(const I_input_dataset:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('UniqueDataset',[I_input_dataset],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -7161,7 +7128,7 @@ function TGraphExt.AddUnsortedSegmentSum(const I_data:string; const I_segment_id
   begin
   result:=AddOper('UnsortedSegmentSum',[I_data,I_segment_ids,I_num_segments],[],[],[O_output],['T','Tindices','Tnumsegments'],['type','type','type'],[@A_T,@A_Tindices,@A_Tnumsegments])
   end;
-function TGraphExt.AddUnstage(const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):string;
+function TGraphExt.AddUnstage(const OL_values:string; const A_capacity:cint64; const A_memory_limit:cint64; const A_dtypes:TF_TypeList; const A_container:string; const A_shared_name:string):string;
   begin
   result:=AddOper('Unstage',[],[],[],[OL_values],['capacity','memory_limit','dtypes','container','shared_name'],['int','int','list(type)','string','string'],[@A_capacity,@A_memory_limit,@A_dtypes,@A_container,@A_shared_name])
   end;
@@ -7197,9 +7164,9 @@ function TGraphExt.AddWhere(const I_input:string; const O_index:string; const A_
   begin
   result:=AddOper('Where',[I_input],[],[],[O_index],['T'],['type'],[@A_T])
   end;
-function TGraphExt.AddWhile(const I_input:string; const OL_output:string; const A_T:array of TF_DataType; const A_cond:TF_Function; const A_body:TF_Function; const A_output_shapes:array of TF_Shape; const A_parallel_iterations:cint64):string;
+function TGraphExt.AddWhile(const IL_input:string; const OL_output:string; const A_T:TF_TypeList; const A_cond:TF_Function; const A_body:TF_Function; const A_output_shapes:TF_ShapeList; const A_parallel_iterations:cint64):string;
   begin
-  result:=AddOper('While',[I_input],[],[],[OL_output],['T','cond','body','output_shapes','parallel_iterations'],['list(type)','func','func','list(shape)','int'],[@A_T,@A_cond,@A_body,@A_output_shapes,@A_parallel_iterations])
+  result:=AddOper('While',[],[IL_input],[Length(A_T)],[OL_output],['T','cond','body','output_shapes','parallel_iterations'],['list(type)','func','func','list(shape)','int'],[@A_T,@A_cond,@A_body,@A_output_shapes,@A_parallel_iterations])
   end;
 function TGraphExt.AddWholeFileReader(const O_reader_handle:string; const A_container:string; const A_shared_name:string):string;
   begin
@@ -7209,7 +7176,7 @@ function TGraphExt.AddWholeFileReaderV2(const O_reader_handle:string; const A_co
   begin
   result:=AddOper('WholeFileReaderV2',[],[],[],[O_reader_handle],['container','shared_name'],['string','string'],[@A_container,@A_shared_name])
   end;
-function TGraphExt.AddWindowDataset(const I_input_dataset:string; const I_size:string; const I_shift:string; const I_stride:string; const I_drop_remainder:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape):string;
+function TGraphExt.AddWindowDataset(const I_input_dataset:string; const I_size:string; const I_shift:string; const I_stride:string; const I_drop_remainder:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList):string;
   begin
   result:=AddOper('WindowDataset',[I_input_dataset,I_size,I_shift,I_stride,I_drop_remainder],[],[],[O_handle],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes])
   end;
@@ -7273,11 +7240,12 @@ function TGraphExt.AddZeta(const I_x:string; const I_q:string; const O_z:string;
   begin
   result:=AddOper('Zeta',[I_x,I_q],[],[],[O_z],['T'],['type'],[@A_T])
   end;
-function TGraphExt.AddZipDataset(const IL_input_datasets:string; const O_handle:string; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_N:cint64):string;
+function TGraphExt.AddZipDataset(const IL_input_datasets:string; const O_handle:string; const A_output_types:TF_TypeList; const A_output_shapes:TF_ShapeList; const A_N:cint64):string;
   begin
-  result:=AddOper('ZipDataset',[],[IL_input_datasets],[],[O_handle],['output_types','output_shapes','N'],['list(type)','list(shape)','int'],[@A_output_types,@A_output_shapes,@A_N])
+  result:=AddOper('ZipDataset',[],[IL_input_datasets],[A_N],[O_handle],['output_types','output_shapes','N'],['list(type)','list(shape)','int'],[@A_output_types,@A_output_shapes,@A_N])
   end;
 
+//  The Exec<oper> methods
 function ExecAbs(const I_x:TF_TensorPtr; const D_x:boolean=false):TF_TensorPtr;
   var
     F_T:TF_DataType;
@@ -7936,10 +7904,6 @@ function ExecCSRSparseMatrixToDense(const I_sparse_input:TF_TensorPtr; const A_t
   begin
   result:=ExecOper('CSRSparseMatrixToDense',[I_sparse_input],['type'],['type'],[@A_type],[D_sparse_input])
   end;
-function ExecCSVDataset(const I_filenames:TF_TensorPtr; const I_compression_type:TF_TensorPtr; const I_buffer_size:TF_TensorPtr; const I_header:TF_TensorPtr; const I_field_delim:TF_TensorPtr; const I_use_quote_delim:TF_TensorPtr; const I_na_value:TF_TensorPtr; const I_select_cols:TF_TensorPtr; const I_record_defaults:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_filenames:boolean=false; const D_compression_type:boolean=false; const D_buffer_size:boolean=false; const D_header:boolean=false; const D_field_delim:boolean=false; const D_use_quote_delim:boolean=false; const D_na_value:boolean=false; const D_select_cols:boolean=false; const D_record_defaults:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('CSVDataset',[I_filenames,I_compression_type,I_buffer_size,I_header,I_field_delim,I_use_quote_delim,I_na_value,I_select_cols,I_record_defaults],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes],[D_filenames,D_compression_type,D_buffer_size,D_header,D_field_delim,D_use_quote_delim,D_na_value,D_select_cols,D_record_defaults])
-  end;
 function ExecCacheDataset(const I_input_dataset:TF_TensorPtr; const I_filename:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_filename:boolean=false):TF_TensorPtr;
   begin
   result:=ExecOper('CacheDataset',[I_input_dataset,I_filename],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes],[D_input_dataset,D_filename])
@@ -7989,10 +7953,6 @@ function ExecCholeskyGrad(const I_l:TF_TensorPtr; const I_grad:TF_TensorPtr; con
   begin
   F_T:=TF_TensorType(I_l);
   result:=ExecOper('CholeskyGrad',[I_l,I_grad],['T'],['type'],[@F_T],[D_l,D_grad])
-  end;
-function ExecChooseFastestBranchDataset(const I_input_dataset:TF_TensorPtr; const I_ratio_numerator:TF_TensorPtr; const I_ratio_denominator:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const A_Targuments:array of TF_DataType; const A_num_elements_per_branch:integer; const A_branches:array of string; const A_other_arguments_lengths:array of integer; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_ratio_numerator:boolean=false; const D_ratio_denominator:boolean=false; const D_other_arguments:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('ChooseFastestBranchDataset',[I_input_dataset,I_ratio_numerator,I_ratio_denominator,I_other_arguments],['Targuments','num_elements_per_branch','branches','other_arguments_lengths','output_types','output_shapes'],['list(type)','int','list(func)','list(int)','list(type)','list(shape)'],[@A_Targuments,@A_num_elements_per_branch,@A_branches,@A_other_arguments_lengths,@A_output_types,@A_output_shapes],[D_input_dataset,D_ratio_numerator,D_ratio_denominator,D_other_arguments])
   end;
 function ExecClipByValue(const I_t:TF_TensorPtr; const I_clip_value_min:TF_TensorPtr; const I_clip_value_max:TF_TensorPtr; const D_t:boolean=false; const D_clip_value_min:boolean=false; const D_clip_value_max:boolean=false):TF_TensorPtr;
   var
@@ -8549,10 +8509,6 @@ function ExecEncodePng(const I_image:TF_TensorPtr; const A_compression:integer; 
   F_T:=TF_TensorType(I_image);
   result:=ExecOper('EncodePng',[I_image],['compression','T'],['int','type'],[@A_compression,@F_T],[D_image])
   end;
-function ExecEncodeProto(const I_sizes:TF_TensorPtr; const I_values:TF_TensorPtr; const A_field_names:array of string; const A_message_type:string; const A_descriptor_source:string; const A_Tinput_types:array of TF_DataType; const D_sizes:boolean=false; const D_values:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('EncodeProto',[I_sizes,I_values],['field_names','message_type','descriptor_source','Tinput_types'],['list(string)','string','string','list(type)'],[@A_field_names,@A_message_type,@A_descriptor_source,@A_Tinput_types],[D_sizes,D_values])
-  end;
 function ExecEncodeWav(const I_audio:TF_TensorPtr; const I_sample_rate:TF_TensorPtr; const D_audio:boolean=false; const D_sample_rate:boolean=false):TF_TensorPtr;
   begin
   result:=ExecOper('EncodeWav',[I_audio,I_sample_rate],[],[],[],[D_audio,D_sample_rate])
@@ -8643,10 +8599,6 @@ function ExecExperimentalBytesProducedStatsDataset(const I_input_dataset:TF_Tens
   begin
   result:=ExecOper('ExperimentalBytesProducedStatsDataset',[I_input_dataset,I_tag],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes],[D_input_dataset,D_tag])
   end;
-function ExecExperimentalCSVDataset(const I_filenames:TF_TensorPtr; const I_compression_type:TF_TensorPtr; const I_buffer_size:TF_TensorPtr; const I_header:TF_TensorPtr; const I_field_delim:TF_TensorPtr; const I_use_quote_delim:TF_TensorPtr; const I_na_value:TF_TensorPtr; const I_select_cols:TF_TensorPtr; const I_record_defaults:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_filenames:boolean=false; const D_compression_type:boolean=false; const D_buffer_size:boolean=false; const D_header:boolean=false; const D_field_delim:boolean=false; const D_use_quote_delim:boolean=false; const D_na_value:boolean=false; const D_select_cols:boolean=false; const D_record_defaults:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('ExperimentalCSVDataset',[I_filenames,I_compression_type,I_buffer_size,I_header,I_field_delim,I_use_quote_delim,I_na_value,I_select_cols,I_record_defaults],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes],[D_filenames,D_compression_type,D_buffer_size,D_header,D_field_delim,D_use_quote_delim,D_na_value,D_select_cols,D_record_defaults])
-  end;
 function ExecExperimentalDatasetCardinality(const I_input_dataset:TF_TensorPtr; const D_input_dataset:boolean=false):TF_TensorPtr;
   begin
   result:=ExecOper('ExperimentalDatasetCardinality',[I_input_dataset],[],[],[],[D_input_dataset])
@@ -8654,14 +8606,6 @@ function ExecExperimentalDatasetCardinality(const I_input_dataset:TF_TensorPtr; 
 function ExecExperimentalDenseToSparseBatchDataset(const I_input_dataset:TF_TensorPtr; const I_batch_size:TF_TensorPtr; const I_row_shape:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_batch_size:boolean=false; const D_row_shape:boolean=false):TF_TensorPtr;
   begin
   result:=ExecOper('ExperimentalDenseToSparseBatchDataset',[I_input_dataset,I_batch_size,I_row_shape],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes],[D_input_dataset,D_batch_size,D_row_shape])
-  end;
-function ExecExperimentalGroupByReducerDataset(const I_input_dataset:TF_TensorPtr; const I_key_func_other_arguments:TF_TensorPtr; const I_init_func_other_arguments:TF_TensorPtr; const I_reduce_func_other_arguments:TF_TensorPtr; const I_finalize_func_other_arguments:TF_TensorPtr; const A_key_func:string; const A_init_func:string; const A_reduce_func:string; const A_finalize_func:string; const A_Tkey_func_other_arguments:array of TF_DataType; const A_Tinit_func_other_arguments:array of TF_DataType; const A_Treduce_func_other_arguments:array of TF_DataType; const A_Tfinalize_func_other_arguments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_key_func_other_arguments:boolean=false; const D_init_func_other_arguments:boolean=false; const D_reduce_func_other_arguments:boolean=false; const D_finalize_func_other_arguments:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('ExperimentalGroupByReducerDataset',[I_input_dataset,I_key_func_other_arguments,I_init_func_other_arguments,I_reduce_func_other_arguments,I_finalize_func_other_arguments],['key_func','init_func','reduce_func','finalize_func','Tkey_func_other_arguments','Tinit_func_other_arguments','Treduce_func_other_arguments','Tfinalize_func_other_arguments','output_types','output_shapes'],['func','func','func','func','list(type)','list(type)','list(type)','list(type)','list(type)','list(shape)'],[@A_key_func,@A_init_func,@A_reduce_func,@A_finalize_func,@A_Tkey_func_other_arguments,@A_Tinit_func_other_arguments,@A_Treduce_func_other_arguments,@A_Tfinalize_func_other_arguments,@A_output_types,@A_output_shapes],[D_input_dataset,D_key_func_other_arguments,D_init_func_other_arguments,D_reduce_func_other_arguments,D_finalize_func_other_arguments])
-  end;
-function ExecExperimentalGroupByWindowDataset(const I_input_dataset:TF_TensorPtr; const I_key_func_other_arguments:TF_TensorPtr; const I_reduce_func_other_arguments:TF_TensorPtr; const I_window_size_func_other_arguments:TF_TensorPtr; const A_key_func:string; const A_reduce_func:string; const A_window_size_func:string; const A_Tkey_func_other_arguments:array of TF_DataType; const A_Treduce_func_other_arguments:array of TF_DataType; const A_Twindow_size_func_other_arguments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_key_func_other_arguments:boolean=false; const D_reduce_func_other_arguments:boolean=false; const D_window_size_func_other_arguments:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('ExperimentalGroupByWindowDataset',[I_input_dataset,I_key_func_other_arguments,I_reduce_func_other_arguments,I_window_size_func_other_arguments],['key_func','reduce_func','window_size_func','Tkey_func_other_arguments','Treduce_func_other_arguments','Twindow_size_func_other_arguments','output_types','output_shapes'],['func','func','func','list(type)','list(type)','list(type)','list(type)','list(shape)'],[@A_key_func,@A_reduce_func,@A_window_size_func,@A_Tkey_func_other_arguments,@A_Treduce_func_other_arguments,@A_Twindow_size_func_other_arguments,@A_output_types,@A_output_shapes],[D_input_dataset,D_key_func_other_arguments,D_reduce_func_other_arguments,D_window_size_func_other_arguments])
   end;
 function ExecExperimentalIgnoreErrorsDataset(const I_input_dataset:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false):TF_TensorPtr;
   begin
@@ -8679,14 +8623,6 @@ function ExecExperimentalLatencyStatsDataset(const I_input_dataset:TF_TensorPtr;
   begin
   result:=ExecOper('ExperimentalLatencyStatsDataset',[I_input_dataset,I_tag],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes],[D_input_dataset,D_tag])
   end;
-function ExecExperimentalMapAndBatchDataset(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const I_batch_size:TF_TensorPtr; const I_num_parallel_calls:TF_TensorPtr; const I_drop_remainder:TF_TensorPtr; const A_f:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_preserve_cardinality:boolean; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false; const D_batch_size:boolean=false; const D_num_parallel_calls:boolean=false; const D_drop_remainder:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('ExperimentalMapAndBatchDataset',[I_input_dataset,I_other_arguments,I_batch_size,I_num_parallel_calls,I_drop_remainder],['f','Targuments','output_types','output_shapes','preserve_cardinality'],['func','list(type)','list(type)','list(shape)','bool'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes,@A_preserve_cardinality],[D_input_dataset,D_other_arguments,D_batch_size,D_num_parallel_calls,D_drop_remainder])
-  end;
-function ExecExperimentalMapDataset(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const A_f:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_use_inter_op_parallelism:boolean; const A_preserve_cardinality:boolean; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('ExperimentalMapDataset',[I_input_dataset,I_other_arguments],['f','Targuments','output_types','output_shapes','use_inter_op_parallelism','preserve_cardinality'],['func','list(type)','list(type)','list(shape)','bool','bool'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes,@A_use_inter_op_parallelism,@A_preserve_cardinality],[D_input_dataset,D_other_arguments])
-  end;
 function ExecExperimentalMatchingFilesDataset(const I_patterns:TF_TensorPtr; const D_patterns:boolean=false):TF_TensorPtr;
   begin
   result:=ExecOper('ExperimentalMatchingFilesDataset',[I_patterns],[],[],[],[D_patterns])
@@ -8699,14 +8635,6 @@ function ExecExperimentalNonSerializableDataset(const I_input_dataset:TF_TensorP
   begin
   result:=ExecOper('ExperimentalNonSerializableDataset',[I_input_dataset],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes],[D_input_dataset])
   end;
-function ExecExperimentalParallelInterleaveDataset(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const I_cycle_length:TF_TensorPtr; const I_block_length:TF_TensorPtr; const I_sloppy:TF_TensorPtr; const I_buffer_output_elements:TF_TensorPtr; const I_prefetch_input_elements:TF_TensorPtr; const A_f:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false; const D_cycle_length:boolean=false; const D_block_length:boolean=false; const D_sloppy:boolean=false; const D_buffer_output_elements:boolean=false; const D_prefetch_input_elements:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('ExperimentalParallelInterleaveDataset',[I_input_dataset,I_other_arguments,I_cycle_length,I_block_length,I_sloppy,I_buffer_output_elements,I_prefetch_input_elements],['f','Targuments','output_types','output_shapes'],['func','list(type)','list(type)','list(shape)'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes],[D_input_dataset,D_other_arguments,D_cycle_length,D_block_length,D_sloppy,D_buffer_output_elements,D_prefetch_input_elements])
-  end;
-function ExecExperimentalParseExampleDataset(const I_input_dataset:TF_TensorPtr; const I_num_parallel_calls:TF_TensorPtr; const I_dense_defaults:TF_TensorPtr; const A_sparse_keys:array of string; const A_dense_keys:array of string; const A_sparse_types:array of TF_DataType; const A_Tdense:array of TF_DataType; const A_dense_shapes:array of TF_Shape; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_sloppy:boolean; const D_input_dataset:boolean=false; const D_num_parallel_calls:boolean=false; const D_dense_defaults:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('ExperimentalParseExampleDataset',[I_input_dataset,I_num_parallel_calls,I_dense_defaults],['sparse_keys','dense_keys','sparse_types','Tdense','dense_shapes','output_types','output_shapes','sloppy'],['list(string)','list(string)','list(type)','list(type)','list(shape)','list(type)','list(shape)','bool'],[@A_sparse_keys,@A_dense_keys,@A_sparse_types,@A_Tdense,@A_dense_shapes,@A_output_types,@A_output_shapes,@A_sloppy],[D_input_dataset,D_num_parallel_calls,D_dense_defaults])
-  end;
 function ExecExperimentalPrivateThreadPoolDataset(const I_input_dataset:TF_TensorPtr; const I_num_threads:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_num_threads:boolean=false):TF_TensorPtr;
   begin
   result:=ExecOper('ExperimentalPrivateThreadPoolDataset',[I_input_dataset,I_num_threads],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes],[D_input_dataset,D_num_threads])
@@ -8718,10 +8646,6 @@ function ExecExperimentalRandomDataset(const I_seed:TF_TensorPtr; const I_seed2:
 function ExecExperimentalRebatchDataset(const I_input_dataset:TF_TensorPtr; const I_num_replicas:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_use_fallback:boolean; const D_input_dataset:boolean=false; const D_num_replicas:boolean=false):TF_TensorPtr;
   begin
   result:=ExecOper('ExperimentalRebatchDataset',[I_input_dataset,I_num_replicas],['output_types','output_shapes','use_fallback'],['list(type)','list(shape)','bool'],[@A_output_types,@A_output_shapes,@A_use_fallback],[D_input_dataset,D_num_replicas])
-  end;
-function ExecExperimentalScanDataset(const I_input_dataset:TF_TensorPtr; const I_initial_state:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const A_f:string; const A_Tstate:array of TF_DataType; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_preserve_cardinality:boolean; const D_input_dataset:boolean=false; const D_initial_state:boolean=false; const D_other_arguments:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('ExperimentalScanDataset',[I_input_dataset,I_initial_state,I_other_arguments],['f','Tstate','Targuments','output_types','output_shapes','preserve_cardinality'],['func','list(type)','list(type)','list(type)','list(shape)','bool'],[@A_f,@A_Tstate,@A_Targuments,@A_output_types,@A_output_shapes,@A_preserve_cardinality],[D_input_dataset,D_initial_state,D_other_arguments])
   end;
 function ExecExperimentalSetStatsAggregatorDataset(const I_input_dataset:TF_TensorPtr; const I_stats_aggregator:TF_TensorPtr; const I_tag:TF_TensorPtr; const I_counter_prefix:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_stats_aggregator:boolean=false; const D_tag:boolean=false; const D_counter_prefix:boolean=false):TF_TensorPtr;
   begin
@@ -8746,10 +8670,6 @@ function ExecExperimentalStatsAggregatorHandle(const A_container:string; const A
 function ExecExperimentalStatsAggregatorSummary(const I_iterator:TF_TensorPtr; const D_iterator:boolean=false):TF_TensorPtr;
   begin
   result:=ExecOper('ExperimentalStatsAggregatorSummary',[I_iterator],[],[],[],[D_iterator])
-  end;
-function ExecExperimentalTakeWhileDataset(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const A_predicate:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('ExperimentalTakeWhileDataset',[I_input_dataset,I_other_arguments],['predicate','Targuments','output_types','output_shapes'],['func','list(type)','list(type)','list(shape)'],[@A_predicate,@A_Targuments,@A_output_types,@A_output_shapes],[D_input_dataset,D_other_arguments])
   end;
 function ExecExperimentalThreadPoolDataset(const I_input_dataset:TF_TensorPtr; const I_thread_pool:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_thread_pool:boolean=false):TF_TensorPtr;
   begin
@@ -8873,10 +8793,6 @@ function ExecFilterByLastComponentDataset(const I_input_dataset:TF_TensorPtr; co
   begin
   result:=ExecOper('FilterByLastComponentDataset',[I_input_dataset],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes],[D_input_dataset])
   end;
-function ExecFilterDataset(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const A_predicate:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('FilterDataset',[I_input_dataset,I_other_arguments],['predicate','Targuments','output_types','output_shapes'],['func','list(type)','list(type)','list(shape)'],[@A_predicate,@A_Targuments,@A_output_types,@A_output_shapes],[D_input_dataset,D_other_arguments])
-  end;
 function ExecFingerprint(const I_data:TF_TensorPtr; const I_method:TF_TensorPtr; const D_data:boolean=false; const D_method:boolean=false):TF_TensorPtr;
   var
     F_T:TF_DataType;
@@ -8899,10 +8815,6 @@ function ExecFixedLengthRecordReader(const A_header_bytes:integer; const A_recor
 function ExecFixedLengthRecordReaderV2(const A_header_bytes:integer; const A_record_bytes:integer; const A_footer_bytes:integer; const A_hop_bytes:integer; const A_container:string; const A_shared_name:string; const A_encoding:string):TF_TensorPtr;
   begin
   result:=ExecOper('FixedLengthRecordReaderV2',[],['header_bytes','record_bytes','footer_bytes','hop_bytes','container','shared_name','encoding'],['int','int','int','int','string','string','string'],[@A_header_bytes,@A_record_bytes,@A_footer_bytes,@A_hop_bytes,@A_container,@A_shared_name,@A_encoding],[])
-  end;
-function ExecFlatMapDataset(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const A_f:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('FlatMapDataset',[I_input_dataset,I_other_arguments],['f','Targuments','output_types','output_shapes'],['func','list(type)','list(type)','list(shape)'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes],[D_input_dataset,D_other_arguments])
   end;
 function ExecFloor(const I_x:TF_TensorPtr; const D_x:boolean=false):TF_TensorPtr;
   var
@@ -8996,10 +8908,6 @@ function ExecGatherV2(const I_params:TF_TensorPtr; const I_indices:TF_TensorPtr;
   F_Taxis:=TF_TensorType(I_axis);
   result:=ExecOper('GatherV2',[I_params,I_indices,I_axis],['batch_dims','Tparams','Tindices','Taxis'],['int','type','type','type'],[@A_batch_dims,@F_Tparams,@F_Tindices,@F_Taxis],[D_params,D_indices,D_axis])
   end;
-function ExecGeneratorDataset(const I_init_func_other_args:TF_TensorPtr; const I_next_func_other_args:TF_TensorPtr; const I_finalize_func_other_args:TF_TensorPtr; const A_init_func:string; const A_next_func:string; const A_finalize_func:string; const A_Tinit_func_args:array of TF_DataType; const A_Tnext_func_args:array of TF_DataType; const A_Tfinalize_func_args:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_init_func_other_args:boolean=false; const D_next_func_other_args:boolean=false; const D_finalize_func_other_args:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('GeneratorDataset',[I_init_func_other_args,I_next_func_other_args,I_finalize_func_other_args],['init_func','next_func','finalize_func','Tinit_func_args','Tnext_func_args','Tfinalize_func_args','output_types','output_shapes'],['func','func','func','list(type)','list(type)','list(type)','list(type)','list(shape)'],[@A_init_func,@A_next_func,@A_finalize_func,@A_Tinit_func_args,@A_Tnext_func_args,@A_Tfinalize_func_args,@A_output_types,@A_output_shapes],[D_init_func_other_args,D_next_func_other_args,D_finalize_func_other_args])
-  end;
 function ExecGetSessionHandle(const I_value:TF_TensorPtr; const D_value:boolean=false):TF_TensorPtr;
   var
     F_T:TF_DataType;
@@ -9031,14 +8939,6 @@ function ExecGreaterEqual(const I_x:TF_TensorPtr; const I_y:TF_TensorPtr; const 
   begin
   F_T:=TF_TensorType(I_x);
   result:=ExecOper('GreaterEqual',[I_x,I_y],['T'],['type'],[@F_T],[D_x,D_y])
-  end;
-function ExecGroupByReducerDataset(const I_input_dataset:TF_TensorPtr; const I_key_func_other_arguments:TF_TensorPtr; const I_init_func_other_arguments:TF_TensorPtr; const I_reduce_func_other_arguments:TF_TensorPtr; const I_finalize_func_other_arguments:TF_TensorPtr; const A_key_func:string; const A_init_func:string; const A_reduce_func:string; const A_finalize_func:string; const A_Tkey_func_other_arguments:array of TF_DataType; const A_Tinit_func_other_arguments:array of TF_DataType; const A_Treduce_func_other_arguments:array of TF_DataType; const A_Tfinalize_func_other_arguments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_key_func_other_arguments:boolean=false; const D_init_func_other_arguments:boolean=false; const D_reduce_func_other_arguments:boolean=false; const D_finalize_func_other_arguments:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('GroupByReducerDataset',[I_input_dataset,I_key_func_other_arguments,I_init_func_other_arguments,I_reduce_func_other_arguments,I_finalize_func_other_arguments],['key_func','init_func','reduce_func','finalize_func','Tkey_func_other_arguments','Tinit_func_other_arguments','Treduce_func_other_arguments','Tfinalize_func_other_arguments','output_types','output_shapes'],['func','func','func','func','list(type)','list(type)','list(type)','list(type)','list(type)','list(shape)'],[@A_key_func,@A_init_func,@A_reduce_func,@A_finalize_func,@A_Tkey_func_other_arguments,@A_Tinit_func_other_arguments,@A_Treduce_func_other_arguments,@A_Tfinalize_func_other_arguments,@A_output_types,@A_output_shapes],[D_input_dataset,D_key_func_other_arguments,D_init_func_other_arguments,D_reduce_func_other_arguments,D_finalize_func_other_arguments])
-  end;
-function ExecGroupByWindowDataset(const I_input_dataset:TF_TensorPtr; const I_key_func_other_arguments:TF_TensorPtr; const I_reduce_func_other_arguments:TF_TensorPtr; const I_window_size_func_other_arguments:TF_TensorPtr; const A_key_func:string; const A_reduce_func:string; const A_window_size_func:string; const A_Tkey_func_other_arguments:array of TF_DataType; const A_Treduce_func_other_arguments:array of TF_DataType; const A_Twindow_size_func_other_arguments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_key_func_other_arguments:boolean=false; const D_reduce_func_other_arguments:boolean=false; const D_window_size_func_other_arguments:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('GroupByWindowDataset',[I_input_dataset,I_key_func_other_arguments,I_reduce_func_other_arguments,I_window_size_func_other_arguments],['key_func','reduce_func','window_size_func','Tkey_func_other_arguments','Treduce_func_other_arguments','Twindow_size_func_other_arguments','output_types','output_shapes'],['func','func','func','list(type)','list(type)','list(type)','list(type)','list(shape)'],[@A_key_func,@A_reduce_func,@A_window_size_func,@A_Tkey_func_other_arguments,@A_Treduce_func_other_arguments,@A_Twindow_size_func_other_arguments,@A_output_types,@A_output_shapes],[D_input_dataset,D_key_func_other_arguments,D_reduce_func_other_arguments,D_window_size_func_other_arguments])
   end;
 function ExecGuaranteeConst(const I_input:TF_TensorPtr; const D_input:boolean=false):TF_TensorPtr;
   var
@@ -9225,10 +9125,6 @@ function ExecInplaceUpdate(const I_x:TF_TensorPtr; const I_i:TF_TensorPtr; const
   begin
   F_T:=TF_TensorType(I_x);
   result:=ExecOper('InplaceUpdate',[I_x,I_i,I_v],['T'],['type'],[@F_T],[D_x,D_i,D_v])
-  end;
-function ExecInterleaveDataset(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const I_cycle_length:TF_TensorPtr; const I_block_length:TF_TensorPtr; const A_f:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false; const D_cycle_length:boolean=false; const D_block_length:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('InterleaveDataset',[I_input_dataset,I_other_arguments,I_cycle_length,I_block_length],['f','Targuments','output_types','output_shapes'],['func','list(type)','list(type)','list(shape)'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes],[D_input_dataset,D_other_arguments,D_cycle_length,D_block_length])
   end;
 function ExecInv(const I_x:TF_TensorPtr; const D_x:boolean=false):TF_TensorPtr;
   var
@@ -9487,14 +9383,6 @@ function ExecLowerBound(const I_sorted_inputs:TF_TensorPtr; const I_values:TF_Te
   begin
   F_T:=TF_TensorType(I_sorted_inputs);
   result:=ExecOper('LowerBound',[I_sorted_inputs,I_values],['T','out_type'],['type','type'],[@F_T,@A_out_type],[D_sorted_inputs,D_values])
-  end;
-function ExecMapAndBatchDataset(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const I_batch_size:TF_TensorPtr; const I_num_parallel_calls:TF_TensorPtr; const I_drop_remainder:TF_TensorPtr; const A_f:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_preserve_cardinality:boolean; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false; const D_batch_size:boolean=false; const D_num_parallel_calls:boolean=false; const D_drop_remainder:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('MapAndBatchDataset',[I_input_dataset,I_other_arguments,I_batch_size,I_num_parallel_calls,I_drop_remainder],['f','Targuments','output_types','output_shapes','preserve_cardinality'],['func','list(type)','list(type)','list(shape)','bool'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes,@A_preserve_cardinality],[D_input_dataset,D_other_arguments,D_batch_size,D_num_parallel_calls,D_drop_remainder])
-  end;
-function ExecMapDataset(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const A_f:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_use_inter_op_parallelism:boolean; const A_preserve_cardinality:boolean; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('MapDataset',[I_input_dataset,I_other_arguments],['f','Targuments','output_types','output_shapes','use_inter_op_parallelism','preserve_cardinality'],['func','list(type)','list(type)','list(shape)','bool','bool'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes,@A_use_inter_op_parallelism,@A_preserve_cardinality],[D_input_dataset,D_other_arguments])
   end;
 function ExecMapIncompleteSize(const A_capacity:integer; const A_memory_limit:integer; const A_dtypes:array of TF_DataType; const A_container:string; const A_shared_name:string):TF_TensorPtr;
   begin
@@ -10000,10 +9888,6 @@ function ExecOptimizeDataset(const I_input_dataset:TF_TensorPtr; const I_optimiz
   begin
   result:=ExecOper('OptimizeDataset',[I_input_dataset,I_optimizations],['output_types','output_shapes','optimization_configs'],['list(type)','list(shape)','list(string)'],[@A_output_types,@A_output_shapes,@A_optimization_configs],[D_input_dataset,D_optimizations])
   end;
-function ExecOptionalFromValue(const I_components:TF_TensorPtr; const A_Toutput_types:array of TF_DataType; const D_components:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('OptionalFromValue',[I_components],['Toutput_types'],['list(type)'],[@A_Toutput_types],[D_components])
-  end;
 function ExecOptionalHasValue(const I_optional:TF_TensorPtr; const D_optional:boolean=false):TF_TensorPtr;
   begin
   result:=ExecOper('OptionalHasValue',[I_optional],[],[],[],[D_optional])
@@ -10050,22 +9934,6 @@ function ExecPaddingFIFOQueueV2(const A_component_types:array of TF_DataType; co
   begin
   result:=ExecOper('PaddingFIFOQueueV2',[],['component_types','shapes','capacity','container','shared_name'],['list(type)','list(shape)','int','string','string'],[@A_component_types,@A_shapes,@A_capacity,@A_container,@A_shared_name],[])
   end;
-function ExecParallelInterleaveDataset(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const I_cycle_length:TF_TensorPtr; const I_block_length:TF_TensorPtr; const I_sloppy:TF_TensorPtr; const I_buffer_output_elements:TF_TensorPtr; const I_prefetch_input_elements:TF_TensorPtr; const A_f:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false; const D_cycle_length:boolean=false; const D_block_length:boolean=false; const D_sloppy:boolean=false; const D_buffer_output_elements:boolean=false; const D_prefetch_input_elements:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('ParallelInterleaveDataset',[I_input_dataset,I_other_arguments,I_cycle_length,I_block_length,I_sloppy,I_buffer_output_elements,I_prefetch_input_elements],['f','Targuments','output_types','output_shapes'],['func','list(type)','list(type)','list(shape)'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes],[D_input_dataset,D_other_arguments,D_cycle_length,D_block_length,D_sloppy,D_buffer_output_elements,D_prefetch_input_elements])
-  end;
-function ExecParallelInterleaveDatasetV2(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const I_cycle_length:TF_TensorPtr; const I_block_length:TF_TensorPtr; const I_num_parallel_calls:TF_TensorPtr; const A_f:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_sloppy:boolean; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false; const D_cycle_length:boolean=false; const D_block_length:boolean=false; const D_num_parallel_calls:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('ParallelInterleaveDatasetV2',[I_input_dataset,I_other_arguments,I_cycle_length,I_block_length,I_num_parallel_calls],['f','Targuments','output_types','output_shapes','sloppy'],['func','list(type)','list(type)','list(shape)','bool'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes,@A_sloppy],[D_input_dataset,D_other_arguments,D_cycle_length,D_block_length,D_num_parallel_calls])
-  end;
-function ExecParallelInterleaveDatasetV3(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const I_cycle_length:TF_TensorPtr; const I_block_length:TF_TensorPtr; const I_num_parallel_calls:TF_TensorPtr; const A_f:string; const A_deterministic:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false; const D_cycle_length:boolean=false; const D_block_length:boolean=false; const D_num_parallel_calls:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('ParallelInterleaveDatasetV3',[I_input_dataset,I_other_arguments,I_cycle_length,I_block_length,I_num_parallel_calls],['f','deterministic','Targuments','output_types','output_shapes'],['func','string','list(type)','list(type)','list(shape)'],[@A_f,@A_deterministic,@A_Targuments,@A_output_types,@A_output_shapes],[D_input_dataset,D_other_arguments,D_cycle_length,D_block_length,D_num_parallel_calls])
-  end;
-function ExecParallelMapDataset(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const I_num_parallel_calls:TF_TensorPtr; const A_f:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_use_inter_op_parallelism:boolean; const A_sloppy:boolean; const A_preserve_cardinality:boolean; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false; const D_num_parallel_calls:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('ParallelMapDataset',[I_input_dataset,I_other_arguments,I_num_parallel_calls],['f','Targuments','output_types','output_shapes','use_inter_op_parallelism','sloppy','preserve_cardinality'],['func','list(type)','list(type)','list(shape)','bool','bool','bool'],[@A_f,@A_Targuments,@A_output_types,@A_output_shapes,@A_use_inter_op_parallelism,@A_sloppy,@A_preserve_cardinality],[D_input_dataset,D_other_arguments,D_num_parallel_calls])
-  end;
 function ExecParameterizedTruncatedNormal(const I_shape:TF_TensorPtr; const I_means:TF_TensorPtr; const I_stdevs:TF_TensorPtr; const I_minvals:TF_TensorPtr; const I_maxvals:TF_TensorPtr; const A_seed:integer; const A_seed2:integer; const D_shape:boolean=false; const D_means:boolean=false; const D_stdevs:boolean=false; const D_minvals:boolean=false; const D_maxvals:boolean=false):TF_TensorPtr;
   var
     F_T:TF_DataType;
@@ -10074,10 +9942,6 @@ function ExecParameterizedTruncatedNormal(const I_shape:TF_TensorPtr; const I_me
   F_T:=TF_TensorType(I_shape);
   F_dtype:=TF_TensorType(I_means);
   result:=ExecOper('ParameterizedTruncatedNormal',[I_shape,I_means,I_stdevs,I_minvals,I_maxvals],['seed','seed2','dtype','T'],['int','int','type','type'],[@A_seed,@A_seed2,@F_dtype,@F_T],[D_shape,D_means,D_stdevs,D_minvals,D_maxvals])
-  end;
-function ExecParseExampleDataset(const I_input_dataset:TF_TensorPtr; const I_num_parallel_calls:TF_TensorPtr; const I_dense_defaults:TF_TensorPtr; const A_sparse_keys:array of string; const A_dense_keys:array of string; const A_sparse_types:array of TF_DataType; const A_Tdense:array of TF_DataType; const A_dense_shapes:array of TF_Shape; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_sloppy:boolean; const A_ragged_keys:array of string; const A_ragged_value_types:array of TF_DataType; const A_ragged_split_types:array of TF_DataType; const D_input_dataset:boolean=false; const D_num_parallel_calls:boolean=false; const D_dense_defaults:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('ParseExampleDataset',[I_input_dataset,I_num_parallel_calls,I_dense_defaults],['sparse_keys','dense_keys','sparse_types','Tdense','dense_shapes','output_types','output_shapes','sloppy','ragged_keys','ragged_value_types','ragged_split_types'],['list(string)','list(string)','list(type)','list(type)','list(shape)','list(type)','list(shape)','bool','list(string)','list(type)','list(type)'],[@A_sparse_keys,@A_dense_keys,@A_sparse_types,@A_Tdense,@A_dense_shapes,@A_output_types,@A_output_shapes,@A_sloppy,@A_ragged_keys,@A_ragged_value_types,@A_ragged_split_types],[D_input_dataset,D_num_parallel_calls,D_dense_defaults])
   end;
 function ExecParseTensor(const I_serialized:TF_TensorPtr; const A_out_type:TF_DataType; const D_serialized:boolean=false):TF_TensorPtr;
   begin
@@ -10130,23 +9994,12 @@ function ExecPrelinearize(const I_input:TF_TensorPtr; const A_shape:TF_Shape; co
   F_dtype:=TF_TensorType(I_input);
   result:=ExecOper('Prelinearize',[I_input],['dtype','shape','layout'],['type','shape','list(int)'],[@F_dtype,@A_shape,@A_layout],[D_input])
   end;
-function ExecPrelinearizeTuple(const I_inputs:TF_TensorPtr; const A_dtypes:array of TF_DataType; const A_shapes:array of TF_Shape; const A_layouts:array of integer; const D_inputs:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('PrelinearizeTuple',[I_inputs],['dtypes','shapes','layouts'],['list(type)','list(shape)','list(int)'],[@A_dtypes,@A_shapes,@A_layouts],[D_inputs])
-  end;
 function ExecPreventGradient(const I_input:TF_TensorPtr; const A_message:string; const D_input:boolean=false):TF_TensorPtr;
   var
     F_T:TF_DataType;
   begin
   F_T:=TF_TensorType(I_input);
   result:=ExecOper('PreventGradient',[I_input],['T','message'],['type','string'],[@F_T,@A_message],[D_input])
-  end;
-function ExecPrint(const I_input:TF_TensorPtr; const I_data:TF_TensorPtr; const A_U:array of TF_DataType; const A_message:string; const A_first_n:integer; const A_summarize:integer; const D_input:boolean=false; const D_data:boolean=false):TF_TensorPtr;
-  var
-    F_T:TF_DataType;
-  begin
-  F_T:=TF_TensorType(I_input);
-  result:=ExecOper('Print',[I_input,I_data],['T','U','message','first_n','summarize'],['type','list(type)','string','int','int'],[@F_T,@A_U,@A_message,@A_first_n,@A_summarize],[D_input,D_data])
   end;
 function ExecPriorityQueue(const A_component_types:array of TF_DataType; const A_shapes:array of TF_Shape; const A_capacity:integer; const A_container:string; const A_shared_name:string):TF_TensorPtr;
   begin
@@ -10678,10 +10531,6 @@ function ExecScaleAndTranslateGrad(const I_grads:TF_TensorPtr; const I_original_
   begin
   F_T:=TF_TensorType(I_grads);
   result:=ExecOper('ScaleAndTranslateGrad',[I_grads,I_original_image,I_scale,I_translation],['T','kernel_type','antialias'],['type','string','bool'],[@F_T,@A_kernel_type,@A_antialias],[D_grads,D_original_image,D_scale,D_translation])
-  end;
-function ExecScanDataset(const I_input_dataset:TF_TensorPtr; const I_initial_state:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const A_f:string; const A_Tstate:array of TF_DataType; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const A_preserve_cardinality:boolean; const A_use_default_device:boolean; const D_input_dataset:boolean=false; const D_initial_state:boolean=false; const D_other_arguments:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('ScanDataset',[I_input_dataset,I_initial_state,I_other_arguments],['f','Tstate','Targuments','output_types','output_shapes','preserve_cardinality','use_default_device'],['func','list(type)','list(type)','list(type)','list(shape)','bool','bool'],[@A_f,@A_Tstate,@A_Targuments,@A_output_types,@A_output_shapes,@A_preserve_cardinality,@A_use_default_device],[D_input_dataset,D_initial_state,D_other_arguments])
   end;
 function ExecScatterAdd(const I_ref:TF_TensorPtr; const I_indices:TF_TensorPtr; const I_updates:TF_TensorPtr; const A_use_locking:boolean; const D_ref:boolean=false; const D_indices:boolean=false; const D_updates:boolean=false):TF_TensorPtr;
   var
@@ -11682,10 +11531,6 @@ function ExecStridedSliceGrad(const I_shape:TF_TensorPtr; const I_begin:TF_Tenso
   F_T:=TF_TensorType(I_dy);
   result:=ExecOper('StridedSliceGrad',[I_shape,I_begin,I_end,I_strides,I_dy],['T','Index','begin_mask','end_mask','ellipsis_mask','new_axis_mask','shrink_axis_mask'],['type','type','int','int','int','int','int'],[@F_T,@F_Index,@A_begin_mask,@A_end_mask,@A_ellipsis_mask,@A_new_axis_mask,@A_shrink_axis_mask],[D_shape,D_begin,D_end,D_strides,D_dy])
   end;
-function ExecStringFormat(const I_inputs:TF_TensorPtr; const A_T:array of TF_DataType; const A_template:string; const A_placeholder:string; const A_summarize:integer; const D_inputs:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('StringFormat',[I_inputs],['T','template','placeholder','summarize'],['list(type)','string','string','int'],[@A_T,@A_template,@A_placeholder,@A_summarize],[D_inputs])
-  end;
 function ExecStringLength(const I_input:TF_TensorPtr; const A_unit:string; const D_input:boolean=false):TF_TensorPtr;
   begin
   result:=ExecOper('StringLength',[I_input],['unit'],['string'],[@A_unit],[D_input])
@@ -11772,10 +11617,6 @@ function ExecTPUOrdinalSelector():TF_TensorPtr;
 function ExecTakeDataset(const I_input_dataset:TF_TensorPtr; const I_count:TF_TensorPtr; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_count:boolean=false):TF_TensorPtr;
   begin
   result:=ExecOper('TakeDataset',[I_input_dataset,I_count],['output_types','output_shapes'],['list(type)','list(shape)'],[@A_output_types,@A_output_shapes],[D_input_dataset,D_count])
-  end;
-function ExecTakeWhileDataset(const I_input_dataset:TF_TensorPtr; const I_other_arguments:TF_TensorPtr; const A_predicate:string; const A_Targuments:array of TF_DataType; const A_output_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_input_dataset:boolean=false; const D_other_arguments:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('TakeWhileDataset',[I_input_dataset,I_other_arguments],['predicate','Targuments','output_types','output_shapes'],['func','list(type)','list(type)','list(shape)'],[@A_predicate,@A_Targuments,@A_output_types,@A_output_shapes],[D_input_dataset,D_other_arguments])
   end;
 function ExecTan(const I_x:TF_TensorPtr; const D_x:boolean=false):TF_TensorPtr;
   var
@@ -11928,10 +11769,6 @@ function ExecTensorArrayWriteV3(const I_handle:TF_TensorPtr; const I_index:TF_Te
   F_T:=TF_TensorType(I_value);
   result:=ExecOper('TensorArrayWriteV3',[I_handle,I_index,I_value,I_flow_in],['T'],['type'],[@F_T],[D_handle,D_index,D_value,D_flow_in])
   end;
-function ExecTensorDataset(const I_components:TF_TensorPtr; const A_Toutput_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_components:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('TensorDataset',[I_components],['Toutput_types','output_shapes'],['list(type)','list(shape)'],[@A_Toutput_types,@A_output_shapes],[D_components])
-  end;
 function ExecTensorForestTreeIsInitializedOp(const I_tree_handle:TF_TensorPtr; const D_tree_handle:boolean=false):TF_TensorPtr;
   begin
   result:=ExecOper('TensorForestTreeIsInitializedOp',[I_tree_handle],[],[],[],[D_tree_handle])
@@ -12077,10 +11914,6 @@ function ExecTensorScatterUpdate(const I_tensor:TF_TensorPtr; const I_indices:TF
   F_T:=TF_TensorType(I_tensor);
   F_Tindices:=TF_TensorType(I_indices);
   result:=ExecOper('TensorScatterUpdate',[I_tensor,I_indices,I_updates],['T','Tindices'],['type','type'],[@F_T,@F_Tindices],[D_tensor,D_indices,D_updates])
-  end;
-function ExecTensorSliceDataset(const I_components:TF_TensorPtr; const A_Toutput_types:array of TF_DataType; const A_output_shapes:array of TF_Shape; const D_components:boolean=false):TF_TensorPtr;
-  begin
-  result:=ExecOper('TensorSliceDataset',[I_components],['Toutput_types','output_shapes'],['list(type)','list(shape)'],[@A_Toutput_types,@A_output_shapes],[D_components])
   end;
 function ExecTensorStridedSliceUpdate(const I_input:TF_TensorPtr; const I_begin:TF_TensorPtr; const I_end:TF_TensorPtr; const I_strides:TF_TensorPtr; const I_value:TF_TensorPtr; const A_begin_mask:integer; const A_end_mask:integer; const A_ellipsis_mask:integer; const A_new_axis_mask:integer; const A_shrink_axis_mask:integer; const D_input:boolean=false; const D_begin:boolean=false; const D_end:boolean=false; const D_strides:boolean=false; const D_value:boolean=false):TF_TensorPtr;
   var

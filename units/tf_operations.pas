@@ -21,6 +21,7 @@ unit tf_operations;
 //               TGraph.AddOper return value change to string, giving back the name of the operation if successful, or '' if not.
 //               TGraph.AddConstant added for string type
 //               TSession.Run longer version added to run graphs by Operation name as well
+//    18/02/2020 TGraph.AddOper changed to handle list attributes correctly
 //
 //**********************************************************************************************************************************
 //
@@ -234,7 +235,7 @@ function TGraph.AddOper(const AOperationType:string;
       end
     else if AAttrTypes[Index]='list(type)' then
       begin
-      TF_SetAttrTypeList(OperationDescription,@AttrName[1],TF_DataTypePtr(@TF_TypeList(AAttrValues[Index]^)[0]),Length(TF_TypeList(AAttrValues[Index]^)));
+      TF_SetAttrTypeList(OperationDescription,@AttrName[1],TF_DataTypePtr(@(TF_TypeList(AAttrValues[Index]^)[0])),Length(TF_TypeList(AAttrValues[Index]^)));
       end
     else if AAttrTypes[Index]='shape' then
       begin
@@ -373,7 +374,7 @@ function TGraph.AddTensor(const AName:string; const ATensor:TF_TensorPtr; ADelet
   var TensorType:TF_DataType;
   begin
   TensorType:=TF_TensorType(ATensor);
-  result:=AddOper('Const',[],[],[],[AName],['dtype','value'],['type','tensor'],[@TensorType,ATensor]);
+  result:=AddOper('Const',[],[],[],[AName],['dtype','value'],['type','tensor'],[@TensorType,@ATensor]);
   if ADeleteTensor then
     TF_DeleteTensor(ATensor);
   end;

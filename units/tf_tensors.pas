@@ -18,6 +18,7 @@ unit tf_tensors;
 //  Change log:
 //    13/02/2020 Initial version
 //    15/02/2020 CreateTensorString added
+//    18/02/2020 CreateTensorString for multiple strings added
 //
 //**********************************************************************************************************************************
 //
@@ -86,6 +87,7 @@ function CreateTensorSingle(const AShape:array of Int64; const AData:array of Si
 function CreateTensorSingle(const AShape:array of Int64; const AData; ALength:Int64):TF_TensorPtr;
 
 function CreateTensorString(const AData:PChar):TF_TensorPtr;
+function CreateTensorString(const AShape:array of Int64; const AData:array of PChar):TF_TensorPtr;
 
 // other tpyes, e.g. Complex can be added later, but the generic one can always be used
 
@@ -160,12 +162,11 @@ function CreateTensor(ADataType:TF_DataType; const AShape:array of Int64):TF_Ten
   DataLength:=TF_DataTypeSize(ADataType);
   for I:=0 to Length(AShape)-1 do
     DataLength:=DataLength*AShape[I];
-  TensorPtr:=TF_AllocateTensor(ADataType, @AShape, Length(AShape), DataLength);
+  TensorPtr:=TF_AllocateTensor(ADataType, @AShape[0], Length(AShape), DataLength);
   if not Assigned(TensorPtr) then
     raise Exception.Create('Tensor cannot be created');
   result:=TensorPtr;
   end;
-
 function CreateTensorInt8(AData:Int8):TF_TensorPtr;
   begin
   result:=CreateTensor(TF_INT8,[]);
@@ -318,6 +319,32 @@ function CreateTensorString(const AData:PChar):TF_TensorPtr;
   TF_CheckStatus(Status);
   FillByte(TF_TensorData(result)^,8,0);
   end;
+function CreateTensorString(const AShape:array of Int64; const AData:array of PChar):TF_TensorPtr;
+  var
+    Status:TF_StatusPtr;
+    TotalLength:Int64;
+    i:integer;
+  begin
+  // No check to make sure that it has the same number of strings required by the Shape
+  Status:=TF_NewStatus;
+  TotalLength:=0;
+  for i:=0 to Length(AData)-1 do
+    TotalLength:=TotalLength+8+TF_StringEncodedSize(strlen(AData[i]));
+  result:=TF_AllocateTensor(TF_STRING,@AShape[0],Length(AShape),TotalLength);
+  TotalLength:=0;
+  for i:=0 to Length(AData)-1 do
+    begin
+    Int64((TF_TensorData(result)+i*8)^):=TotalLength;
+    TotalLength:=TotalLength+TF_StringEncodedSize(strlen(AData[i]));
+    end;
+  TotalLength:=8*Length(AData);
+  for i:=0 to Length(AData)-1 do
+    begin
+    TF_StringEncode(AData[i],strlen(AData[i]),TF_TensorData(result)+TotalLength,TF_StringEncodedSize(strlen(AData[i])),Status);
+    TF_CheckStatus(Status);
+    TotalLength:=TotalLength+TF_StringEncodedSize(strlen(AData[i]));
+    end;
+end;
 
 //**********************************************************************************************************************************
 //  Data move to and from a Tensor
