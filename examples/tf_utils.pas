@@ -61,6 +61,7 @@ procedure PrintTensorShape(const ATensor:TF_TensorPtr; const AName:string='');
     TF_DOUBLE:    write('Double');
     TF_COMPLEX64: write('Complex64');
     TF_COMPLEX128:write('Complex128');
+    TF_STRING:    write('String');
     else       write(DataType);
     end;
   write('. Dimensions: ');
@@ -71,6 +72,7 @@ procedure PrintTensorShape(const ATensor:TF_TensorPtr; const AName:string='');
     if I<Length(Shape)-1 then
       write('x');
     end;
+  write(' Total length:',TF_TensorByteSize(ATensor));
   writeln;
   end;
 procedure PrintTensorData(const ATensor:TF_TensorPtr; const AName:string='');

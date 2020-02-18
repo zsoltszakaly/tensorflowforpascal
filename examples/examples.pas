@@ -19,6 +19,7 @@ program examples;
 //    13/02/2020 Initial version
 //    15/02/2020 Example12 added to convert a BMP to JPG file (use input file "myinput.bmp")
 //               Minor changes in line with the tf_operations changes
+//    18/02/2020 New examples upto Example 16
 //
 //**********************************************************************************************************************************
 //
@@ -46,7 +47,7 @@ program examples;
 //
 //**********************************************************************************************************************************
 
-uses   sysutils,
+uses
   tf_api,              // the basic interface to tensorflow, based on c_api.h
   tf_tensors,          // the unit to manipulate tensors (TF_TensorPtr)
   tf_operations,       // the unit to handle Graphs, Operations and Sessions in a TensorFlow style (use Oper names)
@@ -317,13 +318,15 @@ procedure Example10;
   end;
 
 procedure Example11;
-// A simple example, how to generate e.g. a Tensor, filled with random numbers in a range
+// Still the same (especially Example9), but using a specific function for SquaredDifference
   var
     t:TF_TensorPtr;
   begin
   writeln('Starting Example 11');
-  t:=CreateTensorSingleRandom([3,4,5],-10,10);
-  PrintTensorShape(t,'T'); // its Shape is 3 dimensional, so the printout is sequential
+  t:=CreateTensorSingle([5],[-1.0,2.0,-3.0,4.0,-5.0]);
+  t:=ExecSquaredDifference(t,CreateTensorSingle([5],[1.0,-2.0,3.0,-4.0,5.0]),true,true); // difference and square in one step
+  t:=ExecSum(t,CreateTensorInt32(0),false,true,true);
+  PrintTensorShape(t,'T');
   PrintTensorData(t);
   TF_DeleteTensor(t);
   writeln('Finished Example 11');
@@ -331,31 +334,127 @@ procedure Example11;
   end;
 
 procedure Example12;
-// This example converts a BMP image into a JPEG image
+// A simple example, how to generate e.g. a Tensor, filled with random numbers in a range
+  var
+    t:TF_TensorPtr;
+  begin
+  writeln('Starting Example 12');
+  t:=CreateTensorSingleRandom([3,4,5],-10,10);
+  PrintTensorShape(t,'T'); // its Shape is 3 dimensional, so the printout is sequential
+  PrintTensorData(t);
+  TF_DeleteTensor(t);
+  writeln('Finished Example 12');
+  writeln;
+  end;
+
+procedure Example13;
+// This example converts a BMP image into a JPEG image while its contrast is also adjusted
   var
     g:TGraphExt;
     s:TSession;
     t:TF_TensorPtr;
     LastOperationName:string;
   begin
-  writeln('Starting Example 12');
+  writeln('Starting Example 13');
   g.Init;
   g.AddInput('input-bmp',TF_String); // The input bmp file name will be given as an input parameter
   g.AddConstant('jpeg-resolution',Int32(80));
   g.AddReadFile('input-bmp','bmp-content');
   g.AddDecodeBmp('bmp-content','decoded-image',3);
-  g.AddEncodeJpegVariableQuality('decoded-image','jpeg-resolution','jpeg-content');
+  g.AddCast('decoded-image','extended-image',TF_UINT8,TF_FLOAT,false);
+  g.AddConstant('contrast-factor',1.0); // no change
+  g.AddAdjustContrastV2('extended-image','contrast-factor','contrasted-image',TF_FLOAT);
+  g.AddCast('contrasted-image','backsized-image',TF_FLOAT,TF_UINT8,false);
+  g.AddEncodeJpegVariableQuality('backsized-image','jpeg-resolution','jpeg-content');
   g.AddConstant('output-jpg','myoutput.jpg'); // The output jpg name will be given as a constant (just to illustrate the difference)
   LastOperationName:=g.AddWriteFile('output-jpg','jpeg-content');
   s.Init(g);
   t:=createtensorstring('myinput.bmp'); // Since the input bmp is an input parameter, we have to create it
   s.run(['input-bmp'],[t],[],[LastOperationName]); // The actual run of the Session, making sure that the last operation runs
-  TF_DeleteTEnsor(t); // In Graph operation, there is no automatic tensor deletion, so it has to be done manually
+  TF_DeleteTensor(t); // In Graph operation, there is no automatic tensor deletion, so it has to be done manually
   s.Done;
   g.Done;
-  writeln('Finished Example 12');
+  writeln('Finished Example 13');
   writeln;
   end;
+
+procedure Example14;
+// In this example a batch matrix multiplication is done on one batch and one fixed Single Tensor
+  var
+    t1:TF_TensorPtr;
+    t2:TF_TensorPtr;
+    attr:TF_DataType;
+    touts:TF_TensorPtrs;
+  begin
+  writeln('Starting Example 14');
+  t1:=CreateTensorSingle([3,1,2],[1.0,2.0,3.0,4.0,5.0,6.0]);     // A 3 pieces of 1x2 matrix (3 long batch)
+  t2:=CreateTensorSingle([2,4],[1.1,2.2,3.3,4.4,5.5,6.6,7.7,8.8]); // A 2x4 matrix to use for all
+  attr:=TF_TensorType(t1);
+  touts:=ExecOper('BatchMatMulV2',[t1,t2],[],[],['T'],['type'],[@attr]); // V2 supports batch vs. non-batch
+  PrintTensorData(touts[0]);
+  TF_DeleteTensor(t1);
+  TF_DeleteTensor(t2);
+  TF_DeleteTensor(touts[0]);
+  SetLength(touts,0);
+  writeln('Finished Example 14');
+  writeln;
+  end;
+
+procedure Example15;
+  var
+    g:TGraphExt;
+    s:TSession;
+    t:TF_TensorPtr;
+    SaveOperationName:string;
+    attr:TF_TypeList;
+  begin
+  // This example shows how to save one Tensors. I still could not solve to Save multiple Tensors in one go. { TODO : How to give an InputList }
+  writeln('Starting Example 15');
+  g.Init;
+  t:=CreateTensorString([1],['fancynamesingle']); // This is a stringlist in one Tensor, with the name(s) to be used for the saved tensors
+  g.AddTensor('whatnametouse',t,true);                         // This is used as a constant inside teh Graph
+  g.AddConstant('whatfilename','test.tft');                    // The file name (another Constant)
+  g.AddConstant('emptystring','');                             // No encryption (another Constant)
+  g.AddInput('thisistosave',TF_FLOAT);                         // It will be InputList values, to be handed over at call (again, I could not make multiple input)
+  SetLength(attr,1);                                           // Before FPC 3.2 Dynamic Arrays cannot be called with values
+  attr[0]:=TF_FLOAT;                                           // The first Attribute is the first (and now only) Tensor's type
+  SaveOperationName:=g.AddSave('whatfilename','whatnametouse','thisistosave',attr);
+
+  t:=CreateTensorSingle([3,1,2],[1.0,2.0,3.0,4.0,5.0,6.0]); // This will be saved as one
+  s.init(g);
+  s.run(['thisistosave'],[t],[],[SaveOperationName]);       // For TensorLists the first has to be given, hence the "t[0]"
+  s.Done;
+  g.Done;
+  writeln('Finished Example 15');
+  writeln;
+  end;
+
+procedure Example16;
+  var
+    g:TGraphExt;
+    s:TSession;
+    t:TF_TensorPtr;
+    touts:TF_TensorPtrs;
+  begin
+  writeln('Starting Example 16');
+  g.Init;
+  g.AddConstant('whatfilepattern','test.tft'); // The file pattern, in this case a direct name
+  t:=CreateTensorString('fancynamesingle'); // This is a string with the name of the tensor to restore
+  g.AddTensor('whattorestore',t,true);
+  g.AddRestore('whatfilepattern','whattorestore','readtensor',TF_FLOAT,-1);
+  s.init(g);
+  touts:=s.run([],[],['readtensor'],[]);
+  PrintTensorShape(touts[0]);
+  PrintTensorData(touts[0]);
+  TF_DeleteTensor(touts[0]);
+  SetLength(touts,0);
+  s.Done;
+  g.Done;
+  writeln('Finished Example 16');
+  writeln;
+  end;
+
+
 
 begin
 Example1;
@@ -370,5 +469,9 @@ Example9;
 Example10;
 Example11;
 Example12;
+Example13;
+Example14;
+Example15;
+Example16;
 end.
 
