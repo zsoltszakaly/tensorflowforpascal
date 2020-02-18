@@ -19,7 +19,6 @@ unit tf_wrapper;
 //    11/02/2020 Initial version
 //    15/02/2020 ctypes add to uses
 //
-//
 //**********************************************************************************************************************************
 //
 //  Description
@@ -116,10 +115,12 @@ type
 implementation
 
 //  #GraphImplementationBegin
+//  The TGraphExt methods
 //  #GraphImplementationFill
 //  #GraphImplementationEnd
 
 //  #EagerImplementationBegin
+//  The Exec<oper> methods
 //  #EagerImplementationFill
 //  #EagerImplementationEnd
 

@@ -19,6 +19,8 @@ program wrappermaker;
 //    13/02/2020 Initial version
 //    15/02/2020 The integer attributes changed to cint64
 //               The generated Add<oper> results changed to string in line with the change in AddOper
+//    18/02/2020 Created interfaces use Dynamic Arrays instead of Open Arrays
+//               Length of InputLists are automatically generated from the relevant Attribute
 //
 //**********************************************************************************************************************************
 //
@@ -456,6 +458,7 @@ function InAttributeInputPair(const AArray:array of TAttributeInputPair; const A
 var
   Inputs:                    array of string;
   InputLists:                array of string;
+  InputListLengths:          array of string;
   Outputs:                   array of string;
   OutputLists:               array of string;
   AttributeNames:            array of string;
@@ -468,6 +471,7 @@ procedure ProcessInputArg(var AInput:string);
     ContentString:             string='';
     LabelProcessed:            boolean;
     InputName:                 string='';
+    InputListLengthSource:     string='';
     InputMultiple:             boolean=false;
   begin
   while AInput<>'' do
@@ -494,6 +498,7 @@ procedure ProcessInputArg(var AInput:string);
       begin
       LabelProcessed:=true;
       InputMultiple:=true;
+      InputListLengthSource:='A_'+Copy(ContentString,2,Length(ContentString)-2)+',';
       end;
     if LabelString='type:' then
       begin
@@ -515,8 +520,9 @@ procedure ProcessInputArg(var AInput:string);
       end;
     if LabelString='type_list_attr:' then
       begin
-      // or even the list of type attr
       LabelProcessed:=true;
+      InputMultiple:=true;
+      InputListLengthSource:='Length(A_'+Copy(ContentString,2,Length(ContentString)-2)+'),';
       end;
     if not LabelProcessed and (CmdLineV>=1) then
       writeln('Unknown Input component found "'+LabelString+'" with content "'+ContentString+'".');
@@ -527,6 +533,8 @@ procedure ProcessInputArg(var AInput:string);
       begin
       SetLength(InputLists,Length(InputLists)+1);
       InputLists[Length(InputLists)-1]:=InputName;
+      SetLength(InputListLengths,Length(InputListLengths)+1);
+      InputListLengths[Length(InputListLengths)-1]:=InputListLengthSource;
       end
     else
       begin
@@ -686,6 +694,7 @@ procedure ProcessOps(const AOpName:string; var AOp:string);
     write('Processing Ops: '+AOpName+'                                            '+#$0d);
   SetLength(Inputs,0);
   SetLength(InputLists,0);
+  SetLength(InputListLengths,0);
   SetLength(Outputs,0);
   SetLength(OutputLists,0);
   SetLength(AttributeNames,0);
@@ -771,7 +780,12 @@ procedure GenerateGraph(const AOpName:string);
     end;
   if OneExecution[Length(OneExecution)]=',' then
     SetLength(OneExecution,Length(OneExecution)-1);
-  OneExecution:=OneExecution+'],[],[';
+  OneExecution:=OneExecution+'],[';
+  for i:=0 to length(InputLists)-1 do
+    OneExecution:=OneExecution+InputListLengths[i];
+  if OneExecution[Length(OneExecution)]=',' then
+    SetLength(OneExecution,Length(OneExecution)-1);
+  OneExecution:=OneExecution+'],[';
   for i:=0 to length(Outputs)-1 do
     begin
     OneCall:=OneCall+'const O_'+Outputs[i]+':string; ';
@@ -790,34 +804,20 @@ procedure GenerateGraph(const AOpName:string);
     OneCall:=OneCall+'const A_'+AttributeNames[i]+':';
     OneExecution:=OneExecution+''''+AttributeNames[i]+''',';
     PascalType:='';
-    if AttributeTypes[i]='bool' then
-      PascalType:='boolean';
-    if AttributeTypes[i]='float' then
-      PascalType:='real';
-    if AttributeTypes[i]='func' then
-      PascalType:='TF_Function';
-    if AttributeTypes[i]='int' then
-      PascalType:='cint64';
-    if AttributeTypes[i]='list(float)' then
-      PascalType:='array of real';
-    if AttributeTypes[i]='list(func)' then
-      PascalType:='array of TF_Function';
-    if AttributeTypes[i]='list(int)' then
-      PascalType:='array of cint64';
-    if AttributeTypes[i]='list(shape)' then
-      PascalType:='array of TF_Shape';
-    if AttributeTypes[i]='list(string)' then
-      PascalType:='array of string';
-    if AttributeTypes[i]='list(type)' then
-      PascalType:='array of TF_DataType';
-    if AttributeTypes[i]='shape' then
-      PascalType:='TF_Shape';
-    if AttributeTypes[i]='string' then
-      PascalType:='string';
-    if AttributeTypes[i]='tensor' then
-      PascalType:='TF_TensorPtr';
-    if AttributeTypes[i]='type' then
-      PascalType:='TF_DataType';
+    if AttributeTypes[i]='bool' then             PascalType:='boolean';
+    if AttributeTypes[i]='float' then            PascalType:='real';
+    if AttributeTypes[i]='func' then             PascalType:='TF_Function';
+    if AttributeTypes[i]='int' then              PascalType:='cint64';
+    if AttributeTypes[i]='list(float)' then      PascalType:='TF_FloatList';
+    if AttributeTypes[i]='list(func)' then       PascalType:='TF_FuncnameList';
+    if AttributeTypes[i]='list(int)' then        PascalType:='TF_IntList';
+    if AttributeTypes[i]='list(shape)' then      PascalType:='TF_ShapeList';
+    if AttributeTypes[i]='list(string)' then     PascalType:='TF_StringList';
+    if AttributeTypes[i]='list(type)' then       PascalType:='TF_TypeList';
+    if AttributeTypes[i]='shape' then            PascalType:='TF_Shape';
+    if AttributeTypes[i]='string' then           PascalType:='string';
+    if AttributeTypes[i]='tensor' then           PascalType:='TF_TensorPtr';
+    if AttributeTypes[i]='type' then             PascalType:='TF_DataType';
     if PascalType='' then
       begin
       if CmdLineV>=1 then
