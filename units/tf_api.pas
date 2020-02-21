@@ -18,6 +18,7 @@ unit tf_api;
 //  Credit: This unit is based on the c_api.inc created by Phil Hess, based on the C header file c_api.h of TensorFlow
 //
 //  Change log: 13/02/2020 Initial version
+//              21/02/2020 TF_DataType changed to cint from clong, because the TypeList works on cint
 //
 //**********************************************************************************************************************************
 //
@@ -49,7 +50,6 @@ type
   cfloatPtr = ^cfloat;
   cintPtr = ^cint;
   cintPtrPtr = ^cintPtr;
-  TF_DataTypePtr = Pointer;
 
 function TF_Version: charPtr; cdecl; external;
 
@@ -80,7 +80,8 @@ const
   TF_UINT32 = 22;
   TF_UINT64 = 23;
 type
-  TF_DataType = clong;
+  TF_DataType = cint;
+  TF_DataTypePtr = ^TF_DataType;
 function TF_DataTypeSize(dt: TF_DataType): csize_t; cdecl; external;
 
 const
@@ -168,6 +169,7 @@ type
     oper: TF_OperationPtr;
     index: cint;
     end;
+  TF_Outputs = array of TF_Output;
   TF_OutputPtr = ^TF_Output;
   TF_Function = OpaqueType;
   TF_FunctionPtr = ^TF_Function;
