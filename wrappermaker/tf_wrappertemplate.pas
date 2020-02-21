@@ -15,14 +15,16 @@ unit tf_wrapper;
 //  A copy of the GNU General Public License is available on the World Wide Web at <http://www.gnu.org/copyleft/gpl.html>. You can
 //  also obtain it by writing to the Free Software Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston, MA 02110-1335, USA.
 //
-//  Change log:
-//    11/02/2020 Initial version
-//    15/02/2020 ctypes add to uses
+//  #TimeStamp
 //
 //**********************************************************************************************************************************
 //
 //  Description
 //  #TemplateDescriptionBegin
+//
+//  Change log:
+//    11/02/2020 Initial version
+//    15/02/2020 ctypes add to uses
 //
 //  When you see this text, it means that you look into the tf_wrappertemplate.pas As the name suggests, it is only a template file
 //  to be used by the WrapperMaker program, that can generate (depending on its CommandLine parameters - see its Help for details)
@@ -68,7 +70,7 @@ unit tf_wrapper;
 //
 //  This wrapper file includes operation specific Exec<oper> functions. These functions are built on the Generic ExecOper function
 //  defined in tf_operations. Exec<oper> functions are only generated for operations that have only ONE Output and no InputList or
-//  OutputList parameters. In the background the Specific Exec<oper> functions call the short version of the  ExecOper function.
+//  OutputList parameters. In the background the Specific Exec<oper> functions call a version of the ExecOper function.
 //  The benefit of using Exec<oper> is that it lists what parameters are required to call the given operation, let it be Inputs or
 //  Attributes. If you use an IDE, already at typing Exec<oper>(, you can see the parameter list, do not need to look it up in the
 //  specification. Also, if an Attribute can be retrieved from the Input Tensor (typically the data type of it, often called "T"),

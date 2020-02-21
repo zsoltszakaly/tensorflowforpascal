@@ -21,6 +21,8 @@ program wrappermaker;
 //               The generated Add<oper> results changed to string in line with the change in AddOper
 //    18/02/2020 Created interfaces use Dynamic Arrays instead of Open Arrays
 //               Length of InputLists are automatically generated from the relevant Attribute
+//    21/02/2020 TGraph.Add<oper> part is changed significantly to cater for OutputLists
+//               Timestamp is added to the generated file
 //
 //**********************************************************************************************************************************
 //
@@ -43,6 +45,9 @@ program wrappermaker;
 // The global uses
 uses
   Sysutils;
+
+const
+  CRLF=#$0d#$0a;
 
 // The CommandLine parameter handling variables
 var
@@ -376,7 +381,7 @@ function LoadTemplate:boolean;
   while not eof(TemplateFile) do
     begin
     readln(TemplateFile,OneLine);
-    TemplateStr:=TemplateStr+OneLine+#$0d#$0a;
+    TemplateStr:=TemplateStr+OneLine+CRLF;
     end;
   CloseFile(TemplateFile);
   result:=true;
@@ -691,7 +696,7 @@ procedure ProcessOps(const AOpName:string; var AOp:string);
     LabelProcessed:            boolean;
   begin
   if CmdLineV>=2 then
-    write('Processing Ops: '+AOpName+'                                            '+#$0d);
+    write('Processing Ops: '+AOpName+'                                            '+CRLF);
   SetLength(Inputs,0);
   SetLength(InputLists,0);
   SetLength(InputListLengths,0);
@@ -762,47 +767,19 @@ procedure GenerateGraph(const AOpName:string);
     PascalType:                string;
     i:                         integer;
   begin
-  // first in any case make full version
+  // first make the call
   OneCall:=CmdLineG+AOpName+'(';
-  OneExecution:='  result:=AddOper('''+AOpName+''',[';
   for i:=0 to length(Inputs)-1 do
-    begin
     OneCall:=OneCall+'const I_'+Inputs[i]+':string; '; // Something is needed, because of input names like "var". "I" is not sufficient, because of "f" giving "If".
-    OneExecution:=OneExecution+'I_'+Inputs[i]+',';
-    end;
-  if OneExecution[Length(OneExecution)]=',' then
-    SetLength(OneExecution,Length(OneExecution)-1);
-  OneExecution:=OneExecution+'],[';
   for i:=0 to length(InputLists)-1 do
-    begin
-    OneCall:=OneCall+'const IL_'+InputLists[i]+':string; ';
-    OneExecution:=OneExecution+'IL_'+InputLists[i]+',';
-    end;
-  if OneExecution[Length(OneExecution)]=',' then
-    SetLength(OneExecution,Length(OneExecution)-1);
-  OneExecution:=OneExecution+'],[';
-  for i:=0 to length(InputLists)-1 do
-    OneExecution:=OneExecution+InputListLengths[i];
-  if OneExecution[Length(OneExecution)]=',' then
-    SetLength(OneExecution,Length(OneExecution)-1);
-  OneExecution:=OneExecution+'],[';
+    OneCall:=OneCall+'const IL_'+InputLists[i]+':TF_StringList; ';
   for i:=0 to length(Outputs)-1 do
-    begin
     OneCall:=OneCall+'const O_'+Outputs[i]+':string; ';
-    OneExecution:=OneExecution+'O_'+Outputs[i]+',';
-    end;
   for i:=0 to length(OutputLists)-1 do
-    begin
-    OneCall:=OneCall+'const OL_'+OutputLists[i]+':string; ';
-    OneExecution:=OneExecution+'OL_'+OutputLists[i]+',';
-    end;
-  if OneExecution[Length(OneExecution)]=',' then
-    SetLength(OneExecution,Length(OneExecution)-1);
-  OneExecution:=OneExecution+'],[';
+    OneCall:=OneCall+'const OL_'+OutputLists[i]+':TF_StringList; ';
   for i:=0 to length(AttributeNames)-1 do
     begin
     OneCall:=OneCall+'const A_'+AttributeNames[i]+':';
-    OneExecution:=OneExecution+''''+AttributeNames[i]+''',';
     PascalType:='';
     if AttributeTypes[i]='bool' then             PascalType:='boolean';
     if AttributeTypes[i]='float' then            PascalType:='real';
@@ -826,6 +803,70 @@ procedure GenerateGraph(const AOpName:string);
       end;
     OneCall:=OneCall+PascalType+'; ';
     end;
+  if OneCall[Length(OneCall)]=' ' then
+    SetLength(OneCall,Length(OneCall)-2);
+  OneCall:=OneCall+'):string;'+CRLF;
+  GraphInterface:=GraphInterface+'    function '+OneCall;
+
+  // and then the execution
+  if (Length(OutputLists)>0) and (Length(Outputs)+Length(OutputLists)>1) then
+    begin // a variable is declared and filled up
+    OneExecution:='  var'+CRLF;
+    OneExecution:=OneExecution+'    OutputNames : TF_StringList;'+CRLF;
+    OneExecution:=OneExecution+'    Index       : integer;'+CRLF;
+    OneExecution:=OneExecution+'    Counter     : integer;'+CRLF;
+    OneExecution:=OneExecution+'  begin'+CRLF;
+    OneExecution:=OneExecution+'  SetLength(OutputNames,';
+    if Length(Outputs)>0 then OneExecution:=OneExecution+IntToStr(Length(Outputs))+'+';
+    for i:=0 to Length(OutputLists)-1 do
+      begin
+      OneExecution:=OneExecution+'Length(OL_'+OutputLists[i]+')';
+      if i=Length(OutputLists)-1 then
+        OneExecution:=OneExecution+');'+CRLF
+      else
+        OneExecution:=OneExecution+'+';
+      end;
+    for i:=0 to Length(Outputs)-1 do
+      OneExecution:=OneExecution+'  Outputnames['+IntToStr(i)+']:=O_'+Outputs[i]+';'+CRLF;
+    OneExecution:=OneExecution+'  Counter:='+IntToStr(Length(Outputs))+';'+CRLF;
+    for i:=0 to Length(OutputLists)-1 do
+      begin
+      OneExecution:=OneExecution+'  for Index:=0 to Length(OL_'+OutputLists[i]+')-1 do'+CRLF;
+      OneExecution:=OneExecution+'    OutputNames[Counter+Index]:=OL_'+OutputLists[i]+'[Index];'+CRLF;
+      if i<Length(OutputLists)-1 then
+        OneExecution:=OneExecution+'  Counter:=Counter+Length(OL_'+OutputLists[i]+');'+CRLF;
+      end;
+    end
+  else
+    OneExecution:='  begin'+CRLF;
+  OneExecution:=OneExecution+'  result:=AddOper('''+AOpName+''',[';
+  for i:=0 to length(Inputs)-1 do
+    OneExecution:=OneExecution+'I_'+Inputs[i]+',';
+  if OneExecution[Length(OneExecution)]=',' then SetLength(OneExecution,Length(OneExecution)-1);
+  OneExecution:=OneExecution+'],[';
+  for i:=0 to length(InputLists)-1 do
+    OneExecution:=OneExecution+'IL_'+InputLists[i]+',';
+  if OneExecution[Length(OneExecution)]=',' then SetLength(OneExecution,Length(OneExecution)-1);
+  OneExecution:=OneExecution+'],';
+  if Length(OutputLists)=0 then
+    begin // calling the outputs directly
+    OneExecution:=OneExecution+'[';
+    for i:=0 to length(Outputs)-1 do
+      OneExecution:=OneExecution+'O_'+Outputs[i]+',';
+    if OneExecution[Length(OneExecution)]=',' then SetLength(OneExecution,Length(OneExecution)-1);
+    OneExecution:=OneExecution+'],[';
+    end
+  else
+    begin
+    if Length(Outputs)+Length(OutputLists)=1 then
+      OneExecution:=OneExecution+'OL_'+OutputLists[0]+',[' // use the only OL
+    else
+      OneExecution:=OneExecution+'OutputNames,['; // use the combined OutputNames
+    end;
+  for i:=0 to length(AttributeNames)-1 do
+    begin
+    OneExecution:=OneExecution+''''+AttributeNames[i]+''',';
+    end;
   if OneExecution[Length(OneExecution)]=',' then
     SetLength(OneExecution,Length(OneExecution)-1);
   OneExecution:=OneExecution+'],[';
@@ -839,13 +880,10 @@ procedure GenerateGraph(const AOpName:string);
   if OneExecution[Length(OneExecution)]=',' then
     SetLength(OneExecution,Length(OneExecution)-1);
   OneExecution:=OneExecution+'])';
-  if OneCall[Length(OneCall)]=' ' then
-    SetLength(OneCall,Length(OneCall)-2);
-  OneCall:=OneCall+'):string;'+#$0a;
-  GraphInterface:=GraphInterface+'    function '+OneCall;
-  GraphImplementation:=GraphImplementation+'function TGraphExt.'+OneCall+'  begin'+#$0d#$0a;
-  GraphImplementation:=GraphImplementation+OneExecution+#$0d#$0a;
-  GraphImplementation:=GraphImplementation+'  end;'+#$0d#$0a;
+  GraphImplementation:=GraphImplementation+'function TGraphExt.'+OneCall;
+  GraphImplementation:=GraphImplementation+OneExecution+CRLF;
+  GraphImplementation:=GraphImplementation+'  end;'+CRLF;
+
   inc(GraphCount);
   end;
 procedure GenerateEager(const AOpName:string);
@@ -856,10 +894,11 @@ procedure GenerateEager(const AOpName:string);
     i:                         integer;
   begin
   // Specific Eager interface is only made for Operations with no InputList input and exactly one Tensor output (no OutputList)
+  // This restriction later can be eased, if needed.
   if Length(InputLists)>0 then exit;
   if Length(Outputs)<>1 then exit;
   if Length(OutputLists)>0 then exit;
-  // first in any case make full version
+  // use ExecOper version nInput, 0InputList, 1Output
   OneCall:='function '+CmdLineE+AOpName+'(';
   OneExecution:='  result:=ExecOper('''+AOpName+''',[';
   for i:=0 to length(Inputs)-1 do
@@ -867,8 +906,7 @@ procedure GenerateEager(const AOpName:string);
     OneCall:=OneCall+'const I_'+Inputs[i]+':TF_TensorPtr; '; // Something is needed, because of input names like "var". "I" is not sufficient, because of "f" giving "If".
     OneExecution:=OneExecution+'I_'+Inputs[i]+',';
     end;
-  if OneExecution[Length(OneExecution)]=',' then
-    SetLength(OneExecution,Length(OneExecution)-1);
+  if OneExecution[Length(OneExecution)]=',' then SetLength(OneExecution,Length(OneExecution)-1);
   OneExecution:=OneExecution+'],[';
   for i:=0 to length(AttributeNames)-1 do
     begin
@@ -911,13 +949,11 @@ procedure GenerateEager(const AOpName:string);
       OneCall:=OneCall+'const A_'+AttributeNames[i]+':'+PascalType+'; '; // only add to the call, if cannot be caluclated
     OneExecution:=OneExecution+''''+AttributeNames[i]+''',';
     end;
-  if OneExecution[Length(OneExecution)]=',' then
-    SetLength(OneExecution,Length(OneExecution)-1);
+  if OneExecution[Length(OneExecution)]=',' then SetLength(OneExecution,Length(OneExecution)-1);
   OneExecution:=OneExecution+'],[';
   for i:=0 to length(AttributeTypes)-1 do
     OneExecution:=OneExecution+''''+AttributeTypes[i]+''',';
-  if OneExecution[Length(OneExecution)]=',' then
-    SetLength(OneExecution,Length(OneExecution)-1);
+  if OneExecution[Length(OneExecution)]=',' then SetLength(OneExecution,Length(OneExecution)-1);
   OneExecution:=OneExecution+'],[';
   for i:=0 to length(AttributeNames)-1 do
     begin
@@ -939,18 +975,18 @@ procedure GenerateEager(const AOpName:string);
   OneExecution:=OneExecution+'])';
   if OneCall[Length(OneCall)]=' ' then
     SetLength(OneCall,Length(OneCall)-2);
-  OneCall:=OneCall+'):TF_TensorPtr;'+#$0a;
+  OneCall:=OneCall+'):TF_TensorPtr;'+CRLF;
   EagerInterface:=EagerInterface+OneCall;
   EagerImplementation:=EagerImplementation+OneCall;
   if Length(InputTypes)>0 then
-    EagerImplementation:=EagerImplementation+'  var'+#$0d#$0a;
+    EagerImplementation:=EagerImplementation+'  var'+CRLF;
   for i:=0 to Length(InputTypes)-1 do
-    EagerImplementation:=EagerImplementation+'    F_'+InputTypes[i].Attribute+':TF_DataType;'+#$0d#$0a;
-  EagerImplementation:=EagerImplementation+'  begin'+#$0d#$0a;
+    EagerImplementation:=EagerImplementation+'    F_'+InputTypes[i].Attribute+':TF_DataType;'+CRLF;
+  EagerImplementation:=EagerImplementation+'  begin'+CRLF;
   for i:=0 to Length(InputTypes)-1 do
-    EagerImplementation:=EagerImplementation+'  F_'+InputTypes[i].Attribute+':=TF_TensorType(I_'+InputTypes[i].Input+');'+#$0d#$0a;
-  EagerImplementation:=EagerImplementation+OneExecution+#$0d#$0a;
-  EagerImplementation:=EagerImplementation+'  end;'+#$0d#$0a;
+    EagerImplementation:=EagerImplementation+'  F_'+InputTypes[i].Attribute+':=TF_TensorType(I_'+InputTypes[i].Input+');'+CRLF;
+  EagerImplementation:=EagerImplementation+OneExecution+CRLF;
+  EagerImplementation:=EagerImplementation+'  end;'+CRLF;
   inc(EagerCount);
   end;
 procedure ProcessOp(var AOp:string);
@@ -1001,6 +1037,7 @@ const
   EMB='//  #EagerImplementationBegin';
   EMF='//  #EagerImplementationFill';
   EME='//  #EagerImplementationEnd';
+  TS ='//  #TimeStamp';
 function ProcessFile:boolean;
   var
     LabelString:               string=         '';
@@ -1043,6 +1080,9 @@ function ProcessFile:boolean;
         writeln('"op" expected "'+LabelString+'" received');
       end;
     end;
+  TemplateStr:=Copy(TemplateStr,1,Pos(TS,TemplateStr)-1)+
+               '//  This file was automatically generated by Wrapper Maker on '+DateToStr(Now)+
+               Copy(TemplateStr,Pos(TS,TemplateStr)+Length(TS));
   TemplateStr:=Copy(TemplateStr,1,Pos(TDB,TemplateStr)-1)+Copy(TemplateStr,Pos(TDE,TemplateStr)+Length(TDE)+2);
   if (CmdLineU=1) or (CmdLineU=3) then
     begin // TGraphExt is generated
