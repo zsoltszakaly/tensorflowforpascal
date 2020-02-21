@@ -20,6 +20,8 @@ program examples;
 //    15/02/2020 Example12 added to convert a BMP to JPG file (use input file "myinput.bmp")
 //               Minor changes in line with the tf_operations changes
 //    18/02/2020 New examples upto Example 16
+//    21/02/2020 New examples upto Example 18
+//               Correction of earlier examples in line with the changes in tf_operations and tf_wrapper
 //
 //**********************************************************************************************************************************
 //
@@ -48,6 +50,7 @@ program examples;
 //**********************************************************************************************************************************
 
 uses
+  sysutils,
   tf_api,              // the basic interface to tensorflow, based on c_api.h
   tf_tensors,          // the unit to manipulate tensors (TF_TensorPtr)
   tf_operations,       // the unit to handle Graphs, Operations and Sessions in a TensorFlow style (use Oper names)
@@ -63,29 +66,28 @@ procedure Example1;
     g:TGraph;          // The TGraph object we will use
     s:TSession;        // The TSession object we use to run
     attr:TF_DataType;  // For the Generic AddOper all Attrubute Values are handed over as pointer and so a variable is needed
-    touts:TF_TensorPtrs;   // The result of TSession.Run is always an array, even if only one output is requested from the Graph
+    tout:TF_TensorPtr; // The result of TSession.Run
   begin
   writeln('Starting Example 1');
   t1:=CreateTensorInt32([3,2],[1,2,3,4,5,6]);     // A 3x2 matrix, and the data is filled through a vector
   t2:=CreateTensorInt32([2,4],[1,2,3,4,5,6,7,8]); // A 2x4 matrix, filled the same way
   g.Init;                                         // Need to call Init before the first use
   attr:=TF_TensorType(t1);                        // Set the Attribute Value for Attribute "T"
-  if g.AddOper('Placeholder',[],[],[],['tensor1'],['dtype'],['type'],[@attr])='' then // The Generic call to add and Input
+  if g.AddOper('Placeholder',[],[],['tensor1'],['dtype'],['type'],[@attr])='' then // The Generic call to add and Input
     writeln('Error while adding tensor1');
   if g.AddInput('tensor2',TF_Int32)='' then      // The same as tensor1, but with a simplified function created to add Inputs
     writeln('Error while adding tensor2');
-  if g.AddOper('MatMul',['tensor1','tensor2'],[],[],['tensorout'],['T'],['type'],[@attr])='' then // The Generic call
+  if g.AddOper('MatMul',['tensor1','tensor2'],[],['tensorout'],['T'],['type'],[@attr])='' then // The Generic call
     writeln('Soemthing went wrong!');
   s.Init(g);                                      // Need to make a Session that runs the Graph
-  touts:=s.run(['tensor1','tensor2'],[t1,t2],['tensorout']); // The actual run of the Session
-  PrintTensorShape(touts[0],'TOut[0]');           // A quick control that the product matrix is indeed 3x4, Int32
-  PrintTensorData(touts[0]);
+  tout:=s.run(['tensor1','tensor2'],[t1,t2],'tensorout'); // The actual run of the Session
+  PrintTensorShape(tout,'tOut');           // A quick control that the product matrix is indeed 3x4, Int32
+  PrintTensorData(tout);
   s.Done;                                         // Release the Session and in it the SessionPtr
   g.Done;                                         // Release the Graph and in it the GraphPtr, the StatusPtr and the Outputs
   TF_DeleteTensor(t1);                            // need to delete all the three tensors to avoid memory leak
   TF_DeleteTensor(t2);
-  TF_DeleteTensor(touts[0]);
-  SetLength(touts,0);
+  TF_DeleteTensor(tout);
   writeln('Finished Example 1');
   writeln;
   end;
@@ -98,20 +100,19 @@ procedure Example2;
     t2:TF_TensorPtr;
     attr1:TF_DataType; // For the Generic ExecOper all Attrubute Values are handed over as pointer as well
     attr2:boolean;
-    touts:TF_TensorPtrs; // The result of TSession.Run is always an array, even if only one output is requested from the Graph
+    tout:TF_TensorPtr; // The result of TSession.Run
   begin
   writeln('Starting Example 2');
   t1:=CreateTensorSingle([2,3],[1.0,2.0,3.0,4.0,5.0,6.0]);     // A 2x3 matrix, need to transpose before MatMul
   t2:=CreateTensorSingle([2,4],[1.1,2.2,3.3,4.4,5.5,6.6,7.7,8.8]); // A 2x4 matrix,no need to transpose
   attr1:=TF_TensorType(t1);
   attr2:=true;
-  touts:=ExecOper('MatMul',[t1,t2],[],[],['T','transpose_a'],['type','bool'],[@attr1,@attr2]);
-  PrintTensorShape(touts[0],'TOut[0]');           // A quick control that the product matrix is indeed 3x4, Int32
-  PrintTensorData(touts[0]);
+  tout:=ExecOper('MatMul',[t1,t2],['T','transpose_a'],['type','bool'],[@attr1,@attr2],[false,false]);
+  PrintTensorShape(tout,'TOut');                 // A quick control that the product matrix is indeed 3x4, Int32
+  PrintTensorData(tout);
   TF_DeleteTensor(t1);                            // need to delete all the three tensors to avoid memory leak
   TF_DeleteTensor(t2);
-  TF_DeleteTensor(touts[0]);
-  SetLength(touts,0);
+  TF_DeleteTensor(tout);
   writeln('Finished Example 2');
   writeln;
   end;
@@ -123,7 +124,7 @@ procedure Example3;
     t1:TF_TensorPtr;
     t2:TF_TensorPtr;
     attr:TF_DataType;
-    tout:TF_TensorPtr;   // The short version gives back only the first output, what is OK most of the type
+    tout:TF_TensorPtr;
   begin
   writeln('Starting Example 3');
   t1:=CreateTensorSingle([2,3],[1.0,2.0,3.0,4.0,5.0,6.0]);     // A 2x3 matrix
@@ -144,7 +145,7 @@ procedure Example4;
     t2:TF_TensorPtr;
     g:TGraphExt;       // The TGraphExt object that includes the detailed calls
     s:TSession;        // The TSession object we use to run
-    touts:TF_TensorPtrs; // The result of TSession.Run is always an array, even if only one output is requested from the Graph
+    touts:TF_TensorPtrs; // The result of TSession.Run in this case is an array as the output is given as an array as well
   begin
   writeln('Starting Example 4');
   t1:=CreateTensorSingle([2,3],[1.0,2.0,3.0,4.0,5.0,6.0]);     // A 2x3 matrix
@@ -195,7 +196,7 @@ procedure Example6;
     g:TGraph;          // The TGraph object we will use
     s:TSession;        // The TSession object we use to run
     attr:TF_DataType;  // For the Generic AddOper all Attrubute Values are handed over as pointer and so a variable is needed
-    touts:TF_TensorPtrs;   // The result of TSession.Run is always an array, even if only one output is requested from the Graph
+    tout:TF_TensorPtr;
   begin
   writeln('Starting Example 6');
   t1:=CreateTensorSingle([5],[-1.0,2.0,-3.0,4.0,-5.0]);
@@ -204,20 +205,19 @@ procedure Example6;
   g.Init;
   g.AddInput('tensor1',TF_FLOAT);                 // Using the simple input adding method
   g.AddInput('tensor2',TF_FLOAT);
-  g.AddOper('Sub',['tensor1','tensor2'],[],[],['difference'],['T'],['type'],[@attr]); // The first step
-  g.AddOper('Square',['difference'],[],[],['squareofdifference'],['T'],['type'],[@attr]); // The second step
+  g.AddOper('Sub',['tensor1','tensor2'],[],['difference'],['T'],['type'],[@attr]); // The first step
+  g.AddOper('Square',['difference'],[],['squareofdifference'],['T'],['type'],[@attr]); // The second step
   g.AddConstant('zerodimension',Int32(0));               // need to add a constant tensor that is used to indicate which dimension to Sum
-  g.AddOper('Sum',['squareofdifference','zerodimension'],[],[],['finalresult'],['T'],['type'],[@attr]); // The third step
+  g.AddOper('Sum',['squareofdifference','zerodimension'],[],['finalresult'],['T'],['type'],[@attr]); // The third step
   s.Init(g);                                      // Need to make a Session that runs the Graph
-  touts:=s.run(['tensor1','tensor2'],[t1,t2],['finalresult']); // The actual run of the Session
-  PrintTensorShape(touts[0],'TOut[0]');           // A quick control that the product matrix is indeed scalar
-  PrintTensorData(touts[0]);                      // Print the value (must be 220 = 2^2 + 4^2 + 6^2 + 8^2 + 10^2)
+  tout:=s.run(['tensor1','tensor2'],[t1,t2],'finalresult'); // The actual run of the Session
+  PrintTensorShape(tout,'TOut');                  // A quick control that the product matrix is indeed scalar
+  PrintTensorData(tout);                          // Print the value (must be 220 = 2^2 + 4^2 + 6^2 + 8^2 + 10^2)
   s.Done;                                         // Release the Session and in it the SessionPtr
   g.Done;                                         // Release the Graph and in it the GraphPtr, the StatusPtr and the Outputs
   TF_DeleteTensor(t1);                            // need to delete all the three tensors to avoid memory leak
   TF_DeleteTensor(t2);
-  TF_DeleteTensor(touts[0]);
-  SetLength(touts,0);
+  TF_DeleteTensor(tout);
   writeln('Finished Example 6');
   writeln;
   end;
@@ -228,7 +228,7 @@ procedure Example7;
     t1,t2:TF_TensorPtr;
     g:TGraphExt;
     s:TSession;
-    touts:TF_TensorPtrs;
+    tout:TF_TensorPtr;
   begin
   writeln('Starting Example 7');
   t1:=CreateTensorSingle([5],[-1.0,2.0,-3.0,4.0,-5.0]);
@@ -241,15 +241,14 @@ procedure Example7;
   g.AddConstant('zerodimension',Int32(0));
   g.AddSum('squareofdifference','zerodimension','finalresult',false,TF_FLOAT,TF_INT32);
   s.Init(g);
-  touts:=s.run(['tensor1','tensor2'],[t1,t2],['finalresult']);
-  PrintTensorShape(touts[0],'TOut[0]');
-  PrintTensorData(touts[0]);
+  tout:=s.run(['tensor1','tensor2'],[t1,t2],'finalresult');
+  PrintTensorShape(tout,'TOut');
+  PrintTensorData(tout);
   s.Done;
   g.Done;
   TF_DeleteTensor(t1);
   TF_DeleteTensor(t2);
-  TF_DeleteTensor(touts[0]);
-  SetLength(touts,0);
+  TF_DeleteTensor(tout);
   writeln('Finished Example 7');
   writeln;
   end;
@@ -370,7 +369,7 @@ procedure Example13;
   LastOperationName:=g.AddWriteFile('output-jpg','jpeg-content');
   s.Init(g);
   t:=createtensorstring('myinput.bmp'); // Since the input bmp is an input parameter, we have to create it
-  s.run(['input-bmp'],[t],[],[LastOperationName]); // The actual run of the Session, making sure that the last operation runs
+  s.run([LastOperationName],['input-bmp'],[t]); // The actual run of the Session, making sure that the last operation runs
   TF_DeleteTensor(t); // In Graph operation, there is no automatic tensor deletion, so it has to be done manually
   s.Done;
   g.Done;
@@ -384,18 +383,16 @@ procedure Example14;
     t1:TF_TensorPtr;
     t2:TF_TensorPtr;
     attr:TF_DataType;
-    touts:TF_TensorPtrs;
+    tout:TF_TensorPtr;
   begin
   writeln('Starting Example 14');
   t1:=CreateTensorSingle([3,1,2],[1.0,2.0,3.0,4.0,5.0,6.0]);     // A 3 pieces of 1x2 matrix (3 long batch)
   t2:=CreateTensorSingle([2,4],[1.1,2.2,3.3,4.4,5.5,6.6,7.7,8.8]); // A 2x4 matrix to use for all
   attr:=TF_TensorType(t1);
-  touts:=ExecOper('BatchMatMulV2',[t1,t2],[],[],['T'],['type'],[@attr]); // V2 supports batch vs. non-batch
-  PrintTensorData(touts[0]);
-  TF_DeleteTensor(t1);
-  TF_DeleteTensor(t2);
-  TF_DeleteTensor(touts[0]);
-  SetLength(touts,0);
+  tout:=ExecOper('BatchMatMulV2',[t1,t2],['T'],['type'],[@attr],[false,true]); // V2 supports batch vs. non-batch
+  PrintTensorData(tout);
+  TF_DeleteTensor(t1); // Only t1 since t2 is deleted in ExecOper
+  TF_DeleteTensor(tout);
   writeln('Finished Example 14');
   writeln;
   end;
@@ -407,22 +404,25 @@ procedure Example15;
     t:TF_TensorPtr;
     SaveOperationName:string;
     attr:TF_TypeList;
+    DataList:TF_StringList;
   begin
-  // This example shows how to save one Tensors. I still could not solve to Save multiple Tensors in one go. { TODO : How to give an InputList }
+  // This example shows how to save one Tensors.
   writeln('Starting Example 15');
   g.Init;
   t:=CreateTensorString([1],['fancynamesingle']); // This is a stringlist in one Tensor, with the name(s) to be used for the saved tensors
-  g.AddTensor('whatnametouse',t,true);                         // This is used as a constant inside teh Graph
+  g.AddTensor('whatnametouse',t,true);                         // This is used as a constant inside the Graph
   g.AddConstant('whatfilename','test.tft');                    // The file name (another Constant)
   g.AddConstant('emptystring','');                             // No encryption (another Constant)
-  g.AddInput('thisistosave',TF_FLOAT);                         // It will be InputList values, to be handed over at call (again, I could not make multiple input)
+  g.AddInput('thisistosave',TF_FLOAT);                         // It will be the one to save
   SetLength(attr,1);                                           // Before FPC 3.2 Dynamic Arrays cannot be called with values
   attr[0]:=TF_FLOAT;                                           // The first Attribute is the first (and now only) Tensor's type
-  SaveOperationName:=g.AddSave('whatfilename','whatnametouse','thisistosave',attr);
+  SetLength(DataList,1);
+  DataList[0]:='thisistosave';
+  SaveOperationName:=g.AddSave('whatfilename','whatnametouse',DataList,attr);
 
   t:=CreateTensorSingle([3,1,2],[1.0,2.0,3.0,4.0,5.0,6.0]); // This will be saved as one
   s.init(g);
-  s.run(['thisistosave'],[t],[],[SaveOperationName]);       // For TensorLists the first has to be given, hence the "t[0]"
+  s.run([SaveOperationName],['thisistosave'],[t]);
   s.Done;
   g.Done;
   writeln('Finished Example 15');
@@ -434,8 +434,9 @@ procedure Example16;
     g:TGraphExt;
     s:TSession;
     t:TF_TensorPtr;
-    touts:TF_TensorPtrs;
+    tout:TF_TensorPtr;
   begin
+  // And how to read it back
   writeln('Starting Example 16');
   g.Init;
   g.AddConstant('whatfilepattern','test.tft'); // The file pattern, in this case a direct name
@@ -443,18 +444,98 @@ procedure Example16;
   g.AddTensor('whattorestore',t,true);
   g.AddRestore('whatfilepattern','whattorestore','readtensor',TF_FLOAT,-1);
   s.init(g);
-  touts:=s.run([],[],['readtensor'],[]);
-  PrintTensorShape(touts[0]);
-  PrintTensorData(touts[0]);
-  TF_DeleteTensor(touts[0]);
-  SetLength(touts,0);
+  tout:=s.run([],[],'readtensor');
+  PrintTensorShape(tout);
+  PrintTensorData(tout);
+  TF_DeleteTensor(tout);
   s.Done;
   g.Done;
   writeln('Finished Example 16');
   writeln;
   end;
 
+procedure Example17;
+  var
+    g:TGraphExt;
+    s:TSession;
+    t:TF_TensorPtr;
+    touts:TF_TensorPtrs; // showing again the s.run with multiple outputs, even if that "multiple" is just one
+  begin
+  // This is to test the Frac(x) functionality on two different ways
+  writeln('Starting Example 17');
+  t:=CreateTensorSingleRandom([30000,10000],0,1000);
+  g.Init;
+  g.AddInput('x',TF_FLOAT);
+  g.AddConstant('1',1.0);
+  g.AddMod('x','1','xmod1',TF_FLOAT);
+  s.init(g);
+  Writeln('Before x mod 1 ',DateTimeToStr(Now));
+  touts:=s.run(['x'],[t],['xmod1']);
+  Writeln('After x mod 1 ',DateTimeToStr(Now));
+  PrintTensorShape(touts[0]);
+  TF_DeleteTensor(touts[0]);
+  SetLength(touts,0);
+  s.Done;
+  g.Done;
 
+  g.Init;
+  g.AddInput('x',TF_FLOAT);
+  g.AddFloor('x','xfloor',TF_FLOAT);
+  g.AddSub('x','xfloor','xminusxfloor',TF_FLOAT);
+  s.init(g);
+  Writeln('Before x - xfloor ',DateTimeToStr(Now));
+  touts:=s.run(['x'],[t],['xminusxfloor']);
+  Writeln('After x - x floor ',DateTimeToStr(Now));
+  PrintTensorShape(touts[0]);
+  TF_DeleteTensor(touts[0]);
+  SetLength(touts,0);
+  s.Done;
+  g.Done;
+
+  TF_DeleteTensor(t);
+
+  writeln('Finished Example 17');
+  writeln;
+  end;
+
+procedure Example18;
+  var
+    g:TGraphExt;
+    s:TSession;
+    t,t1,t2:TF_TensorPtr;
+    SaveOperationName:string;
+    attr:TF_TypeList;
+    DataList:TF_StringList;
+  begin
+  // This example shows how to save multiple Tensors in one save.
+  writeln('Starting Example 18');
+  g.Init;
+  t:=CreateTensorString([2],['fancynamesingle','fancynameint']); // This is a stringlist in one Tensor, with the name(s) to be used for the saved tensors
+  g.AddTensor('whatnametouse',t,true);                         // This is used as a constant inside the Graph
+  g.AddConstant('whatfilename','test2.tft');                    // The file name (another Constant)
+  g.AddConstant('emptystring','');                             // No encryption (another Constant)
+  g.AddInput('thisistosave1',TF_FLOAT);                        // It will be the first to save
+  g.AddInput('thisistosave2',TF_INT32);                        // It will be the second to save
+  SetLength(attr,2);                                           // Before FPC 3.2 Dynamic Arrays cannot be called with values
+  attr[0]:=TF_FLOAT;                                           // The first Attribute is the first Tensor's type
+  attr[1]:=TF_INT32;                                           // The first Attribute is the second Tensor's type
+  SetLength(DataList,2);
+  DataList[0]:='thisistosave1';
+  DataList[1]:='thisistosave2';
+  SaveOperationName:=g.AddSave('whatfilename','whatnametouse',DataList,attr);
+
+  t1:=CreateTensorSingle([3,1,2],[1.0,2.0,3.0,4.0,5.0,6.0]); // This will be saved as first
+  t2:=CreateTensorInt32([8],[1,2,3,4,5,6,7,8]);              // This will be saved as second
+  s.init(g);
+
+  s.run([SaveOperationName],['thisistosave1','thisistosave2'],[t1,t2]);
+  TF_DeleteTensor(t1);
+  TF_DeleteTensor(t2);
+  s.Done;
+  g.Done;
+  writeln('Finished Example 18');
+  writeln;
+  end;
 
 begin
 Example1;
@@ -473,5 +554,7 @@ Example13;
 Example14;
 Example15;
 Example16;
+Example17;
+Example18;
 end.
 

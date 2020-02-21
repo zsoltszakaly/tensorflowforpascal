@@ -48,6 +48,7 @@ procedure PrintTensorShape(const ATensor:TF_TensorPtr; const AName:string='');
   Write('Tensor details ',AName,': Type: ');
   DataType:=TF_TensorType(ATensor);
   case DataType of
+    TF_BOOL:      write('Boolean');
     TF_INT8:      write('Int8');
     TF_INT16:     write('Int16');
     TF_INT32:     write('Int32');
