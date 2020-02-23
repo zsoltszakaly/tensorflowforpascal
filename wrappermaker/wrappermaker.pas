@@ -23,6 +23,7 @@ program wrappermaker;
 //               Length of InputLists are automatically generated from the relevant Attribute
 //    21/02/2020 TGraph.Add<oper> part is changed significantly to cater for OutputLists
 //               Timestamp is added to the generated file
+//    23/02/2020 Add<oper> with InputList or OutputList fixed (changed from array of string to TF_StringList)
 //
 //**********************************************************************************************************************************
 //
@@ -911,34 +912,20 @@ procedure GenerateEager(const AOpName:string);
   for i:=0 to length(AttributeNames)-1 do
     begin
     PascalType:='';
-    if AttributeTypes[i]='bool' then
-      PascalType:='boolean';
-    if AttributeTypes[i]='float' then
-      PascalType:='real';
-    if AttributeTypes[i]='func' then
-      PascalType:='string';
-    if AttributeTypes[i]='int' then
-      PascalType:='integer';
-    if AttributeTypes[i]='list(float)' then
-      PascalType:='array of real';
-    if AttributeTypes[i]='list(func)' then
-      PascalType:='array of string';
-    if AttributeTypes[i]='list(int)' then
-      PascalType:='array of integer';
-    if AttributeTypes[i]='list(shape)' then
-      PascalType:='array of TF_Shape';
-    if AttributeTypes[i]='list(string)' then
-      PascalType:='array of string';
-    if AttributeTypes[i]='list(type)' then
-      PascalType:='array of TF_DataType';
-    if AttributeTypes[i]='shape' then
-      PascalType:='TF_Shape';
-    if AttributeTypes[i]='string' then
-      PascalType:='string';
-    if AttributeTypes[i]='tensor' then
-      PascalType:='TF_TensorPtr';
-    if AttributeTypes[i]='type' then
-      PascalType:='TF_DataType';
+    if AttributeTypes[i]='bool' then             PascalType:='boolean';
+    if AttributeTypes[i]='float' then            PascalType:='real';
+    if AttributeTypes[i]='func' then             PascalType:='TF_Function';
+    if AttributeTypes[i]='int' then              PascalType:='cint64';
+    if AttributeTypes[i]='list(float)' then      PascalType:='TF_FloatList';
+    if AttributeTypes[i]='list(func)' then       PascalType:='TF_FuncnameList';
+    if AttributeTypes[i]='list(int)' then        PascalType:='TF_IntList';
+    if AttributeTypes[i]='list(shape)' then      PascalType:='TF_ShapeList';
+    if AttributeTypes[i]='list(string)' then     PascalType:='TF_StringList';
+    if AttributeTypes[i]='list(type)' then       PascalType:='TF_TypeList';
+    if AttributeTypes[i]='shape' then            PascalType:='TF_Shape';
+    if AttributeTypes[i]='string' then           PascalType:='string';
+    if AttributeTypes[i]='tensor' then           PascalType:='TF_TensorPtr';
+    if AttributeTypes[i]='type' then             PascalType:='TF_DataType';
     if PascalType='' then
       begin
       if CmdLineV>=1 then
