@@ -33,5 +33,8 @@ examples.pas (in examples) is a simple program, showing some examples, how to us
 
 tf_utils (in examples) is a very simple utility unit, to add useful little functions.
 
+mnist  (in examples) is an example how to solve MNIST using the above interfaces, wrappers, etc.
+
+
 
 Please let me know if you find it useful, if you find bugs or if you want to contribute.
