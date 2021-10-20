@@ -25,6 +25,7 @@ unit tf_operations;
 //    21/02/2020 Multiple versions of TSession.Run, ExecOper to cater for various InputList, OutputList scenarios
 //               TGraph.AddInputs to handle multiple inputs easier
 //               TGraph.AddOper corrections to handle InputLists correctly
+//    20/10/2021 Removed types declared unnecessary, like charPtr and replaced it with more standard PChar
 //
 //**********************************************************************************************************************************
 //
@@ -108,7 +109,7 @@ type
       function    AddInputs(const AName:string; const ACount:Int64; ADataType:TF_DataType):TF_StringList;
       function    AddInputs(const ANames: array of string; ADataType:TF_DataType):TF_StringList;
       function    AddTensor(const AName:string; const ATensor:TF_TensorPtr; ADeleteTensor:boolean=false):string;
-      function    AddVariable(const AName:string; const AShape:TF_ShapePtr; AType:TF_AttrType):string;
+      function    AddVar(const AName:string; const AShape:TF_ShapePtr; AType:TF_AttrType):string;
     end;
 
 type
@@ -222,7 +223,7 @@ function    TGraph.AddOper(const AOperationType:string;
       end
     else if AAttrTypes[Index]='func' then
       begin
-      TF_SetAttrFuncname(OperationDescription,@AttrName[1],charptr(@string(AAttrValues[Index]^)[1]),length(string(AAttrValues[Index]^)));
+      TF_SetAttrFuncname(OperationDescription,@AttrName[1],PChar(@string(AAttrValues[Index]^)[1]),length(string(AAttrValues[Index]^)));
       end
     else if AAttrTypes[Index]='int' then
       begin
@@ -230,23 +231,23 @@ function    TGraph.AddOper(const AOperationType:string;
       end
     else if AAttrTypes[Index]='list(float)' then
       begin
-      TF_SetAttrFloatList(OperationDescription,@AttrName[1],cfloatptr(@TF_FloatList(AAttrValues[Index]^)[0]),Length(TF_FloatList(AAttrValues[Index]^)));
+      TF_SetAttrFloatList(OperationDescription,@AttrName[1],pcfloat(@TF_FloatList(AAttrValues[Index]^)[0]),Length(TF_FloatList(AAttrValues[Index]^)));
       end
     else if AAttrTypes[Index]='list(func)' then { TODO : There is no dedicated TF_SetAttFuncnameList. Is it OK like this? }
       begin
-      TF_SetAttrFuncname(OperationDescription,@AttrName[1],charptr(@TF_FuncnameList(AAttrValues[Index]^)[0]),Length(TF_FuncnameList(AAttrValues[Index]^)));
+      TF_SetAttrFuncname(OperationDescription,@AttrName[1],PChar(@TF_FuncnameList(AAttrValues[Index]^)[0]),Length(TF_FuncnameList(AAttrValues[Index]^)));
       end
     else if AAttrTypes[Index]='list(int)' then
       begin
-      TF_SetAttrIntList(OperationDescription,@AttrName[1],cint64ptr(@TF_IntList(AAttrValues[Index]^)[0]),Length(TF_IntList(AAttrValues[Index]^)));
+      TF_SetAttrIntList(OperationDescription,@AttrName[1],pcint64(@TF_IntList(AAttrValues[Index]^)[0]),Length(TF_IntList(AAttrValues[Index]^)));
       end
     else if AAttrTypes[Index]='list(shape)' then
       begin
       SetLength(AttrDims,Length(TF_ShapeList(AAttrValues[Index]^)));
       for i:=0 to Length(AttrDims)-1 do
         AttrDims[i]:=Length(TF_ShapeList(AAttrValues[Index]^)[i]);
-      TF_SetAttrShapeList(OperationDescription,@AttrName[1],cint64ptrptr(@TF_ShapeList(AAttrValues[Index]^)[0]),
-                        cintptr(@AttrDims[0]),Length(TF_ShapeList(AAttrValues[Index]^)));
+      TF_SetAttrShapeList(OperationDescription,@AttrName[1],ppcint64(@TF_ShapeList(AAttrValues[Index]^)[0]),
+                        pcint(@AttrDims[0]),Length(TF_ShapeList(AAttrValues[Index]^)));
       SetLength(AttrDims,0);
       end
     else if AAttrTypes[Index]='list(string)' then
@@ -254,8 +255,8 @@ function    TGraph.AddOper(const AOperationType:string;
       SetLength(AttrDims,Length(TF_StringList(AAttrValues[Index]^)));
       for i:=0 to Length(AttrDims)-1 do
         AttrDims[i]:=Length(TF_StringList(AAttrValues[Index]^)[i]);
-      TF_SetAttrStringList(OperationDescription,@AttrName[1],pointerptr(@TF_StringList(AAttrValues[Index]^)[0]),
-                           csize_tptr(@AttrDims[0]),Length(TF_StringList(AAttrValues[Index]^)));
+      TF_SetAttrStringList(OperationDescription,@AttrName[1],ppointer(@TF_StringList(AAttrValues[Index]^)[0]),
+                           pcsize_t(@AttrDims[0]),Length(TF_StringList(AAttrValues[Index]^)));
       SetLength(AttrDims,0);
       end
     else if AAttrTypes[Index]='list(type)' then
@@ -264,7 +265,7 @@ function    TGraph.AddOper(const AOperationType:string;
       end
     else if AAttrTypes[Index]='shape' then
       begin
-      TF_SetAttrShape(OperationDescription,@AttrName[1],cint64ptr(@(TF_ShapePtr(AAttrValues[Index])^[0])),Length(TF_ShapePtr(AAttrValues[Index])^));
+      TF_SetAttrShape(OperationDescription,@AttrName[1],pcint64(@(TF_ShapePtr(AAttrValues[Index])^[0])),Length(TF_ShapePtr(AAttrValues[Index])^));
       end
     else if AAttrTypes[Index]='string' then
       begin
@@ -411,7 +412,7 @@ function    TGraph.AddTensor(const AName:string; const ATensor:TF_TensorPtr; ADe
   if ADeleteTensor then
     TF_DeleteTensor(ATensor);
   end;
-function    TGraph.AddVariable(const AName:string; const AShape:TF_ShapePtr; AType:TF_AttrType):string;
+function    TGraph.AddVar(const AName:string; const AShape:TF_ShapePtr; AType:TF_AttrType):string;
   begin
   result:=AddOper('Variable',[],[],[AName],['dtype','shape'],['type','shape'],[@AType,@AShape]);
   end;
