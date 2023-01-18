@@ -35,6 +35,13 @@ tf_utils (in examples) is a very simple utility unit, to add useful little funct
 
 mnist  (in examples) is an example how to solve MNIST using the above interfaces, wrappers, etc.
 
+BRANCHES
 
+Multiple branches are made:
+
+Old- and a release number is a collection of deprecated TF version related files
+Master is the currently active version.
+
+Read the special readme.txt describing what is in the actual branch.
 
 Please let me know if you find it useful, if you find bugs or if you want to contribute.
