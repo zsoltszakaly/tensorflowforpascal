@@ -24,7 +24,7 @@ program wrappermaker;
 //    21/02/2020 TGraph.Add<oper> part is changed significantly to cater for OutputLists
 //               Timestamp is added to the generated file
 //    23/02/2020 Add<oper> with InputList or OutputList fixed (changed from array of string to TF_StringList)
-//    18/01/2023 As the TF 2.4 ops.pbtxt has a different structure than the earlier one used (1.15) some significant changes had to
+//    18/01/2023 As the TF 2.11 ops.pbtxt has a different structure than the earlier one used (1.15) some significant changes had to
 //                   be made, parsing differently and handling summary and description fields.
 //               Some objects are initialized "=nil" in the generated tf_wrapper so to avoid warnings there
 //
