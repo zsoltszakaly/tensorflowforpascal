@@ -1,1 +1,1 @@
-At the moment the master branch is still the old TF 1.15 related interface. Work is being made to update it asap to 2.14.
+The wrappermaker folder is already updated to use the latest (as of 18/01/2023) ops.pbtxt file and generate the interface for TF 2.11.
