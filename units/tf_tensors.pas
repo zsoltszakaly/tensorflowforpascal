@@ -4,7 +4,7 @@ unit tf_tensors;
 //
 //  Pascal methods to create and manage TensorFlow based Tensors
 //
-//  Copyright: (C) 2020, Zsolt Szakaly
+//  Copyright: (C) 2020-2023, Zsolt Szakaly
 //
 //  This source is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as
 //  published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
@@ -19,6 +19,9 @@ unit tf_tensors;
 //    13/02/2020 Initial version
 //    15/02/2020 CreateTensorString added
 //    18/02/2020 CreateTensorString for multiple strings added
+//    22/10/2021 More CreateTensor versions are created for integer types as well
+//    17/01/2023 Update to reflect TF change from 1.15 to 2.11
+//               Unimportant compiler hints suppressed
 //
 //**********************************************************************************************************************************
 //
@@ -54,33 +57,39 @@ function GetTensorScalarToIndex(const ATensor:TF_TensorPtr; const AScalar:Int64)
 // the generic function to create a Tensor without adding data to it
 function CreateTensor(ADataType:TF_DataType; const AShape:array of Int64):TF_TensorPtr;
 
-// for integer types there are three versions: (a) constant, (b) shape and an appropriate array, (c) shape, pointer and length
+// there are four versions: (a) constant, (b) vector, (c) shape and an appropriate array, (d) shape, pointer and length
 function CreateTensorInt8(AData:Int8):TF_TensorPtr;
+function CreateTensorInt8(const AData:array of Int8):TF_TensorPtr;
 function CreateTensorInt8(const AShape:array of Int64; const AData:array of Int8):TF_TensorPtr;
 function CreateTensorInt8(const AShape:array of Int64; const AData; ALength:Int64):TF_TensorPtr;
 function CreateTensorInt16(AData:Int16):TF_TensorPtr;
+function CreateTensorInt16(const AData:array of Int16):TF_TensorPtr;
 function CreateTensorInt16(const AShape:array of Int64; const AData:array of Int16):TF_TensorPtr;
 function CreateTensorInt16(const AShape:array of Int64; const AData; ALength:Int64):TF_TensorPtr;
 function CreateTensorInt32(AData:Int32):TF_TensorPtr;
+function CreateTensorInt32(const AData:array of Int32):TF_TensorPtr;
 function CreateTensorInt32(const AShape:array of Int64; const AData:array of Int32):TF_TensorPtr;
 function CreateTensorInt32(const AShape:array of Int64; const AData; ALength:Int64):TF_TensorPtr;
 function CreateTensorInt64(AData:Int64):TF_TensorPtr;
+function CreateTensorInt64(const AData:array of Int64):TF_TensorPtr;
 function CreateTensorInt64(const AShape:array of Int64; const AData:array of Int64):TF_TensorPtr;
 function CreateTensorInt64(const AShape:array of Int64; const AData; ALength:Int64):TF_TensorPtr;
 function CreateTensorUInt8(AData:UInt8):TF_TensorPtr;
+function CreateTensorUInt8(const AData:array of UInt8):TF_TensorPtr;
 function CreateTensorUInt8(const AShape:array of Int64; const AData:array of UInt8):TF_TensorPtr;
 function CreateTensorUInt8(const AShape:array of Int64; const AData; ALength:Int64):TF_TensorPtr;
 function CreateTensorUInt16(AData:UInt16):TF_TensorPtr;
+function CreateTensorUInt16(const AData:array of UInt16):TF_TensorPtr;
 function CreateTensorUInt16(const AShape:array of Int64; const AData:array of UInt16):TF_TensorPtr;
 function CreateTensorUInt16(const AShape:array of Int64; const AData; ALength:Int64):TF_TensorPtr;
 function CreateTensorUInt32(AData:UInt32):TF_TensorPtr;
+function CreateTensorUInt32(const AData:array of UInt32):TF_TensorPtr;
 function CreateTensorUInt32(const AShape:array of Int64; const AData:array of UInt32):TF_TensorPtr;
 function CreateTensorUInt32(const AShape:array of Int64; const AData; ALength:Int64):TF_TensorPtr;
 function CreateTensorUInt64(AData:UInt64):TF_TensorPtr;
+function CreateTensorUInt64(const AData:array of UInt64):TF_TensorPtr;
 function CreateTensorUInt64(const AShape:array of Int64; const AData:array of UInt64):TF_TensorPtr;
 function CreateTensorUInt64(const AShape:array of Int64; const AData; ALength:Int64):TF_TensorPtr;
-
-// for TF_FLOAT the Single name is used. In addition to the integer types, there is (d) direct array (vector)
 function CreateTensorSingle(const AData:Single):TF_TensorPtr;
 function CreateTensorSingle(const AData:array of Single):TF_TensorPtr;
 function CreateTensorSingle(const AShape:array of Int64; const AData:array of Single):TF_TensorPtr;
@@ -108,6 +117,7 @@ implementation
 function GetTensorShape(const ATensor:TF_TensorPtr):TF_Shape;
   var I:integer;
   begin
+  result:=nil;
   SetLength(result,TF_NumDims(ATensor));
   for I:=0 to length(result)-1 do
     result[i]:=TF_Dim(ATensor,I);
@@ -139,6 +149,7 @@ function GetTensorScalarToIndex(const ATensor:TF_TensorPtr; const AScalar:Int64)
     Index:integer;
     Scalar:Int64;
   begin
+  result:=nil;
   Shape:=GetTensorShape(ATensor);
   SetLength(result,Length(Shape));
   Scalar:=AScalar;
@@ -172,6 +183,11 @@ function CreateTensorInt8(AData:Int8):TF_TensorPtr;
   result:=CreateTensor(TF_INT8,[]);
   WriteTensorData(result, AData, SizeOf(AData));
   end;
+function CreateTensorInt8(const AData:array of Int8):TF_TensorPtr;
+  begin
+  result:=CreateTensor(TF_INT8,[length(AData)]);
+  WriteTensorData(result, AData[0], Length(AData)*SizeOf(Int8));
+  end;
 function CreateTensorInt8(const AShape:array of Int64; const AData:array of Int8):TF_TensorPtr;
   begin
   result:=CreateTensor(TF_INT8,AShape);
@@ -186,6 +202,11 @@ function CreateTensorInt16(AData:Int16):TF_TensorPtr;
   begin
   result:=CreateTensor(TF_INT16,[]);
   WriteTensorData(result, AData, SizeOf(AData));
+  end;
+function CreateTensorInt16(const AData:array of Int16):TF_TensorPtr;
+  begin
+  result:=CreateTensor(TF_INT16,[length(AData)]);
+  WriteTensorData(result, AData[0], Length(AData)*SizeOf(Int16));
   end;
 function CreateTensorInt16(const AShape:array of Int64; const AData:array of Int16):TF_TensorPtr;
   begin
@@ -202,6 +223,11 @@ function CreateTensorInt32(AData:Int32):TF_TensorPtr;
   result:=CreateTensor(TF_INT32,[]);
   WriteTensorData(result, AData, SizeOf(AData));
   end;
+function CreateTensorInt32(const AData:array of Int32):TF_TensorPtr;
+  begin
+  result:=CreateTensor(TF_INT32,[length(AData)]);
+  WriteTensorData(result,AData[0],Length(AData)*SizeOf(Int32));
+  end;
 function CreateTensorInt32(const AShape:array of Int64; const AData:array of Int32):TF_TensorPtr;
   begin
   result:=CreateTensor(TF_INT32,AShape);
@@ -216,6 +242,11 @@ function CreateTensorInt64(AData:Int64):TF_TensorPtr;
   begin
   result:=CreateTensor(TF_INT64,[]);
   WriteTensorData(result, AData, SizeOf(AData));
+  end;
+function CreateTensorInt64(const AData:array of Int64):TF_TensorPtr;
+  begin
+  result:=CreateTensor(TF_INT64,[length(AData)]);
+  WriteTensorData(result,AData[0],Length(AData)*SizeOf(Int64));
   end;
 function CreateTensorInt64(const AShape:array of Int64; const AData:array of Int64):TF_TensorPtr;
   begin
@@ -232,6 +263,11 @@ function CreateTensorUInt8(AData:UInt8):TF_TensorPtr;
   result:=CreateTensor(TF_UINT8,[]);
   WriteTensorData(result, AData, SizeOf(AData));
   end;
+function CreateTensorUInt8(const AData:array of Byte):TF_TensorPtr;
+  begin
+  result:=CreateTensor(TF_UINT8,[length(AData)]);
+  WriteTensorData(result, AData[0], Length(AData)*SizeOf(Byte));
+  end;
 function CreateTensorUInt8(const AShape:array of Int64; const AData:array of Byte):TF_TensorPtr;
   begin
   result:=CreateTensor(TF_UINT8,AShape);
@@ -246,6 +282,11 @@ function CreateTensorUInt16(AData:UInt16):TF_TensorPtr;
   begin
   result:=CreateTensor(TF_UInt16,[]);
   WriteTensorData(result, AData, SizeOf(AData));
+  end;
+function CreateTensorUInt16(const AData:array of UInt16):TF_TensorPtr;
+  begin
+  result:=CreateTensor(TF_UInt16,[length(AData)]);
+  WriteTensorData(result, AData[0], Length(AData)*SizeOf(UInt16));
   end;
 function CreateTensorUInt16(const AShape:array of Int64; const AData:array of UInt16):TF_TensorPtr;
   begin
@@ -262,6 +303,11 @@ function CreateTensorUInt32(AData:UInt32):TF_TensorPtr;
   result:=CreateTensor(TF_UInt32,[]);
   WriteTensorData(result, AData, SizeOf(AData));
   end;
+function CreateTensorUInt32(const AData:array of UInt32):TF_TensorPtr;
+  begin
+  result:=CreateTensor(TF_UInt32,[length(AData)]);
+  WriteTensorData(result,AData[0],Length(AData)*SizeOf(UInt32));
+  end;
 function CreateTensorUInt32(const AShape:array of Int64; const AData:array of UInt32):TF_TensorPtr;
   begin
   result:=CreateTensor(TF_UInt32,AShape);
@@ -277,6 +323,11 @@ function CreateTensorUInt64(AData:UInt64):TF_TensorPtr;
   result:=CreateTensor(TF_UInt64,[]);
   WriteTensorData(result, AData, SizeOf(AData));
   end;
+function CreateTensorUInt64(const AData:array of UInt64):TF_TensorPtr;
+  begin
+  result:=CreateTensor(TF_UInt64,[length(AData)]);
+  WriteTensorData(result,AData[0],Length(AData)*SizeOf(UInt64));
+  end;
 function CreateTensorUInt64(const AShape:array of Int64; const AData:array of UInt64):TF_TensorPtr;
   begin
   result:=CreateTensor(TF_UInt64,AShape);
@@ -287,7 +338,6 @@ function CreateTensorUInt64(const AShape:array of Int64; const AData; ALength:In
   result:=CreateTensor(TF_UInt64,AShape);
   WriteTensorData(result,AData,ALength);
   end;
-
 function CreateTensorSingle(const AData:Single):TF_TensorPtr;
   begin
   result:=CreateTensor(TF_FLOAT,[]);
@@ -312,20 +362,31 @@ function CreateTensorSingle(const AShape:array of Int64; const AData; ALength:In
 function CreateTensorString(const AData:PChar):TF_TensorPtr;
   var
     Status:TF_StatusPtr;
+    TStringPtr:TF_TStringPtr=nil;
   begin
   Status:=TF_NewStatus;
+  // 17.01.2023 New experimental version to reflect changes in TF API
+  new(TStringPtr);
+  result:=TF_AllocateTensor(TF_String,nil,0,sizeof(TF_TString));
+  TF_StringInit(TStringPtr);
+  TF_StringCopy(TStringPtr, AData, strlen(AData));
+  WriteTensorData(result,TStringPtr^,sizeof(TF_TString));
+  (* Previous version that worked under 1.15
   result:=TF_AllocateTensor(TF_STRING,nil,0,8+TF_StringEncodedSize(strlen(AData)));
   TF_StringEncode(AData,strlen(AData),TF_TensorData(result)+8,TF_StringEncodedSize(strlen(AData)),Status);
+  *)
+  // do I need to Dealloc the string????
   TF_CheckStatus(Status);
-  FillByte(TF_TensorData(result)^,8,0);
   end;
 function CreateTensorString(const AShape:array of Int64; const AData:array of PChar):TF_TensorPtr;
   var
     Status:TF_StatusPtr;
-    TotalLength:Int64;
+    TStringPtr:TF_TStringPtr=nil;
+//    TotalLength:Int64;
     i:integer;
   begin
   // No check to make sure that it has the same number of strings required by the Shape
+  (* Previous version
   Status:=TF_NewStatus;
   TotalLength:=0;
   for i:=0 to Length(AData)-1 do
@@ -344,7 +405,21 @@ function CreateTensorString(const AShape:array of Int64; const AData:array of PC
     TF_CheckStatus(Status);
     TotalLength:=TotalLength+TF_StringEncodedSize(strlen(AData[i]));
     end;
-end;
+  TF_CheckStatus(Status);
+  *)
+  // Experimental version
+  Status:=TF_NewStatus;
+  result:=TF_AllocateTensor(TF_STRING,@AShape[0],Length(AShape),Length(AData) * sizeof(TF_TString));
+  new(TStringPtr);
+  for i:=0 to Length(AData)-1 do
+    begin
+    TF_StringInit(TStringPtr);
+    TF_StringCopy(TStringPtr, AData[i], strlen(AData[i]));
+    Move(TStringPtr^, (TF_TensorData(result)+i * sizeof(TF_TString))^, sizeof(TF_TString));
+//    TF_StringDealloc(TStringPtr); // does it kill it?
+    end;
+  TF_CheckStatus(Status);
+  end;
 
 //**********************************************************************************************************************************
 //  Data move to and from a Tensor
@@ -389,26 +464,26 @@ procedure ReadTensorData(const ATensor:TF_TensorPtr; const AData; ADataLength:In
 function GetTensorValue(const ATensor:TF_TensorPtr; const AIndex:array of Int64):Variant;
   begin
   case TF_TensorType(ATensor) of
-    TF_INT8:result:=Int8((TF_TensorData(ATensor)+
-                          GetTensorIndexToScalar(ATensor,AIndex)*TF_DataTypeSize(TF_TensorType(ATensor)))^);
-    TF_INT16:result:=Int16((TF_TensorData(ATensor)+
-                            GetTensorIndexToScalar(ATensor,AIndex)*TF_DataTypeSize(TF_TensorType(ATensor)))^);
-    TF_INT32:result:=Int32((TF_TensorData(ATensor)+
-                            GetTensorIndexToScalar(ATensor,AIndex)*TF_DataTypeSize(TF_TensorType(ATensor)))^);
-    TF_INT64:result:=Int64((TF_TensorData(ATensor)+
-                            GetTensorIndexToScalar(ATensor,AIndex)*TF_DataTypeSize(TF_TensorType(ATensor)))^);
-    TF_UINT8:result:=UInt8((TF_TensorData(ATensor)+
-                            GetTensorIndexToScalar(ATensor,AIndex)*TF_DataTypeSize(TF_TensorType(ATensor)))^);
-    TF_UINT16:result:=UInt16((TF_TensorData(ATensor)+
-                              GetTensorIndexToScalar(ATensor,AIndex)*TF_DataTypeSize(TF_TensorType(ATensor)))^);
-    TF_UINT32:result:=UInt32((TF_TensorData(ATensor)+
-                              GetTensorIndexToScalar(ATensor,AIndex)*TF_DataTypeSize(TF_TensorType(ATensor)))^);
-    TF_UINT64:result:=UInt64((TF_TensorData(ATensor)+
-                              GetTensorIndexToScalar(ATensor,AIndex)*TF_DataTypeSize(TF_TensorType(ATensor)))^);
-    TF_FLOAT:result:=Single((TF_TensorData(ATensor)+
-                             GetTensorIndexToScalar(ATensor,AIndex)*TF_DataTypeSize(TF_TensorType(ATensor)))^);
-    TF_DOUBLE:result:=Double((TF_TensorData(ATensor)+
-                              GetTensorIndexToScalar(ATensor,AIndex)*TF_DataTypeSize(TF_TensorType(ATensor)))^);
+    TF_INT8:result:={%H-}Int8((TF_TensorData(ATensor)+
+                               GetTensorIndexToScalar(ATensor,AIndex)*TF_DataTypeSize(TF_TensorType(ATensor)))^);
+    TF_INT16:result:={%H-}Int16((TF_TensorData(ATensor)+
+                                 GetTensorIndexToScalar(ATensor,AIndex)*TF_DataTypeSize(TF_TensorType(ATensor)))^);
+    TF_INT32:result:={%H-}Int32((TF_TensorData(ATensor)+
+                                 GetTensorIndexToScalar(ATensor,AIndex)*TF_DataTypeSize(TF_TensorType(ATensor)))^);
+    TF_INT64:result:={%H-}Int64((TF_TensorData(ATensor)+
+                                 GetTensorIndexToScalar(ATensor,AIndex)*TF_DataTypeSize(TF_TensorType(ATensor)))^);
+    TF_UINT8:result:={%H-}UInt8((TF_TensorData(ATensor)+
+                                 GetTensorIndexToScalar(ATensor,AIndex)*TF_DataTypeSize(TF_TensorType(ATensor)))^);
+    TF_UINT16:result:={%H-}UInt16((TF_TensorData(ATensor)+
+                                   GetTensorIndexToScalar(ATensor,AIndex)*TF_DataTypeSize(TF_TensorType(ATensor)))^);
+    TF_UINT32:result:={%H-}UInt32((TF_TensorData(ATensor)+
+                                   GetTensorIndexToScalar(ATensor,AIndex)*TF_DataTypeSize(TF_TensorType(ATensor)))^);
+    TF_UINT64:result:={%H-}UInt64((TF_TensorData(ATensor)+
+                                   GetTensorIndexToScalar(ATensor,AIndex)*TF_DataTypeSize(TF_TensorType(ATensor)))^);
+    TF_FLOAT:result:={%H-}Single((TF_TensorData(ATensor)+
+                                  GetTensorIndexToScalar(ATensor,AIndex)*TF_DataTypeSize(TF_TensorType(ATensor)))^);
+    TF_DOUBLE:result:={%H-}Double((TF_TensorData(ATensor)+
+                                   GetTensorIndexToScalar(ATensor,AIndex)*TF_DataTypeSize(TF_TensorType(ATensor)))^);
     end;
   end;
 

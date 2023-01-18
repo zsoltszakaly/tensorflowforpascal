@@ -4,7 +4,7 @@ unit tf_api;
 //
 //  Pascal interface to TensorFlow dynamic library
 //
-//  Copyright: (C) 2020, Zsolt Szakaly
+//  Copyright: (C) 2020-2023, Zsolt Szakaly
 //
 //  This source is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as
 //  published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
@@ -17,8 +17,31 @@ unit tf_api;
 //
 //  Credit: This unit is based on the c_api.inc created by Phil Hess, based on the C header file c_api.h of TensorFlow
 //
-//  Change log: 13/02/2020 Initial version
-//              21/02/2020 TF_DataType changed to cint from clong, because the TypeList works on cint
+//  Change log:
+//    13/02/2020 Initial version
+//    21/02/2020 TF_DataType changed to cint from clong, because the TypeList works on cint
+//    20/10/2021 Removed types declared unnecessary, like charPtr and replaced it with more standard PChar
+//    22/10/2021 TF_DeleteTensors added to delete an array of tensors in one step
+//    17/01/2023 Update to reflect c_api.h change from 1.15 to 2.11
+//               - Added TF_TensorFromProto
+//               - Added TF_StringView
+//               - Added TF_NewOperationLocked
+//               - Added TF_FinishOperationLocked
+//               - Added TF_OperationAllInputs
+//               - Added TF_OperationGetNumAttrs
+//               . Added TF_OperationGetAttrNameLength
+//               - Added TF_OperationGetAttrName
+//               - Added TF_UpdateEdge
+//               - Added TF_RegisterFilesystemPlugin
+//               - Removed TF_StringEncode
+//               - Removed TF_StringDecode
+//               - Removed TF_StringEncodedSize
+//               Added all string related routines as per the new tf_string.h in 2.11
+//               Complete some missing structure and routines
+//               - Added TF_GetAllRegisteredKernels
+//               - Added TF_GetRegisteredKernelsForOp
+//               - Added TF_Server and the related routines
+//               - Added TF_RegisterLogListener
 //
 //**********************************************************************************************************************************
 //
@@ -27,9 +50,6 @@ unit tf_api;
 //  This interface is trying to implement the c api published by the TensorFlow team on GitHub (www.github.com/tensorflow)
 //  Certain types were added to provide easier use in the additional units based on this one, as well as a function to check
 //  status codes.
-//
-//  Change log:
-//    20/10/2021 Removed types declared unnecessary, like charPtr and replaced it with more standard PChar
 //
 //**********************************************************************************************************************************
 
@@ -119,9 +139,14 @@ procedure TF_DeleteBuffer(param1: TF_BufferPtr); cdecl; external;
 function TF_GetBuffer(buffer: TF_BufferPtr): TF_Buffer; cdecl; external;
 
 type
+  TF_StringView = record
+    data: PChar;
+    len: csize_t;
+    end;
+
+type
   TF_Tensor = record end;
   TF_TensorPtr = ^TF_Tensor;
-  TF_TensorPtrs = array of TF_TensorPtr;
 function TF_AllocateTensor(param1: TF_DataType; dims: pcint64; num_dims: cint; len: csize_t): TF_TensorPtr; cdecl; external;
 function TF_TensorMaybeMove(tensor: TF_TensorPtr): TF_TensorPtr; cdecl; external;
 procedure TF_DeleteTensor(param1: TF_TensorPtr); cdecl; external;
@@ -130,9 +155,11 @@ function TF_NumDims(param1: TF_TensorPtr): cint; cdecl; external;
 function TF_Dim(tensor: TF_TensorPtr; dim_index: cint): cint64; cdecl; external;
 function TF_TensorByteSize(param1: TF_TensorPtr): csize_t; cdecl; external;
 function TF_TensorData(param1: TF_TensorPtr): pointer; cdecl; external;
+(* routines removed as they are not available after TF 2.4
 function TF_StringEncode(src: PChar; src_len: csize_t; dst: PChar; dst_len: csize_t; status: TF_StatusPtr): csize_t; cdecl; external;
 function TF_StringDecode(src: PChar; src_len: csize_t; dst: PPChar; dst_len: pcsize_t; status: TF_StatusPtr): csize_t; cdecl; external;
 function TF_StringEncodedSize(len: csize_t): csize_t; cdecl; external;
+*)
 
 type
   TF_SessionOptions = record end;
@@ -171,6 +198,7 @@ type
 procedure TF_GraphSetTensorShape(graph: TF_GraphPtr; output: TF_Output; dims: pcint64; num_dims: cint; status: TF_StatusPtr); cdecl; external;
 function TF_GraphGetTensorNumDims(graph: TF_GraphPtr; output: TF_Output; status: TF_StatusPtr): cint; cdecl; external;
 procedure TF_GraphGetTensorShape(graph: TF_GraphPtr; output: TF_Output; dims: pcint64; num_dims: cint; status: TF_StatusPtr); cdecl; external;
+function TF_NewOperationLocked(graph: TF_GraphPtr; op_type: PChar; oper_name: PChar): TF_OperationDescriptionPtr; cdecl; external;
 function TF_NewOperation(graph: TF_GraphPtr; op_type: PChar; oper_name: PChar): TF_OperationDescriptionPtr; cdecl; external;
 procedure TF_SetDevice(desc: TF_OperationDescriptionPtr; device: PChar); cdecl; external;
 procedure TF_AddInput(desc: TF_OperationDescriptionPtr; input: TF_Output); cdecl; external;
@@ -195,6 +223,7 @@ procedure TF_SetAttrTensorShapeProtoList(desc: TF_OperationDescriptionPtr; attr_
 procedure TF_SetAttrTensor(desc: TF_OperationDescriptionPtr; attr_name: PChar; value: TF_TensorPtr; status: TF_StatusPtr); cdecl; external;
 procedure TF_SetAttrTensorList(desc: TF_OperationDescriptionPtr; attr_name: PChar; values: TF_TensorPtr; num_values: cint; status: TF_StatusPtr); cdecl; external;
 procedure TF_SetAttrValueProto(desc: TF_OperationDescriptionPtr; attr_name: PChar; proto: pointer; proto_len: csize_t; status: TF_StatusPtr); cdecl; external;
+function TF_FinishOperationLocked(desc: TF_OperationDescriptionPtr; status: TF_StatusPtr): TF_OperationPtr; cdecl; external;
 function TF_FinishOperation(desc: TF_OperationDescriptionPtr; status: TF_StatusPtr): TF_OperationPtr; cdecl; external;
 function TF_OperationName(oper: TF_OperationPtr): PChar; cdecl; external;
 function TF_OperationOpType(oper: TF_OperationPtr): PChar; cdecl; external;
@@ -206,6 +235,7 @@ function TF_OperationNumInputs(oper: TF_OperationPtr): cint; cdecl; external;
 function TF_OperationInputType(oper_in: TF_Input): TF_DataType; cdecl; external;
 function TF_OperationInputListLength(oper: TF_OperationPtr; arg_name: PChar; status: TF_StatusPtr): cint; cdecl; external;
 function TF_OperationInput(oper_in: TF_Input): TF_Output; cdecl; external;
+procedure TF_OperationAllInputs(oper: TF_OperationPtr; inputs: TF_OutputPtr; max_inputs: cint); cdecl; external;
 function TF_OperationOutputNumConsumers(oper_out: TF_Output): cint; cdecl; external;
 function TF_OperationOutputConsumers(oper_out: TF_Output; consumers: TF_InputPtr; max_consumers: cint): cint; cdecl; external;
 function TF_OperationNumControlInputs(oper: TF_OperationPtr): cint; cdecl; external;
@@ -250,6 +280,9 @@ procedure TF_OperationGetAttrTensorShapeProtoList(oper: TF_OperationPtr; attr_na
 procedure TF_OperationGetAttrTensor(oper: TF_OperationPtr; attr_name: PChar; value: TF_TensorPtr; status: TF_StatusPtr); cdecl; external;
 procedure TF_OperationGetAttrTensorList(oper: TF_OperationPtr; attr_name: PChar; values: TF_TensorPtr; max_values: cint; status: TF_StatusPtr); cdecl; external;
 procedure TF_OperationGetAttrValueProto(oper: TF_OperationPtr; attr_name: PChar; output_attr_value: TF_BufferPtr; status: TF_StatusPtr); cdecl; external;
+function TF_OperationGetNumAttrs(oper: TF_OperationPtr): cint; cdecl; external;
+function TF_OperationGetAttrNameLength(oper: TF_OperationPtr; i: cint): cint; cdecl; external;
+procedure TF_OperationGetAttrName(oper: TF_OperationPtr; i: cint; output: PChar; status: TF_StatusPtr); cdecl; external;
 function TF_GraphOperationByName(graph: TF_GraphPtr; oper_name: PChar): TF_OperationPtr; cdecl; external;
 function TF_GraphNextOperation(graph: TF_GraphPtr; pos: pcsize_t): TF_OperationPtr; cdecl; external;
 procedure TF_GraphToGraphDef(graph: TF_GraphPtr; output_graph_def: TF_BufferPtr; status: TF_StatusPtr); cdecl; external;
@@ -362,6 +395,45 @@ procedure TF_DeleteApiDefMap(apimap: TF_ApiDefMapPtr); cdecl; external;
 procedure TF_ApiDefMapPut(api_def_map: TF_ApiDefMapPtr; text: PChar; text_len: csize_t; status: TF_StatusPtr); cdecl; external;
 function TF_ApiDefMapGet(api_def_map: TF_ApiDefMapPtr; name: PChar; name_len: csize_t; status: TF_StatusPtr): TF_BufferPtr; cdecl; external;
 
+function TF_GetAllRegisteredKernels(status: TF_StatusPtr): TF_BufferPtr; cdecl; external;
+function TF_GetRegisteredKernelsForOp(name: PChar; status: TF_StatusPtr): TF_BufferPtr; cdecl; external;
+
+procedure TF_UpdateEdge(graph: TF_GraphPtr; new_src: TF_Output; dst: TF_Input; status: TF_StatusPtr); cdecl; external;
+
+type
+  TF_Server = record end;
+  TF_ServerPtr = ^TF_Server;
+
+function TF_NewServer(proto: pointer; proto_len: csize_t; status: TF_StatusPtr): TF_ServerPtr; cdecl; external;
+procedure TF_ServerStart(server: TF_ServerPtr; status: TF_StatusPtr); cdecl; external;
+procedure TF_ServerStop(server: TF_ServerPtr; status: TF_StatusPtr); cdecl; external;
+procedure TF_ServerJoin(server: TF_ServerPtr; status: TF_StatusPtr); cdecl; external;
+function TF_ServerTarget(server: TF_ServerPtr): PChar; cdecl; external;
+procedure TF_DeleteServer(server: TF_ServerPtr); cdecl; external;
+
+type
+  TF_ListenerProcedure = procedure(message: PChar);
+
+procedure TF_RegisterLogListener(listener: TF_ListenerProcedure); cdecl; external;
+
+procedure TF_RegisterFilesystemPlugin(plugin_filename: PChar; status: TF_StatusPtr); cdecl; external;
+
+type
+  TF_TString = record
+    raw: packed array[1..32] of char;
+    end;
+  TF_TStringPtr = ^TF_TString;
+  TF_TString_Type = byte;
+
+procedure TF_StringInit(t: TF_TStringPtr); cdecl; external;
+procedure TF_StringCopy(dst: TF_TstringPtr; src: PChar; size: csize_t); cdecl; external;
+procedure TF_StringAssignView(dst: TF_TstringPtr; src: PChar; size: csize_t); cdecl; external;
+function TF_StringGetDataPointer(tstr: TF_TStringPtr): PChar; cdecl; external;
+function TF_StringGetType(str: TF_TStringPtr): TF_TString_Type; cdecl; external;
+function TF_StringGetSize(tstr: TF_TStringPtr): csize_t; cdecl; external;
+function TF_StringGetCapacity(str: TF_TStringPtr): csize_t; cdecl; external;
+procedure TF_StringDealloc(tstr: TF_TStringPtr); cdecl; external;
+
 type
   TF_Shape=array of Int64;
   TF_ShapePtr=^TF_Shape;
@@ -371,7 +443,11 @@ type
   TF_ShapeList=array of TF_Shape;
   TF_StringList=array of string;
   TF_TypeList=array of TF_DataType;
+  TF_TensorPtrs = array of TF_TensorPtr;
 
+procedure TF_TensorFromProto(aFrom: TF_BufferPtr; aTo: TF_TensorPtr; aStatus: TF_StatusPtr); cdecl; external;
+
+procedure TF_DeleteTensors(ATensors: TF_TensorPtrs);
 
 implementation
 
@@ -383,6 +459,13 @@ function TF_CheckStatus(AStatusPtr:TF_StatusPtr):Boolean;
   result:=TF_GetCode(AStatusPtr)=TF_OK;
   if not result then
     raise exception.create(TF_Message(AStatusPtr));
+  end;
+
+procedure TF_DeleteTensors(ATensors: TF_TensorPtrs);
+  var Tensor : TF_TensorPtr;
+  begin
+  for Tensor in ATensors do
+    TF_DeleteTEnsor(Tensor);
   end;
 
 end.

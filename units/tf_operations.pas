@@ -4,7 +4,7 @@ unit tf_operations;
 //
 //  Pascal methods to create and manage TensorFlow based Operations
 //
-//  Copyright: (C) 2020, Zsolt Szakaly
+//  Copyright: (C) 2020-2023, Zsolt Szakaly
 //
 //  This source is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as
 //  published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
@@ -26,6 +26,7 @@ unit tf_operations;
 //               TGraph.AddInputs to handle multiple inputs easier
 //               TGraph.AddOper corrections to handle InputLists correctly
 //    20/10/2021 Removed types declared unnecessary, like charPtr and replaced it with more standard PChar
+//    17/01/2023 Unimportant compiler warnings are "fixed"
 //
 //**********************************************************************************************************************************
 //
@@ -75,7 +76,7 @@ type
 //**********************************************************************************************************************************
 
 type
-  TGraph=object                // The main Graph Object, including a TF Graph, a TF Status and an Outputs array for easier reference
+  TGraph=object               // The main Graph Object, including a TF Graph, a TF Status and an Outputs array for easier reference
     public                    // Fields to access through methods
       FGraph:TF_GraphPtr;
       FStatus:TF_StatusPtr;
@@ -243,6 +244,7 @@ function    TGraph.AddOper(const AOperationType:string;
       end
     else if AAttrTypes[Index]='list(shape)' then
       begin
+      AttrDims:=nil;
       SetLength(AttrDims,Length(TF_ShapeList(AAttrValues[Index]^)));
       for i:=0 to Length(AttrDims)-1 do
         AttrDims[i]:=Length(TF_ShapeList(AAttrValues[Index]^)[i]);
@@ -314,6 +316,7 @@ function    TGraph.GetOutputsByName(const ANames:TF_StringList):TF_Outputs;
   var
     i:integer;
   begin
+  result:=nil;
   SetLength(result,Length(ANames));
   for i:=0 to Length(ANames)-1 do
     result[i]:=GetOutputByName(ANames[i]);
@@ -393,6 +396,7 @@ function    TGraph.AddInput(const AName:string; ADataType:TF_DataType):string;
 function    TGraph.AddInputs(const AName:string; const ACount:Int64; ADataType:TF_DataType):TF_StringList;
   var i:Int64;
   begin
+  result:=nil;
   SetLength(result,ACount);
   for i:=0 to ACount-1 do
     result[i]:=AddOper('Placeholder',[],[],[AName+'_'+inttostr(i)],['dtype'],['type'],[@ADataType]);
@@ -400,6 +404,7 @@ function    TGraph.AddInputs(const AName:string; const ACount:Int64; ADataType:T
 function    TGraph.AddInputs(const ANames: array of string; ADataType:TF_DataType):TF_StringList;
   var i:Int64;
   begin
+  result:=nil;
   SetLength(result,Length(ANames));
   for i:=0 to Length(ANames)-1 do
     result[i]:=AddOper('Placeholder',[],[],[ANames[i]],['dtype'],['type'],[@ADataType]);
@@ -439,9 +444,9 @@ function    TSession.Run(const AOperations:array of string;
                          const AInputs:array of string; const AInputValues:array of TF_TensorPtr;
                          const AOutputs:array of string):TF_TensorPtrs;
   var
-    InputOperations:array of TF_Output;
-    OutputOperations:array of TF_Output;
-    ExecuteOperations:array of TF_OperationPtr;
+    InputOperations:array of TF_Output=nil;
+    OutputOperations:array of TF_Output=nil;
+    ExecuteOperations:array of TF_OperationPtr=nil;
     i:integer;
   begin
   SetLength(InputOperations,length(AInputs));
@@ -450,6 +455,7 @@ function    TSession.Run(const AOperations:array of string;
   SetLength(OutputOperations,length(AOutputs));
   for i:=0 to Length(AOutputs)-1 do
     OutputOperations[i]:=FGraph.GetOutputByName(AOutputs[i]);
+  result:=nil;
   SetLength(result,Length(OutputOperations));
   SetLength(ExecuteOperations,length(AOperations));
   for i:=0 to Length(AOperations)-1 do
@@ -499,9 +505,9 @@ function  ExecOper( // nInput, nInputList, nOutput
   var
     Graph:TGraph;
     Index1,Index2:integer;
-    InputNames:array of string;
-    InputListNames:array of TF_StringList;
-    OutputNames:array of string;
+    InputNames:array of string=nil;
+    InputListNames:array of TF_StringList=nil;
+    OutputNames:array of string=nil;
     Session:TSession;
     OperationName:string;
   begin
