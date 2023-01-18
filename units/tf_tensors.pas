@@ -20,9 +20,10 @@ unit tf_tensors;
 //    15/02/2020 CreateTensorString added
 //    18/02/2020 CreateTensorString for multiple strings added
 //    22/10/2021 More CreateTensor versions are created for integer types as well
-//    17/01/2023 Update to reflect TF change from 1.15 to 2.11
+//    17/01/2023 Update to reflect TF change from 1.15 to 2.11 in CreateTensorString
 //               Unimportant compiler hints suppressed
-// 
+//    18/01/2023 GetTensorValue extended to TF_STRING
+//
 //**********************************************************************************************************************************
 //
 //  Description
@@ -123,8 +124,24 @@ function GetTensorShape(const ATensor:TF_TensorPtr):TF_Shape;
     result[i]:=TF_Dim(ATensor,I);
   end;
 function GetTensorScalarCount(const ATensor:TF_TensorPtr):Int64;
+  var
+    DataType : TF_DataType;
+    DataTypeSize : integer;
   begin
-  result:=TF_TensorByteSize(ATensor) div TF_DataTypeSize(TF_TensorType(ATensor));
+  DataType := TF_TensorType(ATensor);
+  DataTypeSize := TF_DataTypeSize(DataType);
+  if DataTypeSize = 0 then
+    begin
+    if DataType = TF_STRING then
+      DataTypeSize := 32
+    else
+      begin
+      Writeln('Tensor type has no fixed size');
+      result := 0;
+      exit;
+      end;
+    end;
+  result:=TF_TensorByteSize(ATensor) div DataTypeSize;
   end;
 function GetTensorIndexToScalar(const ATensor:TF_TensorPtr; const AIndex:array of Int64):Int64;
   var
@@ -358,30 +375,27 @@ function CreateTensorSingle(const AShape:array of Int64; const AData; ALength:In
   result:=CreateTensor(TF_FLOAT,AShape);
   WriteTensorData(result,AData,ALength);
   end;
-
 function CreateTensorString(const AData:PChar):TF_TensorPtr;
   var
     Status:TF_StatusPtr;
-    TStringPtr:TF_TStringPtr=nil;
+    TString:TF_TString;
   begin
   Status:=TF_NewStatus;
-  // 17.01.2023 New experimental version to reflect changes in TF API
-  new(TStringPtr);
-  result:=TF_AllocateTensor(TF_String,nil,0,sizeof(TF_TString));
-  TF_StringInit(TStringPtr);
-  TF_StringCopy(TStringPtr, AData, strlen(AData));
-  WriteTensorData(result,TStringPtr^,sizeof(TF_TString));
+  // 18.01.2023 New version to reflect changes in TF API
+  result:=TF_AllocateTensor(TF_String,nil,0,sizeof(TString));
+  TF_StringInit(@TString);
+  TF_StringCopy(@TString, AData, strlen(AData));
+  WriteTensorData(result,TString,sizeof(TString));
   (* Previous version that worked under 1.15
   result:=TF_AllocateTensor(TF_STRING,nil,0,8+TF_StringEncodedSize(strlen(AData)));
   TF_StringEncode(AData,strlen(AData),TF_TensorData(result)+8,TF_StringEncodedSize(strlen(AData)),Status);
   *)
-  // do I need to Dealloc the string????
   TF_CheckStatus(Status);
   end;
 function CreateTensorString(const AShape:array of Int64; const AData:array of PChar):TF_TensorPtr;
   var
     Status:TF_StatusPtr;
-    TStringPtr:TF_TStringPtr=nil;
+    TString:TF_TString;
 //    TotalLength:Int64;
     i:integer;
   begin
@@ -407,16 +421,14 @@ function CreateTensorString(const AShape:array of Int64; const AData:array of PC
     end;
   TF_CheckStatus(Status);
   *)
-  // Experimental version
+  // 18/01/2023 New version
   Status:=TF_NewStatus;
   result:=TF_AllocateTensor(TF_STRING,@AShape[0],Length(AShape),Length(AData) * sizeof(TF_TString));
-  new(TStringPtr);
   for i:=0 to Length(AData)-1 do
     begin
-    TF_StringInit(TStringPtr);
-    TF_StringCopy(TStringPtr, AData[i], strlen(AData[i]));
-    Move(TStringPtr^, (TF_TensorData(result)+i * sizeof(TF_TString))^, sizeof(TF_TString));
-//    TF_StringDealloc(TStringPtr); // does it kill it?
+    TF_StringInit(@TString);
+    TF_StringCopy(@TString, AData[i], strlen(AData[i]));
+    Move(TString, (TF_TensorData(result)+i * sizeof(TString))^, sizeof(TString));
     end;
   TF_CheckStatus(Status);
   end;
@@ -484,6 +496,7 @@ function GetTensorValue(const ATensor:TF_TensorPtr; const AIndex:array of Int64)
                                   GetTensorIndexToScalar(ATensor,AIndex)*TF_DataTypeSize(TF_TensorType(ATensor)))^);
     TF_DOUBLE:result:={%H-}Double((TF_TensorData(ATensor)+
                                    GetTensorIndexToScalar(ATensor,AIndex)*TF_DataTypeSize(TF_TensorType(ATensor)))^);
+    TF_STRING:result:={%H-}TF_StringGetDataPointer((TF_TensorData(ATensor)+GetTensorIndexToScalar(ATensor,AIndex)*sizeof(TF_TString)));
     end;
   end;
 
