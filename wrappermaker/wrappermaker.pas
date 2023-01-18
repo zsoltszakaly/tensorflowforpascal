@@ -570,7 +570,7 @@ procedure ProcessOutputArg(var AOutput:string);
   while AOutput<>'' do
     begin
     ParseStringIntoThree(AOutput,LabelString,ContentString,AOutput);
-    if LabelString='description:' then
+    if LabelString='experimental_full_type' then // TODO What is it for?
       begin
       end else
     if LabelString='is_ref:' then
@@ -731,6 +731,9 @@ procedure ProcessOps(const AOpName:string; var AOp:string);
       begin
       end else
     if LabelString='is_commutative:' then
+      begin
+      end else
+    if LabelString='is_distributed_communication:' then
       begin
       end else
     if LabelString='is_stateful:' then
