@@ -4,7 +4,7 @@ program wrappermaker;
 //
 //  Pascal interface generator for TensorFlow operations
 //
-//  Copyright: (C) 2020, Zsolt Szakaly
+//  Copyright: (C) 2020-2023, Zsolt Szakaly
 //
 //  This source is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as
 //  published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
@@ -24,6 +24,9 @@ program wrappermaker;
 //    21/02/2020 TGraph.Add<oper> part is changed significantly to cater for OutputLists
 //               Timestamp is added to the generated file
 //    23/02/2020 Add<oper> with InputList or OutputList fixed (changed from array of string to TF_StringList)
+//    18/01/2023 As the TF 2.4 ops.pbtxt has a different structure than the earlier one used (1.15) some significant changes had to
+//                   be made, parsing differently and handling summary and description fields.
+//               Some objects are initialized "=nil" in the generated tf_wrapper so to avoid warnings there
 //
 //**********************************************************************************************************************************
 //
@@ -412,21 +415,8 @@ procedure ParseStringIntoThree(const AInput:string; var ALabel:string; var ACont
   SplitPos:=Pos(' ',AInput);
   ALabel:=Copy(AInput,1,SplitPos-1);
   ARest:=Copy(AInput,SplitPos+1);
-  if ARest[1]<>'{' then
-    begin
-    SplitPos:=Pos(' ',ARest);
-    if SplitPos=0 then
-      begin
-      AContent:=ARest;
-      ARest:='';
-      end
-    else
-      begin
-      AContent:=Copy(ARest,1,SplitPos-1);
-      ARest:=Copy(ARest,SplitPos+1);
-      end;
-    end
-  else
+
+  if ARest[1]='{' then
     begin
     SplitPos:=1;
     ParanthesisCount:=1;
@@ -441,6 +431,27 @@ procedure ParseStringIntoThree(const AInput:string; var ALabel:string; var ACont
       end;
     AContent:=Copy(ARest,3,SplitPos-4);
     ARest:=Copy(ARest,SplitPos+2);
+    end else
+  if ARest[1]='"' then
+    begin
+    SplitPos := 2;
+    while (ARest[SplitPos] <> '"') or (ARest[SplitPos - 1] = '\') do
+      inc(SplitPos);
+    AContent := Copy(ARest, 2, SplitPos - 2);
+    ARest:=Copy(ARest,SplitPos+2);
+    end else
+    begin
+    SplitPos:=Pos(' ',ARest);
+    if SplitPos=0 then
+      begin
+      AContent:=ARest;
+      ARest:='';
+      end
+    else
+      begin
+      AContent:=Copy(ARest,1,SplitPos-1);
+      ARest:=Copy(ARest,SplitPos+1);
+      end;
     end;
   end;
 
@@ -475,7 +486,6 @@ procedure ProcessInputArg(var AInput:string);
   var
     LabelString:               string='';
     ContentString:             string='';
-    LabelProcessed:            boolean;
     InputName:                 string='';
     InputListLengthSource:     string='';
     InputMultiple:             boolean=false;
@@ -483,37 +493,34 @@ procedure ProcessInputArg(var AInput:string);
   while AInput<>'' do
     begin
     ParseStringIntoThree(AInput,LabelString,ContentString,AInput);
-    LabelProcessed:=false;
+    if LabelString='description:' then
+      begin
+      end else
     if LabelString='is_ref:' then
       begin
       // no need to processed { TODO : Is it surely not needed }
-      LabelProcessed:=true;
-      end;
+      end else
     if LabelString='name:' then
       begin
-      LabelProcessed:=true;
       if InputName='' then
-        InputName:=Copy(ContentString,2,Length(ContentString)-2)
+        InputName:=ContentString
       else
         begin
         if CmdLineV>=1 then
           writeln('Input has duplicate Name value!');
         end;
-      end;
+      end else
     if LabelString='number_attr:' then
       begin
-      LabelProcessed:=true;
       InputMultiple:=true;
-      InputListLengthSource:='A_'+Copy(ContentString,2,Length(ContentString)-2)+',';
-      end;
+      InputListLengthSource:='A_'+ContentString+',';
+      end else
     if LabelString='type:' then
       begin
-      LabelProcessed:=true;
-      end;
+      end else
     if LabelString='type_attr:' then
       begin
-      LabelProcessed:=true;
-      ContentString:=Copy(ContentString,2,Length(ContentString)-2);
+      ContentString:=ContentString;
       if InAttributeInputPair(InputTypes,ContentString)=-1 then
         begin // This input (first occurence) will be used for this attribute
         SetLength(InputTypes,Length(InputTypes)+1);
@@ -523,14 +530,13 @@ procedure ProcessInputArg(var AInput:string);
           Attribute:=ContentString;
           end;
         end;
-      end;
+      end else
     if LabelString='type_list_attr:' then
       begin
-      LabelProcessed:=true;
       InputMultiple:=true;
-      InputListLengthSource:='Length(A_'+Copy(ContentString,2,Length(ContentString)-2)+'),';
-      end;
-    if not LabelProcessed and (CmdLineV>=1) then
+      InputListLengthSource:='Length(A_'+ContentString+'),';
+      end else
+    if CmdLineV>=1 then
       writeln('Unknown Input component found "'+LabelString+'" with content "'+ContentString+'".');
     end;
   if InputName<>'' then
@@ -558,46 +564,44 @@ procedure ProcessOutputArg(var AOutput:string);
   var
     LabelString:               string='';
     ContentString:             string='';
-    LabelProcessed:            boolean;
     OutputName:                string='';
     OutputMultiple:            boolean=false;
   begin
   while AOutput<>'' do
     begin
     ParseStringIntoThree(AOutput,LabelString,ContentString,AOutput);
-    LabelProcessed:=false;
+    if LabelString='description:' then
+      begin
+      end else
     if LabelString='is_ref:' then
       begin
-      LabelProcessed:=true;
-      end;
+      end else
     if LabelString='name:' then
       begin
-      LabelProcessed:=true;
       if OutputName='' then
-        OutputName:=Copy(ContentString,2,Length(ContentString)-2)
+        OutputName:=ContentString
       else
         if CmdLineV>=1 then
           writeln('Output has duplicate Name value!');
-      end;
+      end else
     if LabelString='number_attr:' then
       begin
-      LabelProcessed:=true;
       OutputMultiple:=true;
-      end;
+      end else
+    if LabelString='summary:' then
+      begin
+      end else
     if LabelString='type:' then
       begin
-      LabelProcessed:=true;
-      end;
+      end else
     if LabelString='type_attr:' then
       begin
-      LabelProcessed:=true;
-      end;
+      end else
     if LabelString='type_list_attr:' then
       begin
-      LabelProcessed:=true;
       OutputMultiple:=true;
-      end;
-    if not LabelProcessed and (CmdLineV>=1) then
+      end else
+    if CmdLineV>=1 then
       writeln('Unknown Output component found "'+LabelString+'" with content "'+ContentString+'".');
     end;
   if OutputName<>'' then
@@ -614,10 +618,8 @@ procedure ProcessOutputArg(var AOutput:string);
       end;
     end
   else
-    begin
     if CmdLineV>=1 then
       writeln('Output has no Name');
-    end;
   end;
 procedure ProcessAttr(var AAttr:string);
   var
@@ -626,20 +628,16 @@ procedure ProcessAttr(var AAttr:string);
     AttrName:                  string='';
     AttrType:                  string='';
     AttrDefault:               boolean=false;
-    LabelProcessed:            boolean;
   begin
   while AAttr<>'' do
     begin
     ParseStringIntoThree(AAttr,LabelString,ContentString,AAttr);
-    LabelProcessed:=false;
     if LabelString='allowed_values' then
       begin
-      LabelProcessed:=true;
       // no need to do anything, it is checked at run-time
-      end;
+      end else
     if LabelString='default_value' then
       begin
-      LabelProcessed:=true;
       if not AttrDefault then
         begin
         AttrDefault:=true;
@@ -648,34 +646,33 @@ procedure ProcessAttr(var AAttr:string);
         begin
         writeln('Attr has duplicate Default value!');
         end;
-      end;
+      end else
+    if LabelString='description:' then
+      begin
+      end else
     if LabelString='has_minimum:' then
       begin
-      LabelProcessed:=true;
       // no need to do anything, it is checked at run-time
-      end;
+      end else
     if LabelString='minimum:' then
       begin
-      LabelProcessed:=true;
       // no need to do anything, it is checked at run-time
-      end;
+      end else
     if LabelString='name:' then
       begin
-      LabelProcessed:=true;
       if AttrName='' then
-        AttrName:=Copy(ContentString,2,Length(ContentString)-2)
+        AttrName:=ContentString
       else
         writeln('Attr has duplicate Name value!');
-      end;
+      end else
     if LabelString='type:' then
       begin
-      LabelProcessed:=true;
       if AttrType='' then
-        AttrType:=Copy(ContentString,2,Length(ContentString)-2)
+        AttrType:=ContentString
       else
         writeln('Attr has duplicate Type value!');
-      end;
-    if not LabelProcessed then
+      end else
+    if CmdLineV>=1 then
       writeln('Unknown Attr component found "'+LabelString+'" with content "'+ContentString+'".');
     end;
   if (AttrName<>'') and (AttrType<>'') then
@@ -694,7 +691,6 @@ procedure ProcessOps(const AOpName:string; var AOp:string);
   var
     LabelString:               string=         '';
     ContentString:             string=         '';
-    LabelProcessed:            boolean;
   begin
   if CmdLineV>=2 then
     write('Processing Ops: '+AOpName+'                                            '+CRLF);
@@ -710,47 +706,43 @@ procedure ProcessOps(const AOpName:string; var AOp:string);
   while AOp<>'' do
     begin
     ParseStringIntoThree(AOp,LabelString,ContentString,AOp);
-    LabelProcessed:=false;
     if LabelString='allows_uninitialized:' then
       begin
-      LabelProcessed:=true;
-      end;
+      end else
     if LabelString='allows_uninitialized_input:' then
       begin
-      LabelProcessed:=true;
-      end;
+      end else
+    if LabelString='description:' then
+      begin
+      end else
     if LabelString='input_arg' then
       begin
-      LabelProcessed:=true;
       ProcessInputArg(ContentString);
-      end;
+      end else
     if LabelString='output_arg' then
       begin
-      LabelProcessed:=true;
       ProcessOutputArg(ContentString);
-      end;
+      end else
     if LabelString='attr' then
       begin
-      LabelProcessed:=true;
       ProcessAttr(ContentString);
-      end;
+      end else
     if LabelString='is_aggregate:' then
       begin
-      LabelProcessed:=true;
-      end;
+      end else
     if LabelString='is_commutative:' then
       begin
-      LabelProcessed:=true;
-      end;
+      end else
     if LabelString='is_stateful:' then
       begin
-      LabelProcessed:=true;
-      end;
+      end else
+    if LabelString='summary:' then
+      begin
+      end else
     if LabelString='deprecation' then
       begin
-      LabelProcessed:=true;
-      end;
-    if (not LabelProcessed) and (CmdLineV>=1) then
+      end else
+    if CmdLineV>=1 then
       writeln('Unknown component found "'+LabelString+'" with content "'+ContentString+'" in '+AOpName);
     end;
   end;
@@ -813,7 +805,7 @@ procedure GenerateGraph(const AOpName:string);
   if (Length(OutputLists)>0) and (Length(Outputs)+Length(OutputLists)>1) then
     begin // a variable is declared and filled up
     OneExecution:='  var'+CRLF;
-    OneExecution:=OneExecution+'    OutputNames : TF_StringList;'+CRLF;
+    OneExecution:=OneExecution+'    OutputNames : TF_StringList=nil;'+CRLF;
     OneExecution:=OneExecution+'    Index       : integer;'+CRLF;
     OneExecution:=OneExecution+'    Counter     : integer;'+CRLF;
     OneExecution:=OneExecution+'  begin'+CRLF;
@@ -984,20 +976,11 @@ procedure ProcessOp(var AOp:string);
   ParseStringIntoThree(AOp,LabelString,ContentString,AOp);
   if LabelString='name:' then
     begin
-    if (ContentString[1]='"') and (ContentString[Length(ContentString)]='"') then
-      begin
-      ContentString:=Copy(ContentString,2,Length(ContentString)-2);
-      ProcessOps(ContentString,AOp);
-      if (CmdLineU=1) or (CmdLineU=3) then
-        GenerateGraph(ContentString);
-      if (CmdLineU=2) or (CmdLineU=3) then
-        GenerateEager(ContentString);
-      end
-    else
-      begin
-      if CmdLineV>=1 then
-        writeln('Ops name is not included in "" for '+ContentString);
-      end;
+    ProcessOps(ContentString,AOp);
+    if (CmdLineU=1) or (CmdLineU=3) then
+      GenerateGraph(ContentString);
+    if (CmdLineU=2) or (CmdLineU=3) then
+      GenerateEager(ContentString);
     end
   else
     begin
@@ -1033,7 +1016,7 @@ function ProcessFile:boolean;
   begin
   if CmdLineV>=1 then
     begin
-    writeln('Wrapper Maker by Zsolt Szakaly, 2020');
+    writeln('Wrapper Maker by Zsolt Szakaly, 2020-2023');
     end;
   if CmdLineV>=2 then
     begin
