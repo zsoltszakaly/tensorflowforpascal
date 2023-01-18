@@ -22,7 +22,7 @@ unit tf_tensors;
 //    22/10/2021 More CreateTensor versions are created for integer types as well
 //    17/01/2023 Update to reflect TF change from 1.15 to 2.11
 //               Unimportant compiler hints suppressed
-//
+// 
 //**********************************************************************************************************************************
 //
 //  Description
