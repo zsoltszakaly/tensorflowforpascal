@@ -18,6 +18,7 @@ unit tf_utils;
 //  Change log:
 //    17/01/2023 Unimportant compiler warnings are "fixed"
 //               Unimportant compiler hints suppressed
+//    18/01/2023 PrintTensorData made available for TF_STRING type tensors as well
 //
 //**********************************************************************************************************************************
 //
@@ -87,8 +88,23 @@ procedure PrintTensorData(const ATensor:TF_TensorPtr; const AName:string='');
   var
     i,j:integer;
     Index:TF_Shape;
+    DataType:TF_DataType;
   begin
   if AName<>'' then writeln(AName);
+
+  DataType:=TF_TensorType(ATensor);
+  if DataType = TF_String then
+    begin
+    for i:= 0 to GetTensorScalarCount(ATensor)-1 do
+      begin
+      Index:=GetTensorScalarToIndex(ATensor,i);
+      for j:=0 to Length(Index)-1 do
+        write(Index[j],' ');
+      writeln('"',GetTensorValue(ATensor,Index),'"');
+      end;
+    exit;
+    end;
+
   case Length(GetTensorShape(ATensor)) of
     0:writeln(Format(AFormat,[Single(GetTensorValue(ATensor,[])){%H-}]));
     1:for i:=0 to GetTensorScalarCount(ATensor)-1 do
