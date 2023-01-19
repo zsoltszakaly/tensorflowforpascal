@@ -42,6 +42,7 @@ unit tf_api;
 //               - Added TF_GetRegisteredKernelsForOp
 //               - Added TF_Server and the related routines
 //               - Added TF_RegisterLogListener
+//    19/01/2023 TF_Tstring length changed
 //
 //**********************************************************************************************************************************
 //
@@ -420,7 +421,7 @@ procedure TF_RegisterFilesystemPlugin(plugin_filename: PChar; status: TF_StatusP
 
 type
   TF_TString = record
-    raw: packed array[1..32] of char;
+    raw: packed array[1..24] of char;
     end;
   TF_TStringPtr = ^TF_TString;
   TF_TString_Type = byte;
