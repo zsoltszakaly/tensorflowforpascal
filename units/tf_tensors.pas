@@ -23,6 +23,8 @@ unit tf_tensors;
 //    17/01/2023 Update to reflect TF change from 1.15 to 2.11 in CreateTensorString
 //               Unimportant compiler hints suppressed
 //    18/01/2023 GetTensorValue extended to TF_STRING
+//    19/01/2023 Added GetTensorDataTypeSize
+//               Fixed the CreateTEnsorString routines
 //
 //**********************************************************************************************************************************
 //
@@ -50,6 +52,7 @@ function GetTensorShape(const ATensor:TF_TensorPtr):TF_Shape;
 function GetTensorScalarCount(const ATensor:TF_TensorPtr):Int64;
 function GetTensorIndexToScalar(const ATensor:TF_TensorPtr; const AIndex:array of Int64):Int64;
 function GetTensorScalarToIndex(const ATensor:TF_TensorPtr; const AScalar:Int64):TF_Shape;
+function GetTensorDataTypeSize(const aTensor: TF_TensorPtr): Int64;
 
 //**********************************************************************************************************************************
 //  Creation of various Tensor types
@@ -125,23 +128,13 @@ function GetTensorShape(const ATensor:TF_TensorPtr):TF_Shape;
   end;
 function GetTensorScalarCount(const ATensor:TF_TensorPtr):Int64;
   var
-    DataType : TF_DataType;
-    DataTypeSize : integer;
+    TensorShape : TF_Shape;
+    i : integer;
   begin
-  DataType := TF_TensorType(ATensor);
-  DataTypeSize := TF_DataTypeSize(DataType);
-  if DataTypeSize = 0 then
-    begin
-    if DataType = TF_STRING then
-      DataTypeSize := 32
-    else
-      begin
-      Writeln('Tensor type has no fixed size');
-      result := 0;
-      exit;
-      end;
-    end;
-  result:=TF_TensorByteSize(ATensor) div DataTypeSize;
+  TensorShape := GetTensorShape(ATensor);
+  result := 1;
+  for i := 0 to length(TensorShape) - 1 do
+    result := result * TF_Dim(ATensor, i);
   end;
 function GetTensorIndexToScalar(const ATensor:TF_TensorPtr; const AIndex:array of Int64):Int64;
   var
@@ -175,6 +168,12 @@ function GetTensorScalarToIndex(const ATensor:TF_TensorPtr; const AScalar:Int64)
     result[Index]:=Scalar mod Shape[Index];
     Scalar:=Scalar div Shape[Index];
     end;
+  end;
+function GetTensorDataTypeSize(const aTensor: TF_TensorPtr): Int64;
+  begin
+  result := TF_DataTypeSize(TF_TensorType(ATensor));
+  if result = 0 then // try to figure it out, especially for TF_String type
+    result := TF_TensorByteSize(ATensor) div GetTensorScalarCount(aTensor);
   end;
 
 //**********************************************************************************************************************************
@@ -496,7 +495,8 @@ function GetTensorValue(const ATensor:TF_TensorPtr; const AIndex:array of Int64)
                                   GetTensorIndexToScalar(ATensor,AIndex)*TF_DataTypeSize(TF_TensorType(ATensor)))^);
     TF_DOUBLE:result:={%H-}Double((TF_TensorData(ATensor)+
                                    GetTensorIndexToScalar(ATensor,AIndex)*TF_DataTypeSize(TF_TensorType(ATensor)))^);
-    TF_STRING:result:={%H-}TF_StringGetDataPointer((TF_TensorData(ATensor)+GetTensorIndexToScalar(ATensor,AIndex)*sizeof(TF_TString)));
+    TF_STRING:result:={%H-}TF_StringGetDataPointer((TF_TensorData(ATensor)+
+                                                   GetTensorIndexToScalar(ATensor,AIndex)*GetTensorDataTypeSize(ATensor)));
     end;
   end;
 
