@@ -19,6 +19,7 @@ unit tf_utils;
 //    17/01/2023 Unimportant compiler warnings are "fixed"
 //               Unimportant compiler hints suppressed
 //    18/01/2023 PrintTensorData made available for TF_STRING type tensors as well
+//    19/01/2023 Formatted the output of PrintTensorShape
 //
 //**********************************************************************************************************************************
 //
@@ -49,40 +50,44 @@ procedure PrintTensorShape(const ATensor:TF_TensorPtr; const AName:string='');
     DataType:TF_DataType;
     I:Integer;
   begin
-  Write('Tensor details ',AName,': Type: ');
+  writeln('Tensor details: ',AName);
+  write('- Type:                 ');
   DataType:=TF_TensorType(ATensor);
   case DataType of
-    TF_BOOL:      write('Boolean');
-    TF_INT8:      write('Int8');
-    TF_INT16:     write('Int16');
-    TF_INT32:     write('Int32');
-    TF_INT64:     write('Int64');
-    TF_UINT8:     write('UInt8');
-    TF_UINT16:    write('UInt16');
-    TF_UINT32:    write('UInt32');
-    TF_UINT64:    write('UInt64');
-    TF_HALF:      write('Half');
-    TF_FLOAT:     write('Float');
-    TF_DOUBLE:    write('Double');
-    TF_COMPLEX64: write('Complex64');
-    TF_COMPLEX128:write('Complex128');
-    TF_STRING:    write('String');
-    TF_VARIANT:   write('Variant');
-    else       write(DataType);
+    TF_BOOL:      writeln('Boolean');
+    TF_INT8:      writeln('Int8');
+    TF_INT16:     writeln('Int16');
+    TF_INT32:     writeln('Int32');
+    TF_INT64:     writeln('Int64');
+    TF_UINT8:     writeln('UInt8');
+    TF_UINT16:    writeln('UInt16');
+    TF_UINT32:    writeln('UInt32');
+    TF_UINT64:    writeln('UInt64');
+    TF_HALF:      writeln('Half');
+    TF_FLOAT:     writeln('Float');
+    TF_DOUBLE:    writeln('Double');
+    TF_COMPLEX64: writeln('Complex64');
+    TF_COMPLEX128:writeln('Complex128');
+    TF_STRING:    writeln('String');
+    TF_VARIANT:   writeln('Variant');
+    else       writeln(DataType);
     end;
-  write('. Dimensions: ');
+  write('- Dimensions:           ');
   Shape:=GetTensorShape(ATensor);
   for I:=0 to length(Shape)-1 do
     begin
     write(Shape[i]);
     if I<Length(Shape)-1 then
-      write('x');
+      write(' x ');
     end;
-  write(' Total length:',TF_TensorByteSize(ATensor));
+  writeln;
+  writeln('- Byte length:          ',TF_TensorByteSize(ATensor));
+  writeln('- Elements:             ', GetTensorScalarCount(ATensor));
+  writeln('- Elementary data size: ', TF_TensorByteSize(ATensor) div GetTensorScalarCount(ATensor));
   writeln;
   end;
 procedure PrintTensorData(const ATensor:TF_TensorPtr; const AName:string='');
-  // to simplify life, all tensors are printed as Single (otherwise the Variant type would need to be split as per its type.
+  // to simplify life, all non-string tensors are printed as Single (otherwise the Variant type would need to be split as per its type.
   const
     AFormat:string='%10.5f';
   var
@@ -90,7 +95,7 @@ procedure PrintTensorData(const ATensor:TF_TensorPtr; const AName:string='');
     Index:TF_Shape;
     DataType:TF_DataType;
   begin
-  if AName<>'' then writeln(AName);
+  writeln('Tensor data: ', AName);
 
   DataType:=TF_TensorType(ATensor);
   if DataType = TF_String then
@@ -128,6 +133,7 @@ procedure PrintTensorData(const ATensor:TF_TensorPtr; const AName:string='');
         end;
       end;
     end;
+  writeln;
   end;
 
 function CreateTensorSingleRandom(const AShape:array of Int64; const MinValue:single; const MaxValue:single):TF_TensorPtr;
