@@ -443,6 +443,7 @@ type
   TF_IntList=array of cint64;
   TF_ShapeList=array of TF_Shape;
   TF_StringList=array of string;
+  TF_StringLists=array of TF_StringList;
   TF_TypeList=array of TF_DataType;
   TF_TensorPtrs = array of TF_TensorPtr;
 

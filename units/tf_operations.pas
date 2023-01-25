@@ -27,6 +27,10 @@ unit tf_operations;
 //               TGraph.AddOper corrections to handle InputLists correctly
 //    20/10/2021 Removed types declared unnecessary, like charPtr and replaced it with more standard PChar
 //    17/01/2023 Unimportant compiler warnings are "fixed"
+//    22/01/2023 AddConstant expanded to handle TF_Bool
+//    25/01/2023 The most general AddOper and ExecOper routines are deprecated because they assumed that Inputs are always before
+//                 InputLists
+//               Many new overload versions of AddOper and ExecOper added
 //
 //**********************************************************************************************************************************
 //
@@ -86,7 +90,21 @@ type
       destructor  Done; virtual;
     public                     // The generic function to add an Operation to the Graph
       function    AddOper(const AOperationType:string;
-                          const AInputs:array of string; const AInputLists:array of TF_stringlist;
+                          const AInputs:array of string; const AInputLists:TF_StringLists;
+                          const AOutputs:array of string;
+                          const AAttrNames:array of string; const AAttrTypes:array of string; const AAttrValues:array of pointer;
+                          const AOperationName:string=''):string; deprecated;
+      function    AddOper(const AOperationType:string;
+                          const AInputsAndInputLists:array of TF_StringList; const AInputOrInputLists:array of boolean;
+                          const AOutputs:array of string;
+                          const AAttrNames:array of string; const AAttrTypes:array of string; const AAttrValues:array of pointer;
+                          const AOperationName:string=''):string;
+      function    AddOper(const AOperationType:string;
+                          const AInputs:array of string;
+                          const AOutputs:array of string;
+                          const AAttrNames:array of string; const AAttrTypes:array of string; const AAttrValues:array of pointer;
+                          const AOperationName:string=''):string;
+      function    AddOper(const AOperationType:string;
                           const AOutputs:array of string;
                           const AAttrNames:array of string; const AAttrTypes:array of string; const AAttrValues:array of pointer;
                           const AOperationName:string=''):string;
@@ -96,6 +114,7 @@ type
       function    GetOperationByName(const AName:string):TF_OperationPtr;
     public                     // Convenience functions to add Constants, Inputs, Tensors and Variables to a Graph
       function    AddConstant(const AName:string;const AValue; ADataType:TF_DataType):string;
+      function    AddConstant(const AName:string; AValue:boolean):string;
       function    AddConstant(const AName:string; AValue:Int8):string;
       function    AddConstant(const AName:string; AValue:Int16):string;
       function    AddConstant(const AName:string; AValue:Int32):string;
@@ -145,7 +164,17 @@ function  ExecOper( // nInput, nInputList, nOutput
                    const AOperationType:string; const AOutputCount:Int64;
                    const AInputTs:array of TF_TensorPtr; const AInputTLists:array of TF_TensorPtrs;
                    const AAttrNames:array of string; const AAttrTypes:array of string; const AAttrValues:array of pointer;
-                   const ADeleteIs:array of boolean; const ADeleteILs:array of boolean):TF_TensorPtrs;
+                   const ADeleteIs:array of boolean; const ADeleteILs:array of boolean):TF_TensorPtrs; deprecated;
+function  ExecOper( // n(Input + InputList), nOutput
+                   const AOperationType:string; const AOutputCount:Int64;
+                   const AInputTsAndInputTLists:array of TF_TensorPtrs; const AInputTOrInputTLists:array of boolean;
+                   const AAttrNames:array of string; const AAttrTypes:array of string; const AAttrValues:array of pointer;
+                   const ADeleteIAndILs:array of boolean):TF_TensorPtrs;
+function  ExecOper( // n(Input + InputList), 1Output
+                   const AOperationType:string;
+                   const AInputTsAndInputTLists:array of TF_TensorPtrs; const AInputTOrInputTLists:array of boolean;
+                   const AAttrNames:array of string; const AAttrTypes:array of string; const AAttrValues:array of pointer;
+                   const ADeleteIAndILs:array of boolean):TF_TensorPtr;
 function  ExecOper( // nInput, 0InputList, nOutput
                    const AOperationType:string; const AOutputCount:Int64;
                    const AInputTs:array of TF_TensorPtr;
@@ -156,11 +185,24 @@ function  ExecOper( // nInput, 0InputList, 1Output
                    const AInputTs:array of TF_TensorPtr;
                    const AAttrNames:array of string; const AAttrTypes:array of string; const AAttrValues:array of pointer;
                    const ADeleteIs:array of boolean):TF_TensorPtr;
+function  ExecOper( // 1Input, 0InputList, nOutput
+                   const AOperationType:string; const AOutputCount:Int64;
+                   const AInputT:TF_TensorPtr;
+                   const AAttrNames:array of string; const AAttrTypes:array of string; const AAttrValues:array of pointer;
+                   const ADeleteI:boolean):TF_TensorPtrs;
 function  ExecOper( // 1Input, 0InputList, 1Output
                    const AOperationType:string;
                    const AInputT:TF_TensorPtr;
                    const AAttrNames:array of string; const AAttrTypes:array of string; const AAttrValues:array of pointer;
                    const ADeleteI:boolean):TF_TensorPtr;
+function  ExecOper( // 0Input, 0InputList, nOutput
+                   const AOperationType:string; const AOutputCount:Int64;
+                   const AAttrNames:array of string; const AAttrTypes:array of string; const AAttrValues:array of pointer):
+                   TF_TensorPtrs;
+function  ExecOper( // 0Input, 0InputList, 1Output
+                   const AOperationType:string;
+                   const AAttrNames:array of string; const AAttrTypes:array of string; const AAttrValues:array of pointer):
+                   TF_TensorPtr;
 
 implementation
 
@@ -181,7 +223,33 @@ destructor  TGraph.Done;
   TF_DeleteGraph(FGraph);
   end;
 function    TGraph.AddOper(const AOperationType:string;
-                           const AInputs:array of string; const AInputLists:array of TF_stringlist;
+                           const AInputs:array of string; const AInputLists:TF_StringLists;
+                           const AOutputs: array of string;
+                           const AAttrNames: array of string; const AAttrTypes: array of string; const AAttrValues: array of pointer;
+                           const AOperationName:string=''):string; deprecated;
+  // this is a deprecated method, because InputLists follows the Inputs, what is not always the case (only 99%)
+  // still for backward compatibility, it is changed to call the "new" version
+  var
+    InputsAndInputLists:       array of TF_StringList = nil;
+    InputOrInputLists:         array of boolean = nil;
+    i:                         integer;
+  begin
+  SetLength(InputsAndInputLists, length(AInputs) + length(AInputLists));
+  SetLength(InputOrInputLists, length(AInputs) + length(AInputLists));
+  for i := 0 to High(AInputs) do
+    begin
+    InputsAndInputLists[i] := [AInputs[i]];
+    InputOrInputLists[i] := true;
+    end;
+  for i := 0 to High(AInputLists) do
+    begin
+    InputsAndInputLists[length(AInputs) + i] := AInputLists[i];
+    InputOrInputLists[length(AInputs) + i] := false;
+    end;
+  result := AddOper(AOperationType, InputsAndInputLists, InputOrInputLists, AOutputs, AAttrNames, AAttrTypes, AAttrValues, AOperationName);
+  end;
+function    TGraph.AddOper(const AOperationType:string;
+                           const AInputsAndInputLists:array of TF_StringList; const AInputOrInputLists:array of boolean;
                            const AOutputs: array of string;
                            const AAttrNames: array of string; const AAttrTypes: array of string; const AAttrValues: array of pointer;
                            const AOperationName:string=''):string;
@@ -206,11 +274,18 @@ function    TGraph.AddOper(const AOperationType:string;
   else
     OperationName:=AOperationType+IntToStr(OffSet)+#0;
   OperationDescription:=TF_NewOperation(FGraph, @OperationType[1], @OperationName[1]);
-  for Index:=0 to length(AInputs)-1 do
-    TF_AddInput(OperationDescription,GetOutputByName(AInputs[Index]));
-  for Index:=0 to Length(AInputLists)-1 do
-    if Length(AInputLists[Index])>0 then
-      TF_AddInputList(OperationDescription,addr(GetOutputsByName(AInputLists[Index])[0]),Length(AInputLists[Index]));
+  for Index:=0 to length(AInputsAndInputLists)-1 do
+    begin
+    if (length(AInputOrInputLists) <= Index) or AInputOrInputLists[Index] then
+      begin
+      TF_AddInput(OperationDescription,GetOutputByName(AInputsAndInputLists[Index][0]));
+      end
+    else
+      begin
+      if Length(TF_StringList(AInputsAndInputLists[Index]))>0 then
+        TF_AddInputList(OperationDescription,addr(GetOutputsByName(AInputsAndInputLists[Index])[0]),Length(AInputsAndInputLists[Index]));
+      end;
+    end;
   for Index:=0 to Length(AAttrNames)-1 do
     begin
     AttrName:=AAttrNames[Index]+#0;
@@ -298,6 +373,30 @@ function    TGraph.AddOper(const AOperationType:string;
   else
     result:='';
   end;
+function    TGraph.AddOper(const AOperationType:string;
+                           const AInputs:array of string;
+                           const AOutputs: array of string;
+                           const AAttrNames: array of string; const AAttrTypes: array of string; const AAttrValues: array of pointer;
+                           const AOperationName:string=''):string; deprecated;
+  var
+    InputsAndInputLists:       array of TF_StringList = nil;
+    i:                         integer;
+  begin
+  // a simplified version, when there are no InputLists then no need to pass them in an array of TF_StringLists
+  SetLength(InputsAndInputLists, length(AInputs));
+  for i := 0 to High(AInputs) do
+    InputsAndInputLists[i] := [AInputs[i]];
+  result := AddOper(AOperationType, InputsAndInputLists, [], AOutputs, AAttrNames, AAttrTypes, AAttrValues, AOperationName);
+  end;
+function    TGraph.AddOper(const AOperationType:string;
+                           const AOutputs: array of string;
+                           const AAttrNames: array of string; const AAttrTypes: array of string; const AAttrValues: array of pointer;
+                           const AOperationName:string=''):string; deprecated;
+  begin
+  // an even more simplified version, when there are no Input at all
+  result := AddOper(AOperationType, [], [], AOutputs, AAttrNames, AAttrTypes, AAttrValues, AOperationName);
+  end;
+
 function    TGraph.GetOutputByName(const AName:string):TF_Output;
   var i:integer;
   begin
@@ -333,6 +432,7 @@ function    TGraph.AddConstant(const AName:string;const AValue; ADataType:TF_Dat
     ConstantT:TF_TensorPtr;
   begin
   case ADataType of
+    TF_BOOL:ConstantT:=CreateTensorBool(boolean(AValue));
     TF_INT8:ConstantT:=CreateTensorInt8(Int8(AValue));
     TF_INT16:ConstantT:=CreateTensorInt16(Int16(AValue));
     TF_INT32:ConstantT:=CreateTensorInt32(Int32(AValue));
@@ -346,8 +446,12 @@ function    TGraph.AddConstant(const AName:string;const AValue; ADataType:TF_Dat
     else
       raise Exception.Create('Data type not implemented');
     end;
-  result:=AddOper('Const',[],[],[AName],['dtype','value'],['type','tensor'],[@ADataType,@ConstantT]);
+  result:=AddOper('Const',[AName],['dtype','value'],['type','tensor'],[@ADataType,@ConstantT]);
   TF_DeleteTensor(ConstantT);
+  end;
+function    TGraph.AddConstant(const AName:string; AValue:boolean):string;
+  begin
+  result:=AddConstant(AName,AValue,TF_BOOL);
   end;
 function    TGraph.AddConstant(const AName:string; AValue:Int8):string;
   begin
@@ -391,7 +495,7 @@ function    TGraph.AddConstant(const AName:string; AValue:String):string;
   end;
 function    TGraph.AddInput(const AName:string; ADataType:TF_DataType):string;
   begin
-  result:=AddOper('Placeholder',[],[],[AName],['dtype'],['type'],[@ADataType]);
+  result:=AddOper('Placeholder',[AName],['dtype'],['type'],[@ADataType]);
   end;
 function    TGraph.AddInputs(const AName:string; const ACount:Int64; ADataType:TF_DataType):TF_StringList;
   var i:Int64;
@@ -399,7 +503,7 @@ function    TGraph.AddInputs(const AName:string; const ACount:Int64; ADataType:T
   result:=nil;
   SetLength(result,ACount);
   for i:=0 to ACount-1 do
-    result[i]:=AddOper('Placeholder',[],[],[AName+'_'+inttostr(i)],['dtype'],['type'],[@ADataType]);
+    result[i]:=AddOper('Placeholder',[AName+'_'+inttostr(i)],['dtype'],['type'],[@ADataType]);
   end;
 function    TGraph.AddInputs(const ANames: array of string; ADataType:TF_DataType):TF_StringList;
   var i:Int64;
@@ -407,19 +511,19 @@ function    TGraph.AddInputs(const ANames: array of string; ADataType:TF_DataTyp
   result:=nil;
   SetLength(result,Length(ANames));
   for i:=0 to Length(ANames)-1 do
-    result[i]:=AddOper('Placeholder',[],[],[ANames[i]],['dtype'],['type'],[@ADataType]);
+    result[i]:=AddOper('Placeholder',[ANames[i]],['dtype'],['type'],[@ADataType]);
   end;
 function    TGraph.AddTensor(const AName:string; const ATensor:TF_TensorPtr; ADeleteTensor:boolean=false):string;
   var TensorType:TF_DataType;
   begin
   TensorType:=TF_TensorType(ATensor);
-  result:=AddOper('Const',[],[],[AName],['dtype','value'],['type','tensor'],[@TensorType,@ATensor]);
+  result:=AddOper('Const',[AName],['dtype','value'],['type','tensor'],[@TensorType,@ATensor]);
   if ADeleteTensor then
     TF_DeleteTensor(ATensor);
   end;
 function    TGraph.AddVar(const AName:string; const AShape:TF_ShapePtr; AType:TF_AttrType):string;
   begin
-  result:=AddOper('Variable',[],[],[AName],['dtype','shape'],['type','shape'],[@AType,@AShape]);
+  result:=AddOper('Variable',[AName],['dtype','shape'],['type','shape'],[@AType,@AShape]);
   end;
 
 constructor TSession.Init(const AGraph:TGraph);
@@ -501,38 +605,70 @@ function  ExecOper( // nInput, nInputList, nOutput
                   const AOperationType:string; const AOutputCount:Int64;
                   const AInputTs:array of TF_TensorPtr; const AInputTLists:array of TF_TensorPtrs;
                   const AAttrNames:array of string; const AAttrTypes:array of string; const AAttrValues:array of pointer;
-                  const ADeleteIs:array of boolean; const ADeleteILs:array of boolean):TF_TensorPtrs;
+                  const ADeleteIs:array of boolean; const ADeleteILs:array of boolean):TF_TensorPtrs; deprecated;
+  // this is a deprecated function, because InputLists follows the Inputs, what is not always the case (only 99%)
+  // still for backward compatibility, it is changed to call the "new" version
+  var
+    InputTsAndInputTLists:     array of TF_TensorPtrs = nil;
+    InputTOrInputTLists:       array of boolean = nil;
+    DeleteIAndILs:             array of boolean = nil;
+    i:                         integer;
+  begin
+  SetLength(InputTsAndInputTLists, length(AInputTs) + length(AInputTLists));
+  SetLength(InputTOrInputTLists, length(AInputTs) + length(AInputTLists));
+  SetLength(DeleteIAndILs, length(AInputTs) + length(AInputTLists));
+  for i := 0 to High(AInputTs) do
+    begin
+    InputTsAndInputTLists[i] := [AInputTs[i]];
+    InputTOrInputTLists[i] := true;
+    DeleteIAndILs[i] := ADeleteIs[i];
+    end;
+  for i := 0 to High(AInputTLists) do
+    begin
+    InputTsAndInputTLists[length(AInputTs) + i] := AInputTLists[i];
+    InputTOrInputTLists[length(AInputTs) + i] := false;
+    DeleteIAndILs[length(AInputTs) + i] := ADeleteILs[i];
+    end;
+  result := ExecOper(AOperationType, AOutputCount, InputTsAndInputTLists, InputTOrInputTLists, AAttrNames, AAttrTypes, AAttrValues,
+                     DeleteIAndILs);
+  end;
+function  ExecOper( // n(Input + InputList), nOutput
+                  const AOperationType:string; const AOutputCount:Int64;
+                  const AInputTsAndInputTLists:array of TF_TensorPtrs; const AInputTOrInputTLists:array of boolean;
+                  const AAttrNames:array of string; const AAttrTypes:array of string; const AAttrValues:array of pointer;
+                  const ADeleteIAndILs:array of boolean):TF_TensorPtrs;
   var
     Graph:TGraph;
     Index1,Index2:integer;
-    InputNames:array of string=nil;
-    InputListNames:array of TF_StringList=nil;
+    InputAndInputListNames: array of TF_StringList=nil;
     OutputNames:array of string=nil;
     Session:TSession;
     OperationName:string;
   begin
   Graph.Init;
-  SetLength(InputNames,Length(AInputTs));
-  for Index1:=0 to Length(AInputTs)-1 do
+  SetLength(InputAndInputListNames, Length(AInputTsAndInputTLists));
+  for Index1:=0 to Length(AInputTsAndInputTLists)-1 do
     begin
-    InputNames[Index1]:='Input'+IntToStr(Index1);
-    Graph.AddTensor(InputNames[Index1],AInputTs[Index1],ADeleteIs[Index1]);
-    end;
-  SetLength(InputListNames,Length(AInputTLists));
-  for Index1:=0 to Length(AInputTLists)-1 do
-    begin
-    SetLength(InputListNames[Index1],Length(AInputTLists[Index1]));
-    for Index2:=0 to Length(AInputTLists[Index1])-1 do
+    if (length(AInputTOrInputTLists) <= Index1) or AInputTOrInputTLists[Index1] then
       begin
-      InputListNames[Index1,Index2]:='Input'+IntToStr(Index1)+'_'+IntToStr(Index2);
-      Graph.AddTensor(InputListNames[Index1,Index2],AInputTLists[Index1][Index2],ADeleteILs[Index1]);
+      InputAndInputListNames[Index1]:=['Input'+IntToStr(Index1)];
+      Graph.AddTensor(InputAndInputListNames[Index1][0],AInputTsAndInputTLists[Index1][0],ADeleteIAndILs[Index1]);
+      end
+    else
+      begin
+      SetLength(InputAndInputListNames[Index1],Length(AInputTsAndInputTLists[Index1]));
+      for Index2:=0 to Length(AInputTsAndInputTLists[Index1])-1 do
+        begin
+        InputAndInputListNames[Index1,Index2]:='Input'+IntToStr(Index1)+'_'+IntToStr(Index2);
+        Graph.AddTensor(InputAndInputListNames[Index1,Index2],AInputTsAndInputTLists[Index1][Index2],ADeleteIAndILs[Index1]);
+        end;
       end;
     end;
   SetLength(OutputNames,AOutputCount);
   for Index1:=0 to AOutputCount-1 do
     OutputNames[Index1]:='Output'+IntToStr(Index1);
   OperationName:=Graph.AddOper(AOperationType,
-                               InputNames,InputListNames,
+                               InputAndInputListNames,AInputTOrInputTLists,
                                OutputNames,
                                AAttrNames,AAttrTypes,AAttrValues);
   Session.Init(Graph);
@@ -540,13 +676,27 @@ function  ExecOper( // nInput, nInputList, nOutput
   Session.Done;
   Graph.Done;
   end;
+function  ExecOper( // n(Input + InputList), 1Output
+                  const AOperationType:string;
+                  const AInputTsAndInputTLists:array of TF_TensorPtrs; const AInputTOrInputTLists:array of boolean;
+                  const AAttrNames:array of string; const AAttrTypes:array of string; const AAttrValues:array of pointer;
+                  const ADeleteIAndILs:array of boolean):TF_TensorPtr;
+  begin
+  result := ExecOper(AOperationType,1,AInputTsAndInputTLists, AInputTOrInputTLists, AAttrnames, AAttrTypes, AattrValues, ADeleteIAndILs)[0];
+  end;
 function  ExecOper( // nInput, 0InputList, nOutput
                    const AOperationType:string; const AOutputCount:Int64;
                    const AInputTs:array of TF_TensorPtr;
                    const AAttrNames:array of string; const AAttrTypes:array of string; const AAttrValues:array of pointer;
                    const ADeleteIs:array of boolean):TF_TensorPtrs;
+  var
+    InputTsAndInputTLists:array of TF_TensorPtrs=nil;
+    i : integer;
   begin
-  result:=ExecOper(AOperationType,AOutputCount,AInputTs,[],AAttrNames,AAttrTypes,AAttrValues,ADeleteIs,[]);
+  SetLength(InputTsAndInputTLists, length(AInputTs));
+  for i := 0 to High(AInputTs) do
+    InputTsAndInputTLists[i] := [AInputTs[i]];
+  result:=ExecOper(AOperationType,AOutputCount,InputTsAndInputTLists,[],AAttrNames,AAttrTypes,AAttrValues,ADeleteIs);
   end;
 function  ExecOper( // nInput, 0InputList, 1Output
                    const AOperationType:string;
@@ -554,7 +704,15 @@ function  ExecOper( // nInput, 0InputList, 1Output
                    const AAttrNames:array of string; const AAttrTypes:array of string; const AAttrValues:array of pointer;
                    const ADeleteIs:array of boolean):TF_TensorPtr;
   begin
-  result:=ExecOper(AOperationType,1,AInputTs,[],AAttrNames,AAttrTypes,AAttrValues,ADeleteIs,[])[0];
+  result:=ExecOper(AOperationType,1,AInputTs,AAttrNames,AAttrTypes,AAttrValues,ADeleteIs)[0];
+  end;
+function  ExecOper( // 1Input, 0InputList, nOutput
+                   const AOperationType:string; const AOutputCount:Int64;
+                   const AInputT:TF_TensorPtr;
+                   const AAttrNames:array of string; const AAttrTypes:array of string; const AAttrValues:array of pointer;
+                   const ADeleteI:boolean):TF_TensorPtrs;
+  begin
+  result:=ExecOper(AOperationType,AOutputCount,[AInputT],AAttrNames,AAttrTypes,AAttrValues,[ADeleteI]);
   end;
 function  ExecOper( // 1Input, 0InputList, 1Output
                    const AOperationType:string;
@@ -562,7 +720,21 @@ function  ExecOper( // 1Input, 0InputList, 1Output
                    const AAttrNames:array of string; const AAttrTypes:array of string; const AAttrValues:array of pointer;
                    const ADeleteI:boolean):TF_TensorPtr;
   begin
-  result:=ExecOper(AOperationType,1,[AInputT],[],AAttrNames,AAttrTypes,AAttrValues,[ADeleteI],[])[0];
+  result:=ExecOper(AOperationType,[AInputT],AAttrNames,AAttrTypes,AAttrValues,[ADeleteI]);
+  end;
+function  ExecOper( // 0Input, 0InputList, nOutput
+                   const AOperationType:string; const AOutputCount:Int64;
+                   const AAttrNames:array of string; const AAttrTypes:array of string; const AAttrValues:array of pointer):
+                   TF_TensorPtrs;
+  begin
+  result:=ExecOper(AOperationType,AOutputCount,[],AAttrNames,AAttrTypes,AAttrValues,[]);
+  end;
+function  ExecOper( // 0Input, 0InputList, 1Output
+                   const AOperationType:string;
+                   const AAttrNames:array of string; const AAttrTypes:array of string; const AAttrValues:array of pointer):
+                   TF_TensorPtr;
+  begin
+  result:=ExecOper(AOperationType,[],AAttrNames,AAttrTypes,AAttrValues,[]);
   end;
 
 end.

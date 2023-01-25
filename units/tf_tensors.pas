@@ -24,7 +24,8 @@ unit tf_tensors;
 //               Unimportant compiler hints suppressed
 //    18/01/2023 GetTensorValue extended to TF_STRING
 //    19/01/2023 Added GetTensorDataTypeSize
-//               Fixed the CreateTEnsorString routines
+//               Fixed the CreateTensorString routines
+//    22/01/2023 CreateTensorBool added
 //
 //**********************************************************************************************************************************
 //
@@ -62,6 +63,10 @@ function GetTensorDataTypeSize(const aTensor: TF_TensorPtr): Int64;
 function CreateTensor(ADataType:TF_DataType; const AShape:array of Int64):TF_TensorPtr;
 
 // there are four versions: (a) constant, (b) vector, (c) shape and an appropriate array, (d) shape, pointer and length
+function CreateTensorBool(AData:boolean):TF_TensorPtr;
+function CreateTensorBool(const AData:array of boolean):TF_TensorPtr;
+function CreateTensorBool(const AShape:array of Int64; const AData:array of boolean):TF_TensorPtr;
+function CreateTensorBool(const AShape:array of Int64; const AData; ALength:Int64):TF_TensorPtr;
 function CreateTensorInt8(AData:Int8):TF_TensorPtr;
 function CreateTensorInt8(const AData:array of Int8):TF_TensorPtr;
 function CreateTensorInt8(const AShape:array of Int64; const AData:array of Int8):TF_TensorPtr;
@@ -193,6 +198,26 @@ function CreateTensor(ADataType:TF_DataType; const AShape:array of Int64):TF_Ten
   if not Assigned(TensorPtr) then
     raise Exception.Create('Tensor cannot be created');
   result:=TensorPtr;
+  end;
+function CreateTensorBool(AData:boolean):TF_TensorPtr;
+  begin
+  result:=CreateTensor(TF_BOOL,[]);
+  WriteTensorData(result, AData, SizeOf(AData));
+  end;
+function CreateTensorBool(const AData:array of boolean):TF_TensorPtr;
+  begin
+  result:=CreateTensor(TF_BOOL,[length(AData)]);
+  WriteTensorData(result, AData[0], Length(AData)*SizeOf(boolean));
+  end;
+function CreateTensorBool(const AShape:array of Int64; const AData:array of boolean):TF_TensorPtr;
+  begin
+  result:=CreateTensor(TF_BOOL,AShape);
+  WriteTensorData(result, AData[0], Length(AData)*SizeOf(boolean));
+  end;
+function CreateTensorBool(const AShape:array of Int64; const AData; ALength:Int64):TF_TensorPtr;
+  begin
+  result:=CreateTensor(TF_BOOL,AShape);
+  WriteTensorData(result,AData,ALength);
   end;
 function CreateTensorInt8(AData:Int8):TF_TensorPtr;
   begin
