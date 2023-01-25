@@ -25,6 +25,7 @@ unit tf_wrapper;
 //  Change log:
 //    11/02/2020 Initial version
 //    15/02/2020 ctypes add to uses
+//    25/01/2023 Description updated in line with the underlying WrapperMaker.pas changes
 //
 //  When you see this text, it means that you look into the tf_wrappertemplate.pas As the name suggests, it is only a template file
 //  to be used by the WrapperMaker program, that can generate (depending on its CommandLine parameters - see its Help for details)
@@ -40,7 +41,7 @@ unit tf_wrapper;
 //  There are some benefits though. Already at the time typing the Add<oper>( the editor (if you use an IDE, like Lazarus) will
 //  bring up the parameter list, so you can see what inputs and parameters are needed for a given operation. This can simplify
 //  the programming work. On the other hand, it must be mentioned that certain TensorFlow operations have default attributes. E.g.
-//  MatMul (matrix multiplication) have two attributes (transpose_a and transpose_b) indicating whether the input matrix/matrices
+//  MatMul (matrix multiplication) has two attributes (transpose_a and transpose_b) indicating whether the input matrix/matrices
 //  need to be transposed before the operation or not. The default value for both, is false. If you use AddOper, you can safely skip
 //  these attributes if you do not want to transpose your matrices. In the Specific calls (e.g. AddMatMul), included in this file
 //  all attributes of the given operation must be specified. There were considerations to avoid this, but none of the options is
@@ -68,22 +69,22 @@ unit tf_wrapper;
 //  #GraphDescriptionEnd
 //  #EagerDescriptionBegin
 //
-//  This wrapper file includes operation specific Exec<oper> functions. These functions are built on the Generic ExecOper function
-//  defined in tf_operations. Exec<oper> functions are only generated for operations that have only ONE Output and no InputList or
-//  OutputList parameters. In the background the Specific Exec<oper> functions call a version of the ExecOper function.
+//  This wrapper file includes operation specific Exec<oper> functions. These functions are built on the Generic ExecOper functions
+//  defined in tf_operations. Exec<oper> functions are only generated for operations that have no OutputList parameters.
+//  In the background the Specific Exec<oper> functions call a version of the ExecOper function.
 //  The benefit of using Exec<oper> is that it lists what parameters are required to call the given operation, let it be Inputs or
 //  Attributes. If you use an IDE, already at typing Exec<oper>(, you can see the parameter list, do not need to look it up in the
 //  specification. Also, if an Attribute can be retrieved from the Input Tensor (typically the data type of it, often called "T"),
 //  then it is automatically done, you do not need to input it.
 //  As described in the Description of the TGraphExt.Add<oper> (if this tf_wrapper was generated without generating TGraphExt, then
-//  you can find this description in the tf_wrappertemplate file) there is a difference between how ExecOper and Exec<oper> handle
-//  the TensorFlow default attributes. In ExecOper you can skip those attributes that have a default value and you are happy with
-//  it. In the Exec<oper> functions you have to explicitely give all attributes of the given operations. The reasons can be found in
-//  the mentioned TGraphExt description. Similarly to TGraphExt this is currently a low priority to improve on this. It is not a bad
-//  programming practice anyway to specify these parameters explicitely, but if you want to avoid it, just use the base ExecOper.
-//  Just like, in case of ExecOper, all Exec<oper> functions have optional boolean parameters (starting with D_) to delete the input
-//  Tensors at the end of the Operation. This is to make memory management much easier and allow in-line TensorCreate when calling
-//  ExecOper or one of the Exec<oper> functions, without creating a memory leak.
+//  you can find this description in the tf_wrappertemplate.pas file) there is a difference between how ExecOper and Exec<oper>
+//  handle the TensorFlow default attributes. In ExecOper you can skip those attributes that have a default value and you are happy
+//  with it. In the Exec<oper> functions you have to explicitely give all attributes of the given operations. The reasons can be
+//  found in the mentioned TGraphExt description. Similarly to TGraphExt this is currently a low priority to improve on this. It is
+//  not a bad programming practice anyway to specify these parameters explicitely, but if you want to avoid it, just use on of the
+//  ExecOper functions. Just like, in case of ExecOper, all Exec<oper> functions have optional boolean parameters (starting with D_)
+//  to delete the input Tensors at the end of the Operation. This is to make memory management much easier and allow in-line
+//  TensorCreate when calling ExecOper or one of the Exec<oper> functions, without creating a memory leak.
 //
 //  #EagerDescriptionEnd
 //**********************************************************************************************************************************
