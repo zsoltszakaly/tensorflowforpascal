@@ -43,6 +43,7 @@ unit tf_api;
 //               - Added TF_Server and the related routines
 //               - Added TF_RegisterLogListener
 //    19/01/2023 TF_Tstring length changed
+//    06/03/2023 Compiler switch added to load windows dll correctly
 //
 //**********************************************************************************************************************************
 //
@@ -54,7 +55,11 @@ unit tf_api;
 //
 //**********************************************************************************************************************************
 
-{$linklib tensorflow}
+{$IFDEF WINDOWS}
+  {$linklib tensorflow.dll}
+{$ELSE}
+  {$linklib tensorflow}
+{$ENDIF}
 
 interface
 

@@ -26,6 +26,8 @@ unit tf_tensors;
 //    19/01/2023 Added GetTensorDataTypeSize
 //               Fixed the CreateTensorString routines
 //    22/01/2023 CreateTensorBool added
+//    26/01/2023 GetTensorValue extended to bool
+//    06/03/2023 Some basic utilities were moved here, when tf_utils was discontinued
 //
 //**********************************************************************************************************************************
 //
@@ -103,11 +105,14 @@ function CreateTensorSingle(const AData:Single):TF_TensorPtr;
 function CreateTensorSingle(const AData:array of Single):TF_TensorPtr;
 function CreateTensorSingle(const AShape:array of Int64; const AData:array of Single):TF_TensorPtr;
 function CreateTensorSingle(const AShape:array of Int64; const AData; ALength:Int64):TF_TensorPtr;
-
 function CreateTensorString(const AData:PChar):TF_TensorPtr;
 function CreateTensorString(const AShape:array of Int64; const AData:array of PChar):TF_TensorPtr;
-
+function CreateTensorString(const AShape:array of Int64; const AData:TF_StringList):TF_TensorPtr;
 // other tpyes, e.g. Complex can be added later, but the generic one can always be used
+
+// special versions
+function CreateTensorSingleRandomUniform(const AShape:array of Int64; const AMinValue:single; const AMaxValue:single):TF_TensorPtr;
+function CreateTensorSingleRandomNormal(const AShape:array of Int64; const AMeanValue:single; const AStandardDeviation:single):TF_TensorPtr;
 
 //**********************************************************************************************************************************
 //  Data move to and from a Tensor
@@ -117,7 +122,25 @@ procedure WriteTensorData(const ATensor:TF_TensorPtr; const AData; ADataLength:I
 procedure ReadTensorData(const ATensor:TF_TensorPtr; const AData; ADataLength:Int64);
 function GetTensorValue(const ATensor:TF_TensorPtr; const AIndex:array of Int64):Variant;
 
+//**********************************************************************************************************************************
+//  Basic file handling
+//**********************************************************************************************************************************
+
+procedure SaveTensors(const aFileName : string; const aTensorNames : TF_StringList; const aTensors : TF_TensorPtrs);
+function LoadTensor(const aFileName : string; const aTensorName : string; aTensorType : TF_DataType) : TF_TensorPtr;
+
+//**********************************************************************************************************************************
+//  Simple utilities
+//**********************************************************************************************************************************
+
+procedure PrintTensorShape(const ATensor:TF_TensorPtr; const AName:string='');
+procedure PrintTensorData(const ATensor:TF_TensorPtr; const AName:string='');
+
 implementation
+
+uses
+  tf_operations,
+  tf_wrapper;                          // Needed to use elementary operations directly
 
 //**********************************************************************************************************************************
 //  General administration
@@ -448,13 +471,66 @@ function CreateTensorString(const AShape:array of Int64; const AData:array of PC
   // 18/01/2023 New version
   Status:=TF_NewStatus;
   result:=TF_AllocateTensor(TF_STRING,@AShape[0],Length(AShape),Length(AData) * sizeof(TF_TString));
-  for i:=0 to Length(AData)-1 do
+  for i:=0 to High(AData) do
     begin
     TF_StringInit(@TString);
     TF_StringCopy(@TString, AData[i], strlen(AData[i]));
-    Move(TString, (TF_TensorData(result)+i * sizeof(TString))^, sizeof(TString));
+    Move(TString, (TF_TensorData(result) + i * sizeof(TString))^, sizeof(TString));
     end;
   TF_CheckStatus(Status);
+  end;
+function CreateTensorString(const AShape:array of Int64; const AData:TF_StringList):TF_TensorPtr;
+  var
+    Status:TF_StatusPtr;
+    TString:TF_TString;
+    i:integer;
+  begin
+  Status:=TF_NewStatus;
+  result:=TF_AllocateTensor(TF_STRING, @AShape[0], Length(AShape), Length(AData) * sizeof(TF_TString));
+  for i:=0 to High(AData) do
+    begin
+    TF_StringInit(@TString);
+    TF_StringCopy(@TString, @AData[i][1], length(AData[i]));
+    Move(TString, (TF_TensorData(result) + i * sizeof(TString))^, sizeof(TString));
+    end;
+  TF_CheckStatus(Status);
+  end;
+function CreateTensorSingleRandomUniform(const AShape:array of Int64; const AMinValue:single; const AMaxValue:single):TF_TensorPtr;
+  var
+    Graph : TGraphExt;
+    Session:TSession;
+    tmin, tmax, tshape, temp, op : string;
+  begin
+  Graph.Init;
+  tmin := Graph.AddTensor('', CreateTensorSingle(AMinValue), true);
+  tmax := Graph.AddTensor('', CreateTensorSingle(AMaxValue), true);
+  tmax := Graph.AddSub(tmax, tmin, '', TF_Float);
+  tshape := Graph.AddTensor('',CreateTensorInt64([Length(AShape)],AShape),true);
+  temp := Graph.AddRandomUniform(tshape, '',random(MaxInt), random(MaxInt), TF_Float, TF_Int64);
+  temp := Graph.AddMul(temp, tmax, '', TF_Float);
+  op := Graph.AddAdd(temp, tmin, '', TF_Float);
+  Session.init(Graph);
+  result := Session.Run([], [], op);
+  Session.Done;
+  Graph.Done;
+  end;
+function CreateTensorSingleRandomNormal(const AShape:array of Int64; const AMeanValue:single; const AStandardDeviation:single):TF_TensorPtr;
+  var
+    Graph : TGraphExt;
+    Session:TSession;
+    tmean, tstddev, tshape, temp, op : string;
+  begin
+  Graph.Init;
+  tmean := Graph.AddTensor('', CreateTensorSingle(AMeanValue), true);
+  tstddev := Graph.AddTensor('', CreateTensorSingle(AStandardDeviation), true);
+  tshape := Graph.AddTensor('',CreateTensorInt64([Length(AShape)],AShape),true);
+  temp := Graph.AddRandomStandardNormal(tshape, '',random(MaxInt), random(MaxInt), TF_Float, TF_Int64);
+  temp := Graph.AddMul(temp, tstddev, '', TF_Float);
+  op := Graph.AddAdd(temp, tmean, '', TF_Float);
+  Session.init(Graph);
+  result := Session.Run([], [], op);
+  Session.Done;
+  Graph.Done;
   end;
 
 //**********************************************************************************************************************************
@@ -500,6 +576,8 @@ procedure ReadTensorData(const ATensor:TF_TensorPtr; const AData; ADataLength:In
 function GetTensorValue(const ATensor:TF_TensorPtr; const AIndex:array of Int64):Variant;
   begin
   case TF_TensorType(ATensor) of
+    TF_BOOL:result:={%H-}boolean((TF_TensorData(ATensor)+
+                               GetTensorIndexToScalar(ATensor,AIndex)*TF_DataTypeSize(TF_TensorType(ATensor)))^);
     TF_INT8:result:={%H-}Int8((TF_TensorData(ATensor)+
                                GetTensorIndexToScalar(ATensor,AIndex)*TF_DataTypeSize(TF_TensorType(ATensor)))^);
     TF_INT16:result:={%H-}Int16((TF_TensorData(ATensor)+
@@ -523,6 +601,183 @@ function GetTensorValue(const ATensor:TF_TensorPtr; const AIndex:array of Int64)
     TF_STRING:result:={%H-}TF_StringGetDataPointer((TF_TensorData(ATensor)+
                                                    GetTensorIndexToScalar(ATensor,AIndex)*GetTensorDataTypeSize(ATensor)));
     end;
+  end;
+
+//**********************************************************************************************************************************
+//  Basic file handling
+//**********************************************************************************************************************************
+
+procedure SaveTensors(const aFileName : string; const aTensorNames : TF_StringList; const aTensors : TF_TensorPtrs);
+  var
+    g : tGraphExt;
+    s : tSession;
+    SaveOperationName:string;
+    i : integer;
+    SL : TF_StringList = nil;
+    TL : TF_TypeList = nil;
+  begin
+  if length(aTensorNames) <> length(aTensors) then
+    begin
+    writeln('Different number of names and tensors');
+    exit;
+    end;
+  g.Init;
+  g.AddTensor('tensornames', CreateTensorString([length(aTensorNames)], aTensorNames), true);
+  g.AddConstant('filename', aFileName);
+  SetLength(SL, length(aTensorNames));
+  SetLength(TL, length(aTensors));
+  for i := 0 to High(aTensorNames) do
+    begin
+    g.AddInput('tensor' + IntToStr(i), TF_TensorType(aTensors[i]));
+    SL[i] := 'tensor' + IntToStr(i);
+    TL[i] := TF_TensorType(aTensors[i]);
+    end;
+  SaveOperationName:=g.AddSave('filename', 'tensornames', SL, TL);
+  s.init(g);
+  s.run(SaveOperationName, SL, aTensors);
+  s.Done;
+  g.Done;
+  end;
+function LoadTensor(const aFileName : string; const aTensorName : string; aTensorType : TF_DataType) : TF_TensorPtr;
+  var
+    g : tGraphExt;
+    s : tSession;
+  begin
+  g.Init;
+  g.AddConstant('filename', aFileName);
+  g.AddConstant('tensorname', aTensorName);
+  g.AddRestore('filename', 'tensorname', 'readtensor', aTensorType, -1);
+  s.init(g);
+  result := s.run([],[],'readtensor');
+  s.Done;
+  g.Done;
+  end;
+
+//**********************************************************************************************************************************
+//  Simple utilities
+//**********************************************************************************************************************************
+
+procedure PrintTensorShape(const ATensor:TF_TensorPtr; const AName:string='');
+  var
+    Shape:TF_Shape;
+    DataType:TF_DataType;
+    I:Integer;
+  begin
+  writeln('Tensor details: ',AName);
+  write('- Type:                 ');
+  DataType:=TF_TensorType(ATensor);
+  case DataType of
+    TF_BOOL:      writeln('Boolean');
+    TF_INT8:      writeln('Int8');
+    TF_INT16:     writeln('Int16');
+    TF_INT32:     writeln('Int32');
+    TF_INT64:     writeln('Int64');
+    TF_UINT8:     writeln('UInt8');
+    TF_UINT16:    writeln('UInt16');
+    TF_UINT32:    writeln('UInt32');
+    TF_UINT64:    writeln('UInt64');
+    TF_HALF:      writeln('Half');
+    TF_FLOAT:     writeln('Float');
+    TF_DOUBLE:    writeln('Double');
+    TF_COMPLEX64: writeln('Complex64');
+    TF_COMPLEX128:writeln('Complex128');
+    TF_STRING:    writeln('String');
+    TF_VARIANT:   writeln('Variant');
+    TF_RESOURCE:  writeln('Resource');
+    else       writeln(DataType);
+    end;
+  write('- Dimensions:           ');
+  Shape:=GetTensorShape(ATensor);
+  for I:=0 to length(Shape)-1 do
+    begin
+    write(Shape[i]);
+    if I<Length(Shape)-1 then
+      write(' x ');
+    end;
+  writeln;
+  writeln('- Byte length:          ',TF_TensorByteSize(ATensor));
+  writeln('- Elements:             ', GetTensorScalarCount(ATensor));
+  writeln('- Elementary data size: ', TF_TensorByteSize(ATensor) div GetTensorScalarCount(ATensor));
+  writeln;
+  end;
+procedure PrintTensorData(const ATensor:TF_TensorPtr; const AName:string='');
+  // to simplify life, all non-string tensors are printed as Single (otherwise the Variant type would need to be split as per its type.
+  const
+    AFormat:string='%30.20F';
+  var
+    i,j:integer;
+    Index:TF_Shape;
+    DataType:TF_DataType;
+  begin
+  writeln('Tensor data: ', AName);
+
+  DataType:=TF_TensorType(ATensor);
+  if DataType = TF_String then
+    begin
+    for i:= 0 to GetTensorScalarCount(ATensor)-1 do
+      begin
+      Index:=GetTensorScalarToIndex(ATensor,i);
+      for j:=0 to Length(Index)-1 do
+        write(Index[j],' ');
+      writeln('"',GetTensorValue(ATensor,Index),'"');
+      end;
+    writeln;
+    exit;
+    end;
+
+  if DataType = TF_Bool then
+    begin
+    case Length(GetTensorShape(ATensor)) of
+      0:writeln(GetTensorValue(ATensor,[]));
+      1:for i:=0 to GetTensorScalarCount(ATensor)-1 do
+          writeln(GetTensorValue(ATensor,[i]));
+      2:begin
+        for i:=0 to GetTensorShape(ATensor)[0]-1 do
+          begin
+          for j:=0 to GetTensorShape(ATensor)[1]-1 do
+            write(GetTensorValue(ATensor,[i,j]),chr(9));
+          writeln;
+          end;
+        end
+      else
+        begin
+        for i:=0 to GetTensorScalarCount(ATensor)-1 do
+          begin
+          Index:=GetTensorScalarToIndex(ATensor,i);
+          for j:=0 to Length(Index)-1 do
+            write(Index[j],' ');
+          writeln('    ',GetTensorValue(ATensor,Index));
+          end;
+        end;
+      end;
+    writeln;
+    exit;
+    end;
+
+  case Length(GetTensorShape(ATensor)) of
+    0:writeln(Format(AFormat,[Single(GetTensorValue(ATensor,[])){%H-}]));
+    1:for i:=0 to GetTensorScalarCount(ATensor)-1 do
+        writeln(Format(AFormat,[Single(GetTensorValue(ATensor,[i])){%H-}]));
+    2:begin
+      for i:=0 to GetTensorShape(ATensor)[0]-1 do
+        begin
+        for j:=0 to GetTensorShape(ATensor)[1]-1 do
+          write(Format(AFormat,[Single(GetTensorValue(ATensor,[i,j])){%H-}]),chr(9));
+        writeln; sleep(5);
+        end;
+      end
+    else
+      begin
+      for i:=0 to GetTensorScalarCount(ATensor)-1 do
+        begin
+        Index:=GetTensorScalarToIndex(ATensor,i);
+        for j:=0 to Length(Index)-1 do
+          write(Index[j],' ');
+        writeln('    ',Format(AFormat,[Single(GetTensorValue(ATensor,Index)){%H-}]));
+        end;
+      end;
+    end;
+  writeln;
   end;
 
 end.

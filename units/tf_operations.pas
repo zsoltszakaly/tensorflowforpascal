@@ -31,6 +31,7 @@ unit tf_operations;
 //    25/01/2023 The most general AddOper and ExecOper routines are deprecated because they assumed that Inputs are always before
 //                 InputLists
 //               Many new overload versions of AddOper and ExecOper added
+//    31/01/2023 In AddOperation there is no need to name the outputs any more, it is enough to pass on the necessary number of ''
 //
 //**********************************************************************************************************************************
 //
@@ -270,9 +271,9 @@ function    TGraph.AddOper(const AOperationType:string;
   SetLength(FOperOutputs,OffSet+Length(AOutputs));
   OperationType:=AOperationType+#0; // depending on the compiler, string can be null-terminated or not. To be safe, a #0 is added
   if AOperationName<>'' then
-    OperationName:=AOperationName+#0
+    OperationName:=AOperationName
   else
-    OperationName:=AOperationType+IntToStr(OffSet)+#0;
+    OperationName:=AOperationType+IntToStr(OffSet);
   OperationDescription:=TF_NewOperation(FGraph, @OperationType[1], @OperationName[1]);
   for Index:=0 to length(AInputsAndInputLists)-1 do
     begin
@@ -361,12 +362,20 @@ function    TGraph.AddOper(const AOperationType:string;
     end;
   Operation:=TF_FinishOperation(OperationDescription,FStatus);
   OK:=OK and TF_CheckStatus(FStatus);
-  for Index:=0 to Length(AOutputs)-1 do // if there are outputs, they are registered in TGraph for immediate usability later
+  for Index := 0 to High(AOutputs) do // if there are outputs, they are registered in TGraph for immediate usability later
     with FOperOutputs[OffSet+Index] do
       begin
       FOutput.Oper:=Operation;
       FOutput.Index:=Index;
-      FName:=AOutputs[Index];
+      if AOutputs[Index] <> '' then
+        FName := AOutputs[Index]
+      else
+        begin
+        if High(AOutputs) = 0 then
+          FName := OperationName
+        else
+          FName := OperationName + '_' + IntToStr(Index);
+        end;
       end;
   if OK then
     result:=OperationName
@@ -377,7 +386,7 @@ function    TGraph.AddOper(const AOperationType:string;
                            const AInputs:array of string;
                            const AOutputs: array of string;
                            const AAttrNames: array of string; const AAttrTypes: array of string; const AAttrValues: array of pointer;
-                           const AOperationName:string=''):string; deprecated;
+                           const AOperationName:string=''):string;
   var
     InputsAndInputLists:       array of TF_StringList = nil;
     i:                         integer;
@@ -391,7 +400,7 @@ function    TGraph.AddOper(const AOperationType:string;
 function    TGraph.AddOper(const AOperationType:string;
                            const AOutputs: array of string;
                            const AAttrNames: array of string; const AAttrTypes: array of string; const AAttrValues: array of pointer;
-                           const AOperationName:string=''):string; deprecated;
+                           const AOperationName:string=''):string;
   begin
   // an even more simplified version, when there are no Input at all
   result := AddOper(AOperationType, [], [], AOutputs, AAttrNames, AAttrTypes, AAttrValues, AOperationName);
@@ -410,6 +419,7 @@ function    TGraph.GetOutputByName(const AName:string):TF_Output;
       end;
     inc(i);
     end;
+  writeln('Error, Output not found');
   end;
 function    TGraph.GetOutputsByName(const ANames:TF_StringList):TF_Outputs;
   var
