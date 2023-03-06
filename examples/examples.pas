@@ -20,6 +20,7 @@ program examples;
 //    17/01/2023 New examples upto Example 25
 //               All examples reviewed and updated if needed, consider the file as a new one (hence earlier Change logs removed)
 //    25/01/2023 New examples, Example 26 and a Last one (it must always be the last as it aborts)
+//    06/03/2023 Two new examples added and tf_utils removed from uses ((as its functionality is moved elsewhere)
 //
 //**********************************************************************************************************************************
 //
@@ -54,7 +55,7 @@ uses
   tf_tensors,          // the unit to manipulate tensors (TF_TensorPtr)
   tf_operations,       // the unit to handle Graphs, Operations and Sessions in a TensorFlow style (use Oper names)
   tf_wrapper,          // the unit where all Operations are explicitely interfaced for Graph and/or Eager use
-  tf_utils;            // some very basic printing routines
+  tf_customops;        // the unit of custom oprations
 
 procedure Example1;
 // In this example a simple matrix multiplication is done on two Int32 Tensors, using the Graph based General interface
@@ -348,7 +349,7 @@ procedure Example12;
   begin
   writeln('Starting Example 12');
   writeln;
-  t:=CreateTensorSingleRandom([3,4,5],-10,10);
+  t:=CreateTensorSingleRandomUniform([3,4,5],-10,10);
   PrintTensorShape(t,'T'); // its Shape is 3 dimensional, so the printout is sequential
   PrintTensorData(t);
   TF_DeleteTensor(t);
@@ -420,7 +421,7 @@ procedure Example15;
     attr:TF_TypeList;
     DataList:TF_StringList;
   begin
-  // This example shows how to save one Tensors.
+  // This example shows how to save one Tensor.
   writeln('Starting Example 15');
   writeln;
 
@@ -520,13 +521,15 @@ procedure Example17;
     t:TF_TensorPtr;
     touts:TF_TensorPtrs; // showing again the s.run with multiple outputs, even if that "multiple" is just one
   begin
-  // This is to test the Frac(x) functionality on two different ways. The second seems much faster
+  // This is to test the Frac(x) functionality on two different ways, giving the same result for x>=0, but different for x<0
+
   writeln('Starting Example 17');
   writeln;
   writeln('Be patient, it might take few seconds to complete!');
   writeln;
-  t:=CreateTensorSingleRandom([10000,10000],0,1000);
+  t:=CreateTensorSingleRandomUniform([10000,10000],-1000,1000);
 
+  // the first gives frac(-1.1) = -0.1
   g.Init;
   g.AddInput('x',TF_FLOAT);
   g.AddConstant('1',1.0);
@@ -541,6 +544,8 @@ procedure Example17;
   s.Done;
   g.Done;
 
+  // the second gives frac(-1.1) = 0.9
+  // I prefer this version (see Example28 too), and it is also much faster, however might take more memory
   g.Init;
   g.AddInput('x',TF_FLOAT);
   g.AddFloor('x','xfloor',TF_FLOAT);
@@ -554,6 +559,8 @@ procedure Example17;
   SetLength(touts,0);
   s.Done;
   g.Done;
+
+  //Btw. there is a third interpretation of frac, where frac(-1.1) = 0.1 (see: https://en.wikipedia.org/wiki/Fractional_part)
 
   TF_DeleteTensor(t);
 
@@ -650,9 +657,9 @@ procedure Example19;
   writeln('Starting Example 19');
   writeln;
 
-  tvar:=CreateTensorSingleRandom([10],5,10);
+  tvar:=CreateTensorSingleRandomUniform([10],5,10);
   PrintTensorData(tvar,'The initial value');
-  tdelta:=CreateTensorSingleRandom([10],0,1);
+  tdelta:=CreateTensorSingleRandomUniform([10],0,1);
   PrintTensorData(tdelta,'The delta');
   talpha:=CreateTensorSingle(0.1);
   PrintTensorData(talpha,'The alpha');
@@ -695,9 +702,9 @@ procedure Example20;
   writeln('Starting Example 20');
   writeln;
 
-  tvar:=CreateTensorSingleRandom([10],5,10);
+  tvar:=CreateTensorSingleRandomUniform([10],5,10);
   PrintTensorData(tvar,'The initial value');
-  tdelta:=CreateTensorSingleRandom([10],0,1);
+  tdelta:=CreateTensorSingleRandomUniform([10],0,1);
   PrintTensorData(tdelta,'The delta');
   talpha:=CreateTensorSingle(0.1);
   PrintTensorData(talpha,'The alpha');
@@ -764,7 +771,7 @@ procedure Example21;
   // finish the Graph
   g.done;
 
-  writeln('The Graph is saved to teh disk');
+  writeln('The Graph is saved to the disk');
   writeln;
 
   writeln('Finished Example 21');
@@ -935,7 +942,6 @@ procedure Example26;
     touts:TF_TensorPtrs; // The result of TSession.Run
     attr1:Int32;
     attr2:TF_DataType;  // For the Generic AddOper all Attrubute Values are handed over as pointer and so a variable is needed
-
   begin
   // Split a Tensor - It is important to see how to use an OutputList
 
@@ -952,7 +958,7 @@ procedure Example26;
   writeln('Starting Example 26');
   writeln;
 
-  tin := CreateTensorSingleRandom([3,5,5],0,1);
+  tin := CreateTensorSingleRandomUniform([3,5,5],0,1);
   PrintTensorShape(tin, 'a random 3D tensor');
   PrintTensorData(tin, 'a random 3D tensor');
   writeln;
@@ -1006,6 +1012,135 @@ procedure Example26;
   writeln;
   end;
 
+procedure Example27;
+  var
+    g : TGraphExt;
+    s : TSession;
+    tin : TF_TensorPtr;
+    touts : TF_TensorPtrs;
+    i : integer;
+  begin
+  // For variables - if I understand correctly, - the currently prefered way is the VariableOp (and not the Variable)
+  // See Examples 19 and 20 for the two versions of the same ApplyGradientDescent
+  // In this example a non-variable focused operation is used with a VariableOp
+  writeln('Starting Example 27');
+  writeln;
+
+  g.init;
+  g.AddInput('init',TF_Int32);
+  g.AddConstant('one',Int32(1));
+
+  g.AddVarhandleOp('myvar','','',TF_INT32,TF_Shape.Create(0),nil); // a simple Scalar Int32
+  g.AddAssignVariableOp('myvar','init',TF_INT32, false,'MyAssignOp'); // an initialization operation, needed otherwise error
+
+  // the following three steps encapsulate the non-variable focused operation Add
+  g.AddReadVariableOp('myvar','addinput',TF_INT32);
+  g.AddAdd('addinput','one','addoutput',TF_INT32);
+  g.AddAssignVariableOp('myvar','addoutput',TF_INT32, false,'MyRealOp');
+
+  s.init(g);
+  tin := CreateTensorInt32(1);
+  s.run(['MyAssignOp'],['init'],[tin]);
+  TF_DeleteTensor(tin);
+
+  // reading the input and output values
+  touts:=  s.run([],[],[],['addinput','addoutput']);
+  PrintTensorShape(touts[0],'The input');
+  PrintTensorData(touts[0]);
+  PrintTensorShape(touts[1],'The output');
+  PrintTensorData(touts[1]);
+  TF_DeleteTensors(touts);
+
+  // reading the input and output values again
+  // it can be seen that multiple calling of it does not change the result, although addoutput need to call Add, what uses addinput
+  // and addinput reads its value from the variable, the variable is not updated
+  touts:=  s.run([],[],[],['addinput','addoutput']);
+  PrintTensorData(touts[0],'The input again');
+  PrintTensorData(touts[1],'The output again');
+  TF_DeleteTensors(touts);
+
+  // reading the input and output values after one run of the MyRealOp. The visible result is still the same, but in the background
+  // the variable is updated
+  touts:=  s.run(['MyRealOp'],[],[],['addinput','addoutput']);
+  PrintTensorData(touts[0],'The input when MyRealOp ran');
+  PrintTensorData(touts[1],'The output when MyRealOp ran');
+  TF_DeleteTensors(touts);
+
+  // reading the input and output values again without running the MyRealOp
+  // here can be seen that the variable was already updated in the previous step
+  touts:=  s.run([],[],[],['addinput','addoutput']);
+  PrintTensorData(touts[0],'The input again without run');
+  PrintTensorData(touts[1],'The output again without run');
+  TF_DeleteTensors(touts);
+
+  // Now, 1000 runs
+  for i := 1 to 1000 do
+    touts:=s.run(['MyRealOp'],[],[],[]);
+  touts:=  s.run([],[],[],['addinput']);
+  PrintTensorData(touts[0],'The input after 1000 runs');
+  TF_DeleteTensors(touts);
+
+  s.done;
+  g.done;
+
+  writeln('Finished Example 27');
+  writeln;
+  end;
+
+procedure Example28;
+  var
+    g:TGraphCustom;
+    s:TSession;
+    t:TF_TensorPtr;
+    tout:TF_TensorPtr;
+  begin
+  // This is to test the Frac(x) functionality using the TGraphCustom object and three eager ways
+  writeln('Starting Example 28');
+  writeln;
+  writeln('Be patient, it might take few seconds to complete!');
+  writeln;
+  t:=CreateTensorSingleRandomUniform([5000,5000],-1000,1000);
+
+  // first the TGraphCustom.AddFrac solution ( frac(-1.1) = 0.9)
+  g.Init;
+  g.AddInput('x',TF_FLOAT);
+  g.AddFrac('x','fracx',TF_FLOAT);
+  s.init(g);
+  Writeln('Before the graph solution ',DateTimeToStr(Now));
+  tout:=s.run(['x'], [t], 'fracx');
+  Writeln('After the graph solution  ',DateTimeToStr(Now));
+  PrintTensorShape(tout);
+  TF_DeleteTensor(tout);
+  s.Done;
+  g.Done;
+
+  // the graph based eager solutiuon ( frac(-1.1) = 0.9)
+  Writeln('Before the graph based eager solution ',DateTimeToStr(Now));
+  tout := ExecFrac(t);
+  Writeln('After the graph based eager solution ',DateTimeToStr(Now));
+  PrintTensorShape(tout);
+  TF_DeleteTensor(tout);
+
+  // the first version of the two-step eager execution  ( frac(-1.1) = -0.1, the least "official" math interpretation)
+  Writeln('Before the x mod 1 two-step eager solution ',DateTimeToStr(Now));
+  tout := ExecMod(t, CreateTensorSingle(1), false, true);
+  Writeln('After the x mod 1 two-step eager solution ',DateTimeToStr(Now));
+  PrintTensorShape(tout);
+  TF_DeleteTensor(tout);
+
+  // the second version of the two-step eager execution, it has even more memory need, so be careful with larger tensors, but gives ( frac(-1.1) = 0.9)
+  Writeln('Before the x - floor(x) two-step eager solution ',DateTimeToStr(Now));
+  tout := ExecSub(t, ExecFloor(t), false, true);
+  Writeln('After the x - floor(x) two-step eager solution ',DateTimeToStr(Now));
+  PrintTensorShape(tout);
+  TF_DeleteTensor(tout);
+
+  TF_DeleteTensor(t);
+
+  writeln('Finished Example 28');
+  writeln;
+  end;
+
 procedure ExampleLast;
   begin
   // Call an Exec function with no output
@@ -1036,11 +1171,13 @@ Example18;
 Example19;
 Example20;
 Example21;
-Example22;
+Example22;  // still not ok
 Example23;
 Example24;
 Example25;
 Example26;
+Example27;
+Example28;
 
 ExampleLast;
 end.
