@@ -6,4 +6,8 @@ All other units in the units folder is up-to-date.
 In tf_operations both the TGraph.AddOper and ExecOper got many new overloaded versions while the original long versions were deprecated (but still available for compatibility reasons) as those assumed that Inputs are always before InputLists and Outputs are always before OutputLists what turned out not to be the case.
 Be aware that because now Inputs and InputLsits are mixed up and it would be very low performance to allow different types when passing the new InputsAndInputLists, all Inputs are passed as InputLists with just one element and a separate array can or must (depending on the overloaded version) be given, indicating which one is an Input and which one is an InputList.
 
-In the exampes folder the source files (tf_utils.pas, examples.pas and mnist.pas) are updated and two files to test are also added. The input files for mnist has to be downloaded separately (because of their size I do not want to add them here unnecessarily).
+In the exampes folder the source files (examples.pas and mnist.pas) are updated and two files to test are also added. The input files for mnist has to be downloaded separately (because of their size I do not want to add them here unnecessarily).
+
+06/03/2023
+tf_utils is removed, its functionality is moved to tf_tensors.
+tf_customops as a new unit added for wrapper.pas like funcitons that are not found in the standard operations list (to be expanded)
