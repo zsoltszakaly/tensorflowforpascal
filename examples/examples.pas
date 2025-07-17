@@ -4,7 +4,7 @@ program examples;
 //
 //  Pascal example to use TensorFlow through Graph and Eager methods, both Generic and operation Specific
 //
-//  Copyright: (C) 2020, Zsolt Szakaly
+//  Copyright: (C) 2020-2023, Zsolt Szakaly
 //
 //  This source is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as
 //  published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
@@ -49,6 +49,9 @@ program examples;
 //
 //**********************************************************************************************************************************
 
+{$packrecords c}
+
+
 uses
   sysutils,
   tf_api,              // the basic interface to tensorflow, based on c_api.h
@@ -67,7 +70,7 @@ procedure Example1;
     attr:TF_DataType;  // For the Generic AddOper all Attrubute Values are handed over as pointer and so a variable is needed
     tout:TF_TensorPtr; // The result of TSession.Run
   begin
-  writeln('Starting Example 1');
+  writeln(DateTimeToStr(Now), ' Starting Example 1');
   writeln;
   t1:=CreateTensorInt32([3,2],[1,2,3,4,5,6]);     // A 3x2 matrix, and the data is filled through a vector
   t2:=CreateTensorInt32([2,4],[1,2,3,4,5,6,7,8]); // A 2x4 matrix, filled the same way
@@ -88,7 +91,7 @@ procedure Example1;
   TF_DeleteTensor(t1);                            // need to delete all the three tensors to avoid memory leak
   TF_DeleteTensor(t2);
   TF_DeleteTensor(tout);
-  writeln('Finished Example 1');
+  writeln(DateTimeToStr(Now) + ' Finished Example 1');
   writeln;
   end;
 
@@ -102,7 +105,7 @@ procedure Example2;
     attr2:boolean;
     tout:TF_TensorPtr; // The result of TSession.Run
   begin
-  writeln('Starting Example 2');
+  writeln(DateTimeToStr(now), ' Starting Example 2');
   writeln;
   t1:=CreateTensorSingle([2,3],[1.0,2.0,3.0,4.0,5.0,6.0]);     // A 2x3 matrix, need to transpose before MatMul
   t2:=CreateTensorSingle([2,4],[1.1,2.2,3.3,4.4,5.5,6.6,7.7,8.8]); // A 2x4 matrix,no need to transpose
@@ -114,7 +117,7 @@ procedure Example2;
   TF_DeleteTensor(t1);                            // need to delete all the three tensors to avoid memory leak
   TF_DeleteTensor(t2);
   TF_DeleteTensor(tout);
-  writeln('Finished Example 2');
+  writeln(DateTimeToStr(now), ' Finished Example 2');
   writeln;
   end;
 
@@ -127,7 +130,7 @@ procedure Example3;
     attr:TF_DataType;
     tout:TF_TensorPtr;
   begin
-  writeln('Starting Example 3');
+  writeln(DateTimeToStr(now), ' Starting Example 3');
   writeln;
   t1:=CreateTensorSingle([2,3],[1.0,2.0,3.0,4.0,5.0,6.0]);     // A 2x3 matrix
   t2:=CreateTensorSingle([2,3],[1.1,2.2,3.3,4.4,5.5,6.6]);     // Must be the same Shape
@@ -136,12 +139,12 @@ procedure Example3;
   PrintTensorShape(tout,'TOut');
   PrintTensorData(tout);
   TF_DeleteTensor(tout); // only tout has to be deleted, t1 and t2 were delete in the ExecOper
-  writeln('Finished Example 3');
+  writeln(DateTimeToStr(now), ' Finished Example 3');
   writeln;
   end;
 
 procedure Example4;
-// In this example two identical size matrices are added element-wise. It uses the Graph based specific interface (ExecAdd)
+// In this example two identical size matrices are added element-wise. It uses the Graph based specific interface (AddAdd)
   var
     t1:TF_TensorPtr;
     t2:TF_TensorPtr;
@@ -149,7 +152,7 @@ procedure Example4;
     s:TSession;        // The TSession object we use to run
     touts:TF_TensorPtrs; // The result of TSession.Run in this case is an array as the output is given as an array as well
   begin
-  writeln('Starting Example 4');
+  writeln(DateTimeToStr(now), ' Starting Example 4');
   writeln;
   t1:=CreateTensorSingle([2,3],[1.0,2.0,3.0,4.0,5.0,6.0]);     // A 2x3 matrix
   t2:=CreateTensorSingle([2,3],[1.1,2.2,3.3,4.4,5.5,6.6]);     // Must be the same Shape
@@ -157,7 +160,7 @@ procedure Example4;
   g.AddInput('tensor1',TF_FLOAT);                 // not checking the result this time
   g.AddInput('tensor2',TF_FLOAT);
   g.AddAdd('tensor1','tensor2','tensorout',TF_FLOAT);
-  s.Init(g);                                      // Need to make a Session that runs the Graph
+  s.Init(g); // Need to make a Session that runs the Graph
   touts:=s.run(['tensor1','tensor2'],[t1,t2],['tensorout']); // The actual run of the Session
   PrintTensorShape(touts[0],'TOut[0]');           // A quick control that the product matrix is indeed 3x4, Int32
   PrintTensorData(touts[0]);
@@ -167,7 +170,7 @@ procedure Example4;
   TF_DeleteTensor(t2);
   TF_DeleteTensor(touts[0]);
   SetLength(touts,0);
-  writeln('Finished Example 4');
+  writeln(DateTimeToStr(now), ' Finished Example 4');
   writeln;
   end;
 
@@ -177,7 +180,7 @@ procedure Example5;
     t:TF_TensorPtr;
     tout:TF_TensorPtr;
   begin
-  writeln('Starting Example 5');
+  writeln(DateTimeToStr(now), ' Starting Example 5');
   writeln;
   t:=CreateTensorSingle([2,3],[-1.0,2.0,-3.0,4.0,-5.0,6.0]);
   tout:=ExecAbs(t);
@@ -185,7 +188,7 @@ procedure Example5;
   PrintTensorData(tout);
   TF_DeleteTensor(t);    // need to delete manually, because ExecAbs was called without adding ",true" to the end of the call
   TF_DeleteTensor(tout); // otherwise only tout should be deleted
-  writeln('Finished Example 5');
+  writeln(DateTimeToStr(now), ' Finished Example 5');
   writeln;
   end;
 
@@ -194,7 +197,7 @@ procedure Example6;
 // (same shape) matrix (element-wise).
 // In the second step the square of the difference matrix is calculated (again element-wise).
 // Finally in the third step the sum of the squares is calculated.
-// This is basically a chi-square like approach (with no weighting).
+// This is basically a sum-of-square like approach (with no weighting).
   var
     t1,t2:TF_TensorPtr;
     g:TGraph;          // The TGraph object we will use
@@ -202,7 +205,7 @@ procedure Example6;
     attr:TF_DataType;  // For the Generic AddOper all Attrubute Values are handed over as pointer and so a variable is needed
     tout:TF_TensorPtr;
   begin
-  writeln('Starting Example 6');
+  writeln(DateTimeToStr(now), ' Starting Example 6');
   writeln;
   t1:=CreateTensorSingle([5],[-1.0,2.0,-3.0,4.0,-5.0]);
   t2:=CreateTensorSingle([5],[1.0,-2.0,3.0,-4.0,5.0]);
@@ -223,7 +226,7 @@ procedure Example6;
   TF_DeleteTensor(t1);                            // need to delete all the three tensors to avoid memory leak
   TF_DeleteTensor(t2);
   TF_DeleteTensor(tout);
-  writeln('Finished Example 6');
+  writeln(DateTimeToStr(now), ' Finished Example 6');
   writeln;
   end;
 
@@ -235,7 +238,7 @@ procedure Example7;
     s:TSession;
     tout:TF_TensorPtr;
   begin
-  writeln('Starting Example 7');
+  writeln(DateTimeToStr(now), ' Starting Example 7');
   writeln;
   t1:=CreateTensorSingle([5],[-1.0,2.0,-3.0,4.0,-5.0]);
   t2:=CreateTensorSingle([5],[1.0,-2.0,3.0,-4.0,5.0]);
@@ -255,7 +258,7 @@ procedure Example7;
   TF_DeleteTensor(t1);
   TF_DeleteTensor(t2);
   TF_DeleteTensor(tout);
-  writeln('Finished Example 7');
+  writeln(DateTimeToStr(now), ' Finished Example 7');
   writeln;
   end;
 
@@ -265,7 +268,7 @@ procedure Example8;
     t1,t2:TF_TensorPtr;
     attr:TF_DataType;
   begin
-  writeln('Starting Example 8');
+  writeln(DateTimeToStr(now), ' Starting Example 8');
   writeln;
   t1:=CreateTensorSingle([5],[-1.0,2.0,-3.0,4.0,-5.0]);
   t2:=CreateTensorSingle([5],[1.0,-2.0,3.0,-4.0,5.0]);
@@ -277,7 +280,7 @@ procedure Example8;
   PrintTensorShape(t1,'T1');
   PrintTensorData(t1);
   TF_DeleteTensor(t1); // only this tensor is left
-  writeln('Finished Example 8');
+  writeln(DateTimeToStr(now), ' Finished Example 8');
   writeln;
   end;
 
@@ -286,7 +289,7 @@ procedure Example9;
   var
     t:TF_TensorPtr;
   begin
-  writeln('Starting Example 9');
+  writeln(DateTimeToStr(now), ' Starting Example 9');
   writeln;
   t:=CreateTensorSingle([5],[-1.0,2.0,-3.0,4.0,-5.0]);
   t:=ExecSub(t,CreateTensorSingle([5],[1.0,-2.0,3.0,-4.0,5.0]),true,true); // Showing that CreateTensor can be used in-line
@@ -295,7 +298,7 @@ procedure Example9;
   PrintTensorShape(t,'T');
   PrintTensorData(t);
   TF_DeleteTensor(t);
-  writeln('Finished Example 9');
+  writeln(DateTimeToStr(now), ' Finished Example 9');
   writeln;
   end;
 
@@ -305,7 +308,7 @@ procedure Example10;
   var
     t:TF_TensorPtr;
   begin
-  writeln('Starting Example 10');
+  writeln(DateTimeToStr(now), ' Starting Example 10');
   writeln;
   t:=ExecSum(ExecSquare(
                  ExecSub(
@@ -321,7 +324,7 @@ procedure Example10;
   PrintTensorShape(t,'T');
   PrintTensorData(t);
   TF_DeleteTensor(t);
-  writeln('Finished Example 10');
+  writeln(DateTimeToStr(now), ' Finished Example 10');
   writeln;
   end;
 
@@ -330,7 +333,7 @@ procedure Example11;
   var
     t:TF_TensorPtr;
   begin
-  writeln('Starting Example 11');
+  writeln(DateTimeToStr(now), ' Starting Example 11');
   writeln;
   t:=CreateTensorSingle([5],[-1.0,2.0,-3.0,4.0,-5.0]);
   t:=ExecSquaredDifference(t,CreateTensorSingle([5],[1.0,-2.0,3.0,-4.0,5.0]),true,true); // difference and square in one step
@@ -338,7 +341,7 @@ procedure Example11;
   PrintTensorShape(t,'T');
   PrintTensorData(t);
   TF_DeleteTensor(t);
-  writeln('Finished Example 11');
+  writeln(DateTimeToStr(now), ' Finished Example 11');
   writeln;
   end;
 
@@ -347,13 +350,13 @@ procedure Example12;
   var
     t:TF_TensorPtr;
   begin
-  writeln('Starting Example 12');
+  writeln(DateTimeToStr(now), ' Starting Example 12');
   writeln;
   t:=CreateTensorSingleRandomUniform([3,4,5],-10,10);
   PrintTensorShape(t,'T'); // its Shape is 3 dimensional, so the printout is sequential
   PrintTensorData(t);
   TF_DeleteTensor(t);
-  writeln('Finished Example 12');
+  writeln(DateTimeToStr(now), ' Finished Example 12');
   writeln;
   end;
 
@@ -365,7 +368,7 @@ procedure Example13;
     t:TF_TensorPtr;
     LastOperationName:string;
   begin
-  writeln('Starting Example 13');
+  writeln(DateTimeToStr(now), ' Starting Example 13');
   writeln;
   g.Init;
   g.AddInput('input-bmp',TF_String); // The input bmp file name will be given as an input parameter
@@ -387,7 +390,7 @@ procedure Example13;
   g.Done;
   writeln('The BMP file is converted to a JPG file');
   writeln;
-  writeln('Finished Example 13');
+  writeln(DateTimeToStr(now), ' Finished Example 13');
   writeln;
   end;
 
@@ -399,7 +402,7 @@ procedure Example14;
     attr:TF_DataType;
     tout:TF_TensorPtr;
   begin
-  writeln('Starting Example 14');
+  writeln(DateTimeToStr(now), ' Starting Example 14');
   writeln;
   t1:=CreateTensorSingle([3,1,2],[1.0,2.0,3.0,4.0,5.0,6.0]);     // A 3 pieces of 1x2 matrix (3 long batch)
   t2:=CreateTensorSingle([2,4],[1.1,2.2,3.3,4.4,5.5,6.6,7.7,8.8]); // A 2x4 matrix to use for all
@@ -408,7 +411,7 @@ procedure Example14;
   PrintTensorData(tout);
   TF_DeleteTensor(t1); // Only t1 since t2 is deleted in ExecOper
   TF_DeleteTensor(tout);
-  writeln('Finished Example 14');
+  writeln(DateTimeToStr(now), ' Finished Example 14');
   writeln;
   end;
 
@@ -422,7 +425,7 @@ procedure Example15;
     DataList:TF_StringList;
   begin
   // This example shows how to save one Tensor.
-  writeln('Starting Example 15');
+  writeln(DateTimeToStr(now), ' Starting Example 15');
   writeln;
 
   // first a float
@@ -466,7 +469,7 @@ procedure Example15;
   PrintTensorData(t, ' Saved string');
   TF_DeleteTensor(t);
 
-  writeln('Finished Example 15');
+  writeln(DateTimeToStr(now), ' Finished Example 15');
   writeln;
   end;
 
@@ -478,7 +481,7 @@ procedure Example16;
     tout:TF_TensorPtr;
   begin
   // And how to read it back
-  writeln('Starting Example 16');
+  writeln(DateTimeToStr(now), ' Starting Example 16');
   writeln;
 
   // the float
@@ -510,7 +513,7 @@ procedure Example16;
   s.Done;
   g.Done;
 
-  writeln('Finished Example 16');
+  writeln(DateTimeToStr(now), ' Finished Example 16');
   writeln;
   end;
 
@@ -523,7 +526,7 @@ procedure Example17;
   begin
   // This is to test the Frac(x) functionality on two different ways, giving the same result for x>=0, but different for x<0
 
-  writeln('Starting Example 17');
+  writeln(DateTimeToStr(now), ' Starting Example 17');
   writeln;
   writeln('Be patient, it might take few seconds to complete!');
   writeln;
@@ -564,7 +567,7 @@ procedure Example17;
 
   TF_DeleteTensor(t);
 
-  writeln('Finished Example 17');
+  writeln(DateTimeToStr(now), ' Finished Example 17');
   writeln;
   end;
 
@@ -580,7 +583,7 @@ procedure Example18;
     tout: TF_TensorPtr;
   begin
   // This example shows how to save multiple Tensors in one save and restore them one-by-one.
-  writeln('Starting Example 18');
+  writeln(DateTimeToStr(now), ' Starting Example 18');
   writeln;
 
   // save a float and an integer tensor in the same step
@@ -642,7 +645,7 @@ procedure Example18;
   s.Done;
   g.Done;
 
-  writeln('Finished Example 18');
+  writeln(DateTimeToStr(now), ' Finished Example 18');
   writeln;
   end;
 
@@ -654,7 +657,7 @@ procedure Example19;
     assignop,applyop:string;
   begin
   // This example shows how to use a resource-typed variable in an operation
-  writeln('Starting Example 19');
+  writeln(DateTimeToStr(now), ' Starting Example 19');
   writeln;
 
   tvar:=CreateTensorSingleRandomUniform([10],5,10);
@@ -687,7 +690,7 @@ procedure Example19;
   TF_DeleteTensor(talpha);
   TF_DeleteTensor(tdelta);
   TF_DeleteTensor(tout);
-  writeln('Finished Example 19');
+  writeln(DateTimeToStr(now), ' Finished Example 19');
   writeln;
   end;
 
@@ -699,7 +702,7 @@ procedure Example20;
     assignop,applyop:string;
   begin
   // The same as #19, but using the "old" ref type variable
-  writeln('Starting Example 20');
+  writeln(DateTimeToStr(now), ' Starting Example 20');
   writeln;
 
   tvar:=CreateTensorSingleRandomUniform([10],5,10);
@@ -735,7 +738,7 @@ procedure Example20;
   TF_DeleteTensor(tvar);
   TF_DeleteTensor(talpha);
   TF_DeleteTensor(tdelta);
-  writeln('Finished Example 20');
+  writeln(DateTimeToStr(now), ' Finished Example 20');
   writeln;
   end;
 
@@ -747,7 +750,7 @@ procedure Example21;
   begin
   // Shows how to save a Graph from outside the Graph
   // The saved Graph can be retrieved, but be careful, as the TGraph.FOperOutputs is not populated, not all easy TSession.run can work
-  writeln('Starting Example 21');
+  writeln(DateTimeToStr(now), ' Starting Example 21');
   writeln;
   // a very simple "Graph"
   g.init;
@@ -774,7 +777,7 @@ procedure Example21;
   writeln('The Graph is saved to the disk');
   writeln;
 
-  writeln('Finished Example 21');
+  writeln(DateTimeToStr(now), ' Finished Example 21');
   writeln;
   end;
 
@@ -786,7 +789,7 @@ procedure Example22;
     touts:TF_TensorPtrs;
   begin
   // CSV
-  writeln('Starting Example 22');
+  writeln(DateTimeToStr(now), ' Starting Example 22');
   writeln;
 
   // a very simple "Graph"
@@ -796,33 +799,35 @@ procedure Example22;
   g.AddConstant('default1','default');
   g.AddConstant('default2',Int32(9992));
   g.AddConstant('default3',Int32(9993));
+  g.AddConstant('newline', #10);
+  g.AddTensor('shape1', CreateTensorInt32([1]));
 
-  // g.AddReadFile('filename','filecontent');
-  // I would need here an elementary step to split the filecontent dimensionless string tensor into individual lines, i.e. a
-  // 1 dimensional string tensor after removing the header. I would call it "splitcontent", what I now simulate hereby.
-  // Question raised: https://discuss.tensorflow.org/t/missing-step-in-csv-reading-and-decoding/14312
-  // If you can help me, how to do the actual split, please let me know.
-  g.AddTensor('splitcontent',CreateTensorString([3],['a, 1, 2','b, 3, 4', 'c, 5, 6']), true);
-
+  g.AddReadFile('filename','filecontent0');
+  g.AddReshape('filecontent0', 'shape1', 'filecontent', TF_String, TF_Int32);
+  g.AddStringSplit('filecontent', 'newline', 'outputindices', 'splitcontent', 'outputshape', true);
+//  g.AddStringSplitV2('filecontent', 'newline', 'outputindices', 'splitcontent', 'outputshape', Int64(10000000)); alternative option
   g.AddDecodeCSV('splitcontent',TF_StringList.Create('default1','default2','default3'),TF_StringList.Create('coloumn1','coloumn2','coloumn3'),TF_TypeList.Create(TF_STRING,TF_INT32,TF_INT32),',',true,'N/A',TF_IntList.Create(0,1,2));
 
-  tfilename:=CreateTensorString([1],['test.csv']);
-
   s.init(g);
-  touts:=s.run([],[],['coloumn1','coloumn3', 'splitcontent']); // the simulated version
+  tfilename:=CreateTensorString('test.csv');
+  touts:=s.run(['filename'],[tfilename],['coloumn1','coloumn2','coloumn3','outputindices','outputshape']);
   PrintTensorShape(touts[0],'First column');
   PrintTensorData(touts[0],'First column');
-  PrintTensorShape(touts[1],'Third column');
-  PrintTensorData(touts[1],'Third column');
-  PrintTensorShape(touts[2],'splitcontent');
-  PrintTensorData(touts[2],'splitcontent');
-  TF_DeleteTensor(tfilename);
+  PrintTensorShape(touts[1],'Second column');
+  PrintTensorData(touts[1],'Second column');
+  PrintTensorShape(touts[2],'Third column');
+  PrintTensorData(touts[2],'Third column');
+  PrintTensorShape(touts[3],'outputindices');
+  PrintTensorData(touts[3],'outputindices');
+  PrintTensorShape(touts[4],'outputshape');
+  PrintTensorData(touts[4],'outputshape');
   TF_DeleteTensors(touts);
+  TF_DeleteTensor(tfilename);
   s.done;
   g.done;
 
   writeln;
-  writeln('Finished Example 22');
+  writeln(DateTimeToStr(now), ' Finished Example 22');
   writeln;
   end;
 
@@ -836,7 +841,7 @@ procedure Example23;
     tout:TF_TensorPtr; // The result of the Eager run
   begin
   // Split a Tensor into a list of tensors in a Graph and then extract one tensor in eager mode
-  writeln('Starting Example 23');
+  writeln(DateTimeToStr(now), ' Starting Example 23');
   writeln;
   // the Tensor to be split
   tin:=CreateTensorSingle([3,1,2],[1.0,2.0,3.0,4.0,5.0,6.0]);     // A 3x1x2 tensor to be split to 3 pieces of 1x2 tensors
@@ -865,18 +870,18 @@ procedure Example23;
   TF_DeleteTensor(tshape);
   TF_DeleteTensor(tout);
   TF_DeleteTensors(touts);
-  writeln('Finished Example 23');
+  writeln(DateTimeToStr(now), ' Finished Example 23');
   writeln;
   end;
 
 procedure Example24;
   begin
   // Print the TensorFlow release in use
-  writeln('Starting Example 24');
+  writeln(DateTimeToStr(now), ' Starting Example 24');
   writeln;
   writeln('TF version: ', TF_Version);
   writeln;
-  writeln('Finished Example 24');
+  writeln(DateTimeToStr(now), ' Finished Example 24');
   writeln;
   end;
 
@@ -885,7 +890,7 @@ procedure Example25;
     t: TF_TensorPtr;
   begin
   // Create and print various String tensors
-  writeln('Starting Example 25');
+  writeln(DateTimeToStr(now), ' Starting Example 25');
   writeln;
 
   t:=CreateTensorString('short string single');
@@ -929,7 +934,7 @@ procedure Example25;
   PrintTensorData(t, 'a 3D array');
   TF_DeleteTensor(t);
 
-  writeln('Finished Example 25');
+  writeln(DateTimeToStr(now), ' Finished Example 25');
   writeln;
   end;
 
@@ -955,7 +960,7 @@ procedure Example26;
 
   // Also in this example check how the AddOper can be called in many ways
 
-  writeln('Starting Example 26');
+  writeln(DateTimeToStr(now), ' Starting Example 26');
   writeln;
 
   tin := CreateTensorSingleRandomUniform([3,5,5],0,1);
@@ -1008,7 +1013,7 @@ procedure Example26;
   TF_DeleteTensor(tdim);
   TF_DeleteTensors(touts);
 
-  writeln('Finished Example 26');
+  writeln(DateTimeToStr(now), ' Finished Example 26');
   writeln;
   end;
 
@@ -1023,7 +1028,7 @@ procedure Example27;
   // For variables - if I understand correctly, - the currently prefered way is the VariableOp (and not the Variable)
   // See Examples 19 and 20 for the two versions of the same ApplyGradientDescent
   // In this example a non-variable focused operation is used with a VariableOp
-  writeln('Starting Example 27');
+  writeln(DateTimeToStr(now), ' Starting Example 27');
   writeln;
 
   g.init;
@@ -1083,7 +1088,7 @@ procedure Example27;
   s.done;
   g.done;
 
-  writeln('Finished Example 27');
+  writeln(DateTimeToStr(now), ' Finished Example 27');
   writeln;
   end;
 
@@ -1095,7 +1100,7 @@ procedure Example28;
     tout:TF_TensorPtr;
   begin
   // This is to test the Frac(x) functionality using the TGraphCustom object and three eager ways
-  writeln('Starting Example 28');
+  writeln(DateTimeToStr(now), ' Starting Example 28');
   writeln;
   writeln('Be patient, it might take few seconds to complete!');
   writeln;
@@ -1137,19 +1142,116 @@ procedure Example28;
 
   TF_DeleteTensor(t);
 
-  writeln('Finished Example 28');
+  writeln(DateTimeToStr(now), ' Finished Example 28');
+  writeln;
+  end;
+
+procedure Example29;
+  var
+    TFStatus : TF_StatusPtr;
+    TFSessionOptions : TF_SessionOptionsPtr;
+    TFBuffer : TF_BufferPtr;
+    TFGraph : tF_GraphPtr;
+    TFSession : TF_SessionPtr;
+    TFDeviceList : TF_DeviceListPtr;
+    i, NumberOfDevices : integer;
+    Str : string;
+    I64 : int64;
+  begin
+  // This is to print the available devices - no error checking!
+  writeln(DateTimeToStr(now), ' Starting Example 29');
+  writeln;
+  TFStatus := TF_NewStatus;
+  TFSessionOptions := TF_NewSessionOptions;
+  TFBuffer := TF_NewBufferFromString(nil, 0);
+  TFGraph := TF_NewGraph;
+  TFSession := TF_NewSession(TFGraph, TFSessionOptions, TFStatus);
+  TFDeviceList := TF_SessionListDevices(TFSession, TFStatus);
+  NumberOfDevices := TF_DeviceListCount(TFDeviceList);
+  writeln('Device name                                    '#9'Device type'#9'Device memory');
+  for i := 0 to NumberOfDevices - 1 do
+    begin
+    Str := TF_DeviceListName(TFDeviceList, i, TFStatus);
+    write(Str, #9);
+    Str := TF_DeviceListType(TFDeviceList, i, TFStatus);
+    write(Str, #9);
+    I64 := TF_DeviceListMemoryBytes(TFDeviceList, i, TFStatus);
+    writeln(I64);
+    end;
+  TF_DeleteDeviceList(TFDeviceList);
+  TF_DeleteSession(TFSession, TFStatus);
+  TF_DeleteSessionOptions(TFSessionOptions);
+  TF_DeleteBuffer(TFBuffer);
+  TF_DeleteStatus(TFStatus);
+  writeln;
+  writeln(DateTimeToStr(now), ' Finished Example 29');
+  writeln;
+  end;
+
+procedure Example30;
+  var
+    g:TGraphExt;
+    s:TSession;
+    tout:TF_TensorPtr;
+    dst : TF_input;
+    stat : TF_StatusPtr;
+  begin
+  // Loop
+  writeln(DateTimeToStr(now), ' Starting Example 30');
+  writeln;
+
+  // the Graph
+  g.init;
+  g.AddConstant('one', Int32(1)); // this will be the loop increment
+  g.AddConstant('five', 5.0); // this will be the value added in the actual calculation
+  g.AddConstant('i0',int32(0)); // this is the first value of the loop variable
+  g.AddConstant('i10',int32(9)); // this is its maximum value (i.e. 10 iterations)
+  g.AddConstant('s0',0.0); // this is the starting value of the calculation
+  g.AddEnter('one', 'onein', TF_Int32, 'myloop', true, 1); // need to move them all to the frame
+  g.AddEnter('five', 'fivein', TF_FLOAT, 'myloop', true, 1);
+  g.AddEnter('i0', 'iin', TF_Int32, 'myloop', false, 1);
+  g.AddEnter('s0', 'sin', TF_FLOAT, 'myloop', false, 1);
+  g.AddEnter('i10', 'imax', TF_Int32, 'myloop', true, 1);
+  g.AddMerge(['iin', 'iin'], 'imerged', 'iorder', TF_INT32, 2, 'merge_i');
+  g.AddMerge(['sin', 'sin'], 'smerged', 'sorder', TF_FLOAT, 2, 'merge_s');
+  g.AddAdd('onein', 'imerged', 'icalculated', TF_Int32); // this is the loop variable increment
+  g.AddAdd('fivein', 'smerged', 'scalculated', TF_FLOAT); // this is the actual calculation
+  g.AddLess('imax', 'icalculated', 'stop', TF_int32); // decide to stop
+  g.AddSwitch('icalculated', 'stop', 'icont', 'iout', TF_Int32); // routing the loop variable
+  g.AddSwitch('scalculated', 'stop', 'scont', 'sout', TF_FLOAT); // routing the calculated variable
+  g.AddNextIteration('icont', 'ivar', TF_Int32);
+  g.AddNextIteration('scont', 'svar', TF_FLOAT);
+  g.AddExit('sout', 'sfinished', TF_FLOAT); // only s is used outside the loop
+  // need to "hack" the graph using the very low level TF_UpdateEdge
+  stat := TF_NewStatus; // need a status variable for it
+  dst.oper := g.GetOperationByName('merge_i');
+  dst.index := 0;
+  TF_UpdateEdge(g.FGraph, g.GetOutputByName('ivar'), dst, stat); // fixing the i merge
+  dst.oper := g.GetOperationByName('merge_s');
+  dst.index := 0;
+  TF_UpdateEdge(g.FGraph, g.GetOutputByName('svar'), dst, stat); // fixing the s merge
+
+  // and run
+  s.init(g);
+  tout := s.Run([], [], 'sfinished');
+  PrintTensorData(tout, 'Sum after ten cycles');
+  s.done;
+  g.done;
+
+  writeln(DateTimeToStr(now), ' Finished Example 30');
   writeln;
   end;
 
 procedure ExampleLast;
   begin
   // Call an Exec function with no output
-  writeln('Starting the last example (what aborts)');
+  writeln(DateTimeToStr(now), ' Starting the last example (what aborts)');
   writeln;
-  ExecAbort('Here is the end of all the Examples', true); // if false then it aborts with an error message
+  ExecAbort(DateTimeToStr(Now) + ' Here is the end of all the Examples', true); // if false then it aborts with an error message
   end;
 
 begin
+
 Example1;
 Example2;
 Example3;
@@ -1171,14 +1273,16 @@ Example18;
 Example19;
 Example20;
 Example21;
-Example22;  // still not ok
+Example22;
 Example23;
 Example24;
 Example25;
 Example26;
 Example27;
 Example28;
-
+Example29;
+Example30;
 ExampleLast;
+Sleep(1000);
 end.
 
